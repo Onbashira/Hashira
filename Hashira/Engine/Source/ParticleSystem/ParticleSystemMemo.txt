@@ -1,0 +1,18 @@
+[参考資料]　
+
+MH:W | GPU Particle - モンスターハンター:ワールドにおけるGPU Particleの実装
+https://www.slideshare.net/capcom_rd/mhw-gpu-particle
+
+【第三回ひじき祭】Unityでもいっぱいオブジェクトを動かしたい！	
+https://www.nicovideo.jp/watch/sm31802296
+
+第一段階目標
+一個のエフェクトを描画可能にする
+第二目標
+二個以上のエフェクトを描画可能にする
+第三目標
+グルーピングの実装
+第四目標
+サブエミッタの実装
+第五目標
+ゲーム組み込み
