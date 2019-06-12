@@ -21,7 +21,7 @@ namespace Hashira {
 		EmitterHeaderBinary();
 		~EmitterHeaderBinary();
 
-		void Initialize(UINT64 memorySize);
+		HRESULT Initialize(std::shared_ptr<D3D12Device> device,UINT64 memorySize);
 
 		void Write(CPUEmitterHeader* emtHeader);
 

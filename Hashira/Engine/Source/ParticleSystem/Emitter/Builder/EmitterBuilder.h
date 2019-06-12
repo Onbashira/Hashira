@@ -3,8 +3,13 @@ namespace Hashira {
 	class EmitterBuilder
 	{
 	public:
+		
 		EmitterBuilder();
+		
 		~EmitterBuilder();
+
+		
+
 	};
 
 }
