@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "EmitterHeaderBinary.h"
-
+#include "Engine/Source/ParticleSystem/Emitter/Emitter.h"
 #include "Engine/Source/Resource/Resource.h"
 #include "Engine/Source/Device/D3D12Device.h"
 
@@ -11,6 +11,7 @@ Hashira::EmitterHeaderBinary::EmitterHeaderBinary()
 
 Hashira::EmitterHeaderBinary::~EmitterHeaderBinary()
 {
+	this->DiscardMemory();
 }
 
 HRESULT Hashira::EmitterHeaderBinary::Initialize(std::shared_ptr<D3D12Device> device, UINT64 memorySize)
@@ -46,12 +47,34 @@ HRESULT Hashira::EmitterHeaderBinary::Initialize(std::shared_ptr<D3D12Device> de
 
 void Hashira::EmitterHeaderBinary::Write(CPUEmitterHeader * emtHeader)
 {
+	if (this->_bin->GetResourceDesc().Width >= static_cast<UINT64>(_emtHeaderCount * sizeof(GPUEmitterHeader))) {
+#ifdef _DEBUG
+		DEBUG_LOG(std::string("EmtHeaderBin is Full"));
+#endif // _DEBUG
+
+		return;
+	}
+
+
+	GPUEmitterHeader header = emtHeader->CreateGPUEmitterHeader();
+	_bin->Update(&header,sizeof(GPUEmitterHeader), _emtHeaderCount * sizeof(GPUEmitterHeader));
+	++_emtHeaderCount;
+	return;
+
 }
 
 void Hashira::EmitterHeaderBinary::Delete(int emtIndex)
 {
+	--_emtHeaderCount;
+
+
+
 }
 
 void Hashira::EmitterHeaderBinary::DiscardMemory()
 {
+	_bin->Discard();
+	_headers.clear();
+	_headers.shrink_to_fit();
+
 }

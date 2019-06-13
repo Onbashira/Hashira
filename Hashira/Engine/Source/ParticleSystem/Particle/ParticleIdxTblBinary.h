@@ -1,8 +1,10 @@
 #pragma once
-class ParticleIdxTblBinary
-{
-public:
-	ParticleIdxTblBinary();
-	~ParticleIdxTblBinary();
-};
+namespace Hashira {
+	class ParticleIdxTblBinary
+	{
+	public:
+		ParticleIdxTblBinary();
+		~ParticleIdxTblBinary();
+	};
 
+}

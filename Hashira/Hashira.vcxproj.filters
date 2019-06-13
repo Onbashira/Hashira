@@ -438,13 +438,19 @@
     <ClCompile Include="Engine\Source\ParticleSystem\Emitter\Builder\EmitterBuilder.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\GPUBinary\EmitterBinary.cpp">
+    <ClCompile Include="Engine\Source\ParticleSystem\Particle\ParticleRangeBinary.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\GPUBinary\EmitterHeaderBinary.cpp">
+    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\EmitterBinary.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\GPUBinary\EmitterIdxTblBinary.cpp">
+    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\EmitterHeaderBinary.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\EmitterIdxTblBinary.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\EmitterDataBinary.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -869,19 +875,25 @@
     <ClInclude Include="Engine\Source\ParticleSystem\Emitter\Builder\EmitterBuilder.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\GPUBinary\EmitterIdxTblBinary.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\GPUBinary\EmitterBinary.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\GPUBinary\EmitterHeaderBinary.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Hashira.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\ParticleSystem\Item\ParticleItem.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleSystem\Particle\ParticleRangeBinary.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\EmitterBinary.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\EmitterHeaderBinary.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\EmitterIdxTblBinary.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\EmitterDataBinary.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

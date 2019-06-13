@@ -2,9 +2,14 @@
 #include "Emitter.h"
 #include "../Item/ParticleItem.h"
 
-Hashira::Emitter::Emitter() : 
+Hashira::Emitter::Emitter() :
+	_dataSize(sizeof(EmitterCommonItem)),
 	_updater([this]() {for (auto& item : this->_items) { item->UpdateItem(); }}),
-	_dataSize(sizeof(EmitterCommonItem))
+	_emitterData(),
+	_emitterCommonItem(),
+	_items(),
+	_childEmitters(),
+	_emtName("UNNAMED_EMITTER")
 {
 
 }
@@ -25,7 +30,7 @@ void Hashira::Emitter::SetCustomUpdater(std::function<void(void)> function)
 	_updater = function;
 }
 
-void Hashira::Emitter::SetEmitterParam(const EmitterParam & emitterData)
+void Hashira::Emitter::SetEmitterData(const EmitterData & emitterData)
 {
 	_emitterData = emitterData;
 }
@@ -45,6 +50,11 @@ Hashira::EmitterCommonItem & Hashira::Emitter::GetCommonItem()
 	return _emitterCommonItem;
 }
 
+Hashira::EmitterData & Hashira::Emitter::GetEmitterData()
+{
+	return _emitterData;
+}
+
 std::vector<std::unique_ptr<Hashira::ParticleItem>>& Hashira::Emitter::GetEmitterItems()
 {
 	return  _items;
@@ -59,4 +69,10 @@ void Hashira::Emitter::Discard()
 {
 	_updater = []() {};
 	_items.clear();
+	_items.shrink_to_fit();
+	_childEmitters.clear();
+	_childEmitters.shrink_to_fit();
+	_emitterData = EmitterData();
+	_emitterCommonItem = EmitterCommonItem();
+	_emtName = "DELETED_EMITTER";
 }

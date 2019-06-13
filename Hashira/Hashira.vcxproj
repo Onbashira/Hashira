@@ -19,10 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\EmitterDataBinary.cpp" />
     <ClCompile Include="Engine\Source\ParticleSystem\Emitter\Builder\EmitterBuilder.cpp" />
-    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\GPUBinary\EmitterIdxTblBinary.cpp" />
-    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\GPUBinary\EmitterHeaderBinary.cpp" />
-    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\GPUBinary\EmitterBinary.cpp" />
+    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\EmitterIdxTblBinary.cpp" />
+    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\EmitterHeaderBinary.cpp" />
+    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\EmitterBinary.cpp" />
     <ClCompile Include="Engine\Source\ParticleSystem\Effect\ParticleEffect.cpp" />
     <ClCompile Include="Engine\Source\ParticleSystem\Emitter\Emitter.cpp" />
     <ClCompile Include="Engine\ThirdParty\DirectXTex\include\BC.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="Engine\Source\ParticleSystem\Particle\ParticleIdxTblBinary.cpp" />
     <ClCompile Include="Engine\Source\ParticleSystem\Particle\ParticleBinary.cpp" />
     <ClCompile Include="Engine\Source\ParticleSystem\Particle\ParticleHeaderBinary.cpp" />
+    <ClCompile Include="Engine\Source\ParticleSystem\Particle\ParticleRangeBinary.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -170,10 +172,11 @@
     <ClCompile Include="Engine\Source\ParticleSystem\Item\Transform\Velocity3DItem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\EmitterDataBinary.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Emitter\Builder\EmitterBuilder.h" />
-    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\GPUBinary\EmitterIdxTblBinary.h" />
-    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\GPUBinary\EmitterHeaderBinary.h" />
-    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\GPUBinary\EmitterBinary.h" />
+    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\EmitterIdxTblBinary.h" />
+    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\EmitterHeaderBinary.h" />
+    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\EmitterBinary.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Effect\ParticleEffect.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Emitter\Emitter.h" />
     <ClInclude Include="Engine\Source\Component\DefaultComponents.h" />
@@ -313,6 +316,7 @@
     <ClInclude Include="Engine\Source\ParticleSystem\Particle\ParticleIdxTblBinary.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Particle\ParticleBinary.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Particle\ParticleHeaderBinary.h" />
+    <ClInclude Include="Engine\Source\ParticleSystem\Particle\ParticleRangeBinary.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Item\Transform\TransformItem.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Item\Transform\UVSequenceItem.h" />

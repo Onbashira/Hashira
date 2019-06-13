@@ -2,11 +2,11 @@
 #include "ParticleIdxTblBinary.h"
 
 
-ParticleIdxTblBinary::ParticleIdxTblBinary()
+Hashira::ParticleIdxTblBinary::ParticleIdxTblBinary()
 {
 }
 
 
-ParticleIdxTblBinary::~ParticleIdxTblBinary()
+Hashira::ParticleIdxTblBinary::~ParticleIdxTblBinary()
 {
 }

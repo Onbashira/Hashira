@@ -1,9 +1,10 @@
 #pragma once
+#include "Engine/Source/ParticleSystem/Emitter/Emitter.h"
+
 namespace Hashira {
 	class Emitter;
 	class Resource;
 	class D3D12Device;
-	struct CPUEmitterHeader;
 
 	class EmitterHeaderBinary
 	{
@@ -13,9 +14,9 @@ namespace Hashira {
 		
 		int _emtHeaderCount;
 
+		std::vector<GPUEmitterHeader> _headers;
+
 		std::unique_ptr<Resource> _bin;
-
-
 
 	public:
 		EmitterHeaderBinary();

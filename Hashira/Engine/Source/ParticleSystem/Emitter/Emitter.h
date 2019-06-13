@@ -53,7 +53,7 @@ namespace Hashira {
 	};
 
 	//エミッタデータ（GPU内でのみ読み書きされるメモリのフォーマット
-	struct EmitterParam 
+	struct EmitterData
 	{
 		//メモリ位置
 		unsigned int SpawnHead = 0;
@@ -127,7 +127,7 @@ namespace Hashira {
 		unsigned int _dataSize;
 
 		//エミッタパラメータ
-		EmitterParam _emitterData;
+		EmitterData _emitterData;
 
 		//共通アイテム
 		EmitterCommonItem _emitterCommonItem;
@@ -150,6 +150,8 @@ namespace Hashira {
 
 		~Emitter();
 
+		HRESULT Initalize(EmitterData& emtData , );
+
 		//各アイテムのアップデート
 		void UpdateItems();
 
@@ -157,7 +159,7 @@ namespace Hashira {
 		void SetCustomUpdater(std::function<void(void)> function);
 
 		//エミッタの情報のセット
-		void SetEmitterParam(const EmitterParam& emitterData);
+		void SetEmitterData(const EmitterData& emitterData);
 
 		void SetName(String& name);
 
@@ -166,6 +168,9 @@ namespace Hashira {
 
 		//共通アイテムの取得
 		EmitterCommonItem& GetCommonItem();
+
+		//エミッタ情報の取得
+		EmitterData& GetEmitterData();
 		
 		//エミッタアイテム配列の取得
 		std::vector < std::unique_ptr<ParticleItem> >& GetEmitterItems();

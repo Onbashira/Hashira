@@ -2,11 +2,11 @@
 #include "ParticleHeaderBinary.h"
 
 
-ParticleHeaderBinary::ParticleHeaderBinary()
+Hashira::ParticleHeaderBinary::ParticleHeaderBinary()
 {
 }
 
 
-ParticleHeaderBinary::~ParticleHeaderBinary()
+Hashira::ParticleHeaderBinary::~ParticleHeaderBinary()
 {
 }

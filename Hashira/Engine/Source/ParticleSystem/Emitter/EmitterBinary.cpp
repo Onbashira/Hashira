@@ -13,6 +13,8 @@ Hashira::EmitterBinary::EmitterBinary()
 
 Hashira::EmitterBinary::~EmitterBinary()
 {
+	this->DiscardMemory();
+
 }
 
 HRESULT Hashira::EmitterBinary::Initialize(std::shared_ptr<D3D12Device> device, UINT64 memorySize)

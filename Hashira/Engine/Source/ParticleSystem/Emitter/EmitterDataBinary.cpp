@@ -1,22 +1,20 @@
 #include "stdafx.h"
-#include "EmitterIdxTblBinary.h"
-
-
+#include "EmitterDataBinary.h"
+#include "Engine/Source/ParticleSystem/Emitter/Emitter.h"
 #include "Engine/Source/Resource/Resource.h"
 #include "Engine/Source/Device/D3D12Device.h"
 
-Hashira::EmitterIdxTblBinary::EmitterIdxTblBinary()
+Hashira::EmitterDataBinary::EmitterDataBinary() : _offset(0)
 {
 }
 
 
-Hashira::EmitterIdxTblBinary::~EmitterIdxTblBinary()
+Hashira::EmitterDataBinary::~EmitterDataBinary()
 {
 }
 
-HRESULT Hashira::EmitterIdxTblBinary::Initialize(std::shared_ptr<D3D12Device> device, UINT64 memorySize)
+HRESULT Hashira::EmitterDataBinary::Initialize(std::shared_ptr<D3D12Device> device, UINT64 memorySize)
 {
-
 	D3D12_HEAP_PROPERTIES prop = {};
 	prop.Type = D3D12_HEAP_TYPE::D3D12_HEAP_TYPE_CUSTOM;
 	prop.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY::D3D12_CPU_PAGE_PROPERTY_WRITE_COMBINE;
@@ -46,36 +44,15 @@ HRESULT Hashira::EmitterIdxTblBinary::Initialize(std::shared_ptr<D3D12Device> de
 	return hr;
 }
 
-void Hashira::EmitterIdxTblBinary::Write(int emtIndex)
-{
-	auto ret = std::any_of(_emtIdxTbl.begin(), _emtIdxTbl.end(), [&, emtIndex](int  index)->bool {return (index == emtIndex); });
-	
-	//“¯‚¶‚à‚Ì‚ª”z—ñ“à‚É‚ ‚é‚È‚ç‚Î
-	if (ret == true) 
-	{
-		return;
-	}
-	_emtIdxTbl.push_back(emtIndex);
-	
-	_bin->Update(_emtIdxTbl.data(), _emtIdxTbl.size() * sizeof(unsigned int), 0);
-
-
-	return;
-
-}
-
-void Hashira::EmitterIdxTblBinary::Delete(int emtIndex)
+void Hashira::EmitterDataBinary::Write(Emitter * emitter)
 {
 }
 
-void Hashira::EmitterIdxTblBinary::Sort()
+void Hashira::EmitterDataBinary::Delete(int emtIndex)
 {
-	std::sort(_emtIdxTbl.begin(), _emtIdxTbl.end());
-
-	_bin->Update(_emtIdxTbl.data(), _emtIdxTbl.size() * sizeof(unsigned int), 0);
-
 }
 
-void Hashira::EmitterIdxTblBinary::DiscardMemory()
+void Hashira::EmitterDataBinary::DiscardMemory()
 {
+	_bin->Discard();
 }

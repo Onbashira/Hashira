@@ -1,8 +1,10 @@
 #pragma once
-class ParticleBinary
-{
-public:
-	ParticleBinary();
-	~ParticleBinary();
-};
+namespace Hashira {
+	class ParticleBinary
+	{
+	public:
+		ParticleBinary();
+		~ParticleBinary();
+	};
 
+}
