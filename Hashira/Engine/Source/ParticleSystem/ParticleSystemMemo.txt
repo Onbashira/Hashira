@@ -6,6 +6,13 @@ https://www.slideshare.net/capcom_rd/mhw-gpu-particle
 【第三回ひじき祭】Unityでもいっぱいオブジェクトを動かしたい！	
 https://www.nicovideo.jp/watch/sm31802296
 
+
+仕様
+
+シーン単位で発生しうるエフェクトを管理（シーン単位でエフェクトを管理）
+
+
+
 第一段階目標
 一個のエフェクトを描画可能にする
 第二目標

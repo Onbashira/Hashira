@@ -15,24 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Engine\Source\Time\Timer.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Utility\NonCopyable.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\imgui\imgui.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\imgui\imgui_demo.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\imgui\imgui_draw.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\imgui\imgui_widgets.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Source\Async\Fence.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -132,7 +114,136 @@
     <ClCompile Include="Engine\Source\Math\Math.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\PipelineState\PipelineStateObject.cpp">
+    <ClCompile Include="Engine\Source\Mesh\MeshHeap.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Mesh\ModelMesh.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Component\GraphicsComponent\GraphicsComponent.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Component\InputComponent\InputComponent.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Component\GameObject\GameObject.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Component\Transform\Transform.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\CommandAllocator\CommandAllocator.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Command\Core\InternalCommandAllocator.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Component\PhysicsComponent\PhysicsComponent.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\DescriptorHeap\GameHeap.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\MemoryAllocator\VariableSizeAllocationManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\DescriptorHeap\Descriptor.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Device\D3D11on12Device.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Device\D2DDevice.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Component\DefaultComponents\DefaultGraphicsComponent.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Component\DefaultComponents\DefaultInputComponent.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Component\DefaultComponents\DefaultPhysicsComponent.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Mesh\MeshBuffer.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\MaterialSystem\Material.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\MaterialSystem\MaterialManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\MemoryResourceManager\MemoryResourceManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\Emitter.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Item\Transform\RotateAnimItem.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Item\Transform\ScaleAnimItem.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Item\Transform\TransformItem.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Item\Transform\UVSequenceItem.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Item\Transform\Velocity3DItem.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Item\ParticleItem.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Item\Visual\ShaderSettingItem.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Item\Attribute\MeshTypeItem.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Effect\ParticleEffect.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Action\ParticleAction.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\PIpelineState\PipelineStateObject.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Primitive\DefaultComponent\PrimitiveInputComponent.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Primitive\DefaultComponent\PrimitivePhysicsComponent.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Primitive\DefaultComponent\PrimitiveRenderer.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Primitive\Geometry\Cube.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Primitive\Geometry\Plane.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Primitive\Geometry\Sphere.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Primitive\Object\PrimitiveObject.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Rendering\RenderContext\RenderContext.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Rendering\RenderingPass\RenderingPass.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Source\Rendering\RenderingManager.cpp">
@@ -171,6 +282,9 @@
     <ClCompile Include="Engine\Source\RingBuffer\RingBuffer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Source\Scene\Scene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Source\ShaderObject\HLSLIncluder.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -186,111 +300,6 @@
     <ClCompile Include="Engine\Source\Signature\RootSignature.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\Texture\TextureManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Texture\TextureObject.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Window\Window.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Window\WindowManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Texture\TextureLoader.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Mesh\MeshHeap.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Mesh\ModelMesh.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Component\GraphicsComponent\GraphicsComponent.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Component\InputComponent\InputComponent.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Component\GameObject\GameObject.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Component\Transform\Transform.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\CommandAllocator\CommandAllocator.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Command\Core\InternalCommandAllocator.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Component\PhysicsComponent\PhysicsComponent.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\imgui\imgui_impl_dx12.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Scene\Scene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\DescriptorHeap\GameHeap.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Rendering\RenderContext\RenderContext.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\MemoryAllocator\VariableSizeAllocationManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\DescriptorHeap\Descriptor.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Utility\Singleton.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\TextUI\TextUI.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Device\D3D11on12Device.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Device\D2DDevice.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Primitive\Geometry\Cube.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Primitive\Geometry\Plane.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Primitive\Geometry\Sphere.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Primitive\Object\PrimitiveObject.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Primitive\DefaultComponent\PrimitiveRenderer.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Primitive\DefaultComponent\PrimitiveInputComponent.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Primitive\DefaultComponent\PrimitivePhysicsComponent.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Component\DefaultComponents\DefaultGraphicsComponent.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Component\DefaultComponents\DefaultInputComponent.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Component\DefaultComponents\DefaultPhysicsComponent.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Sprite\Sprite.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Source\Sprite\DefaultComponent\SpriteInputComponent.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -300,201 +309,162 @@
     <ClCompile Include="Engine\Source\Sprite\DefaultComponent\SpriteRenderer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\Rendering\RenderingPass\RenderingPass.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\BC.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\BC4BC5.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\BC6HBC7.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\BCDirectCompute.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexCompress.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexCompressGPU.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexConvert.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexD3D11.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexD3D12.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexDDS.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexFlipRotate.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexHDR.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexImage.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexMipmaps.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexMisc.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexNormalMaps.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexPMAlpha.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexResize.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexTGA.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexUtil.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexWIC.cpp">
+    <ClCompile Include="Engine\Source\Sprite\Sprite.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Source\Sprite\SpriteManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\Mesh\MeshBuffer.cpp">
+    <ClCompile Include="Engine\Source\TextUI\TextUI.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\MaterialSystem\Material.cpp">
+    <ClCompile Include="Engine\Source\Texture\TextureLoader.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\MaterialSystem\MaterialManager.cpp">
+    <ClCompile Include="Engine\Source\Texture\TextureManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\MemoryResourceManager\MemoryResourceManager.cpp">
+    <ClCompile Include="Engine\Source\Texture\TextureObject.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\Emitter.cpp">
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\BC.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Item\Transform\RotateAnimItem.cpp">
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\BC4BC5.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Item\Transform\ScaleAnimItem.cpp">
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\BC6HBC7.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Item\Transform\TransformItem.cpp">
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\BCDirectCompute.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Item\Transform\UVSequenceItem.cpp">
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexCompress.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Item\Transform\Velocity3DItem.cpp">
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexCompressGPU.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Item\ParticleItem.cpp">
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexConvert.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\IndirectArgs\ParticleIndirectArgs.cpp">
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexD3D11.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Item\Visual\ShaderSettingItem.cpp">
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexD3D12.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Item\Attribute\MeshTypeItem.cpp">
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexDDS.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\Resource\MultipleBuffer.cpp">
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexFlipRotate.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Effect\ParticleEffect.cpp">
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexHDR.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Action\ParticleAction.cpp">
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexImage.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Particle\ParticleIdxTblBinary.cpp">
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexMipmaps.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Particle\ParticleBinary.cpp">
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexMisc.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Particle\ParticleHeaderBinary.cpp">
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexNormalMaps.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\Builder\EmitterBuilder.cpp">
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexPMAlpha.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Particle\ParticleRangeBinary.cpp">
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexResize.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\EmitterBinary.cpp">
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexTGA.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\EmitterHeaderBinary.cpp">
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexUtil.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\EmitterIdxTblBinary.cpp">
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexWIC.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\EmitterDataBinary.cpp">
+    <ClCompile Include="Engine\Source\ThirdParty\imgui\imgui.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ThirdParty\imgui\imgui_demo.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ThirdParty\imgui\imgui_draw.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ThirdParty\imgui\imgui_impl_dx12.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ThirdParty\imgui\imgui_widgets.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Time\Timer.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Utility\NonCopyable.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Utility\Singleton.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Window\Window.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Window\WindowManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\System\SceneParticleManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Memory\ParticleBinary.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Memory\ParticleHeaderBinary.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Memory\ParticleIdxTblBinary.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Memory\ParticleRangeBinary.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Memory\EmitterBinary.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Memory\EmitterDataBinary.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Memory\EmitterHeaderBinary.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Memory\EmitterIdxTblBinary.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Item\CommonItem\CommonItem.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Memory\ParticleIndirectArgs.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Resource\L0Buffer.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Resource\L1Buffer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Engine\Source\Time\Timer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Utility\D3D12Common.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Utility\d3dx12.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Utility\NonCopyable.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Utility\Utility.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ThirdParty\imgui\imconfig.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ThirdParty\imgui\imgui.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ThirdParty\imgui\imgui_internal.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ThirdParty\imgui\imstb_rectpack.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ThirdParty\imgui\imstb_textedit.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ThirdParty\imgui\imstb_truetype.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Source\DynamicHeap\DefaultRawMemoryAllocator.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\DynamicHeap\MemoryAllocator.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Utility\BasicTypes.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\Async\Fence.h">
@@ -602,81 +572,6 @@
     <ClInclude Include="Engine\Source\Math\Math.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Source\PipelineState\PipelineStateObject.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Rendering\RenderingManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Rendering\SwapChain.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Resource\ConstantBuffer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Resource\DepthStencilBuffer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Resource\IndexBuffer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Resource\Resource.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Resource\Sampler.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Resource\ShaderResource.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Resource\StructuredBuffer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Resource\UnorderedAccessValue.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Resource\UploadBuffer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Resource\VertexBuffer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\RingBuffer\RingBuffer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\ShaderObject\HLSLIncluder.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\ShaderObject\ShaderHelper.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\ShaderObject\ShaderObjectManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Signature\CommandSignature.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Signature\RootSignature.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Texture\TextureManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Texture\TextureObject.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Window\Window.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Window\WindowManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Utility\ManagerComponent.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Texture\TextureLoader.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Source\Mesh\MeshHeap.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -704,28 +599,13 @@
     <ClInclude Include="Engine\Source\Component\PhysicsComponent\PhysicsComponent.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\ThirdParty\imgui\imgui_impl_dx12.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Scene\Scene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Source\DescriptorHeap\GameHeap.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Rendering\RenderContext\RenderContext.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\MemoryAllocator\VariableSizeAllocationManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\DescriptorHeap\Descriptor.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Utility\Singleton.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\TextUI\TextUI.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\Device\D3D11on12Device.h">
@@ -735,27 +615,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\Component\ComponentsHeader.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Primitive\Geometry\Cube.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Primitive\Geometry\Plane.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Primitive\Geometry\Sphere.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Primitive\Object\PrimitiveObject.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Primitive\DefaultComponent\PrimitiveRenderer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Primitive\DefaultComponent\PrimitiveInputComponent.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Primitive\DefaultComponent\PrimitivePhysicsComponent.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\Component\DefaultComponents\DefaultGraphicsComponent.h">
@@ -770,49 +629,7 @@
     <ClInclude Include="Engine\Source\Component\DefaultComponents.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Source\Sprite\Sprite.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Sprite\DefaultComponent\SpriteInputComponent.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Sprite\DefaultComponent\SpritePhysicsComponent.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Sprite\DefaultComponent\SpriteRenderer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Rendering\RenderingPass\RenderingPass.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ThirdParty\DirectXTex\include\BC.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ThirdParty\DirectXTex\include\BCDirectCompute.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ThirdParty\DirectXTex\include\d3dx12.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ThirdParty\DirectXTex\include\DDS.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ThirdParty\DirectXTex\include\DirectXTex.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ThirdParty\DirectXTex\include\DirectXTexP.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ThirdParty\DirectXTex\include\Filters.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ThirdParty\DirectXTex\include\scoped.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Sprite\SpriteManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\Mesh\MeshBuffer.h">
@@ -845,16 +662,10 @@
     <ClInclude Include="Engine\Source\ParticleSystem\Item\Transform\Velocity3DItem.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Source\ParticleSystem\IndirectArgs\ParticleIndirectArgs.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Source\ParticleSystem\Item\Visual\ShaderSettingItem.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\ParticleSystem\Item\Attribute\MeshTypeItem.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Resource\MultipleBuffer.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\ParticleSystem\Effect\ParticleEffect.h">
@@ -863,37 +674,241 @@
     <ClInclude Include="Engine\Source\ParticleSystem\Action\ParticleAction.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Source\ParticleSystem\Particle\ParticleIdxTblBinary.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\ParticleSystem\Particle\ParticleBinary.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\ParticleSystem\Particle\ParticleHeaderBinary.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\Builder\EmitterBuilder.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Hashira.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\ParticleSystem\Item\ParticleItem.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Source\ParticleSystem\Particle\ParticleRangeBinary.h">
+    <ClInclude Include="Engine\Source\PIpelineState\PipelineStateObject.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\EmitterBinary.h">
+    <ClInclude Include="Engine\Source\Primitive\DefaultComponent\PrimitiveInputComponent.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\EmitterHeaderBinary.h">
+    <ClInclude Include="Engine\Source\Primitive\DefaultComponent\PrimitivePhysicsComponent.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\EmitterIdxTblBinary.h">
+    <ClInclude Include="Engine\Source\Primitive\DefaultComponent\PrimitiveRenderer.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\EmitterDataBinary.h">
+    <ClInclude Include="Engine\Source\Primitive\Geometry\Cube.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Primitive\Geometry\Plane.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Primitive\Geometry\Sphere.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Primitive\Object\PrimitiveObject.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Rendering\RenderContext\RenderContext.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Rendering\RenderingPass\RenderingPass.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Rendering\RenderingManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Rendering\SwapChain.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Resource\ConstantBuffer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Resource\DepthStencilBuffer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Resource\IndexBuffer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Resource\MultipleBuffer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Resource\Resource.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Resource\Sampler.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Resource\ShaderResource.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Resource\StructuredBuffer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Resource\UnorderedAccessValue.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Resource\UploadBuffer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Resource\VertexBuffer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\RingBuffer\RingBuffer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Scene\Scene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ShaderObject\HLSLIncluder.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ShaderObject\ShaderHelper.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ShaderObject\ShaderObjectManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Signature\CommandSignature.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Signature\RootSignature.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Sprite\DefaultComponent\SpriteInputComponent.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Sprite\DefaultComponent\SpritePhysicsComponent.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Sprite\DefaultComponent\SpriteRenderer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Sprite\Sprite.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Sprite\SpriteManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\TextUI\TextUI.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Texture\TextureLoader.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Texture\TextureManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Texture\TextureObject.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\BC.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\BCDirectCompute.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\d3dx12.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\DDS.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTex.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexP.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\Filters.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\scoped.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ThirdParty\imgui\imconfig.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ThirdParty\imgui\imgui.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ThirdParty\imgui\imgui_impl_dx12.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ThirdParty\imgui\imgui_internal.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ThirdParty\imgui\imstb_rectpack.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ThirdParty\imgui\imstb_textedit.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ThirdParty\imgui\imstb_truetype.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Time\Timer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Utility\BasicTypes.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Utility\D3D12Common.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Utility\d3dx12.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Utility\ManagerComponent.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Utility\NonCopyable.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Utility\Singleton.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Utility\Utility.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Window\Window.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Window\WindowManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleSystem\System\SceneParticleManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleSystem\Memory\ParticleBinary.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleSystem\Memory\ParticleHeaderBinary.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleSystem\Memory\ParticleIdxTblBinary.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleSystem\Memory\ParticleRangeBinary.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleSystem\Memory\EmitterBinary.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleSystem\Memory\EmitterDataBinary.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleSystem\Memory\EmitterHeaderBinary.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleSystem\Memory\EmitterIdxTblBinary.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleSystem\Item\CommonItem\CommonItem.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleSystem\Memory\ParticleIndirectArgs.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Resource\L0Buffer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Resource\L1Buffer.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -904,7 +919,7 @@
     <FxCompile Include="Engine\Source\ParticleSystem\shaderInc\GPUparticleInc.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Engine\ThirdParty\DirectXTex\include\DirectXTex.inl">
+    <None Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTex.inl">
       <Filter>ヘッダー ファイル</Filter>
     </None>
   </ItemGroup>

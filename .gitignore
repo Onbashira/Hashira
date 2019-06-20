@@ -3,3 +3,6 @@
 /Hashira/x64
 /Hashira/*.user
 
+/Hashira/Engine/Source/ThirdParty/DirectXTex/include/Shaders/Compiled/*.pdb
+/Hashira/Engine/Source/ThirdParty/DirectXTex/lib/Debug/*.pdb
+/Hashira/Engine/Source/ThirdParty/DirectXTex/lib/Release/*.pdb

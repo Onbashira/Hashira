@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include "Engine/Source/Component/Transform/Transform.h"
+
 namespace Hashira {
 
 	class ParticleItem;
@@ -101,20 +103,22 @@ namespace Hashira {
 
 	struct EmitterCommonItem 
 	{
+
 		//エミッタの状態がアップデート可能か
 		EmitterState State;
 		//エミッタがもつ基礎アイテムアクティブフラグ
 		EmitterActiveItem ActiveItemState;
 		//ローカル座標で変形かワールド座標で変形か
 		EmitterTransformMode TransformMode;
-		//エミッタの位置
+
 		Vector3 Pos;
-		//エミッタのスケール
-		Vector3 Scale;
-		//エミッタの回転度合い（Quaternion
-		Quaternion Rotate;
+
+		Vector2 Scale;
+
+		Quaternion Rotation;
 
 	};
+
 
 	class Emitter
 	{
@@ -150,8 +154,6 @@ namespace Hashira {
 
 		~Emitter();
 
-		HRESULT Initalize(EmitterData& emtData , );
-
 		//各アイテムのアップデート
 		void UpdateItems();
 
@@ -183,6 +185,7 @@ namespace Hashira {
 		{
 			_items.push_back(std::make_unique<T>());
 			_dataSize += static_cast<unsigned int>(sizeof(T));
+			//Method Chain
 			return *this;
 		};
 

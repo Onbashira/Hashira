@@ -19,34 +19,36 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\EmitterDataBinary.cpp" />
-    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\Builder\EmitterBuilder.cpp" />
-    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\EmitterIdxTblBinary.cpp" />
-    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\EmitterHeaderBinary.cpp" />
-    <ClCompile Include="Engine\Source\ParticleSystem\Emitter\EmitterBinary.cpp" />
+    <ClCompile Include="Engine\Source\ParticleSystem\Item\CommonItem\CommonItem.cpp" />
+    <ClCompile Include="Engine\Source\ParticleSystem\Memory\EmitterDataBinary.cpp" />
+    <ClCompile Include="Engine\Source\ParticleSystem\Memory\EmitterIdxTblBinary.cpp" />
+    <ClCompile Include="Engine\Source\ParticleSystem\Memory\EmitterHeaderBinary.cpp" />
+    <ClCompile Include="Engine\Source\ParticleSystem\Memory\EmitterBinary.cpp" />
     <ClCompile Include="Engine\Source\ParticleSystem\Effect\ParticleEffect.cpp" />
     <ClCompile Include="Engine\Source\ParticleSystem\Emitter\Emitter.cpp" />
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\BC.cpp" />
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\BC4BC5.cpp" />
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\BC6HBC7.cpp" />
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\BCDirectCompute.cpp" />
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexCompress.cpp" />
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexCompressGPU.cpp" />
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexConvert.cpp" />
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexD3D11.cpp" />
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexD3D12.cpp" />
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexDDS.cpp" />
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexFlipRotate.cpp" />
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexHDR.cpp" />
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexImage.cpp" />
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexMipmaps.cpp" />
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexMisc.cpp" />
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexNormalMaps.cpp" />
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexPMAlpha.cpp" />
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexResize.cpp" />
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexTGA.cpp" />
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexUtil.cpp" />
-    <ClCompile Include="Engine\ThirdParty\DirectXTex\include\DirectXTexWIC.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\BC.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\BC4BC5.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\BC6HBC7.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\BCDirectCompute.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexCompress.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexCompressGPU.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexConvert.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexD3D11.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexD3D12.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexDDS.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexFlipRotate.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexHDR.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexImage.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexMipmaps.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexMisc.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexNormalMaps.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexPMAlpha.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexResize.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexTGA.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexUtil.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexWIC.cpp" />
+    <ClCompile Include="Engine\Source\Resource\L0Buffer.cpp" />
+    <ClCompile Include="Engine\Source\Resource\L1Buffer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Source\Component\DefaultComponents\DefaultPhysicsComponent.cpp" />
     <ClCompile Include="Engine\Source\Component\DefaultComponents\DefaultInputComponent.cpp" />
@@ -90,7 +92,7 @@
     <ClCompile Include="Engine\Source\Input\InputManager.cpp" />
     <ClCompile Include="Engine\Source\Math\Math.cpp" />
     <ClCompile Include="Engine\Source\Mesh\MeshHeap.cpp" />
-    <ClCompile Include="Engine\Source\PipelineState\PipelineStateObject.cpp" />
+    <ClCompile Include="Engine\Source\PIpelineState\PipelineStateObject.cpp" />
     <ClCompile Include="Engine\Source\Rendering\RenderingManager.cpp" />
     <ClCompile Include="Engine\Source\Rendering\SwapChain.cpp" />
     <ClCompile Include="Engine\Source\Resource\ConstantBuffer.cpp" />
@@ -120,11 +122,11 @@
     <ClCompile Include="Engine\Source\Command\State\GeometryState.cpp" />
     <ClCompile Include="Engine\Source\Command\State\TargetState.cpp" />
     <ClCompile Include="Engine\Source\RingBuffer\RingBuffer.cpp" />
-    <ClCompile Include="Engine\ThirdParty\imgui\imgui.cpp" />
-    <ClCompile Include="Engine\ThirdParty\imgui\imgui_demo.cpp" />
-    <ClCompile Include="Engine\ThirdParty\imgui\imgui_draw.cpp" />
-    <ClCompile Include="Engine\ThirdParty\imgui\imgui_impl_dx12.cpp" />
-    <ClCompile Include="Engine\ThirdParty\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\imgui\imgui.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\imgui\imgui_demo.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\imgui\imgui_impl_dx12.cpp" />
+    <ClCompile Include="Engine\Source\ThirdParty\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Engine\Source\Resource\Sampler.cpp" />
     <ClCompile Include="Engine\Source\Command\State\PipelineState.cpp" />
     <ClCompile Include="Engine\Source\Command\State\PipelineResourceTable.cpp" />
@@ -156,13 +158,13 @@
     <ClCompile Include="Engine\Source\ParticleSystem\Item\Transform\RotateAnimItem.cpp" />
     <ClCompile Include="Engine\Source\ParticleSystem\Item\Transform\ScaleAnimItem.cpp" />
     <ClCompile Include="Engine\Source\ParticleSystem\Item\Visual\ShaderSettingItem.cpp" />
-    <ClCompile Include="Engine\Source\ParticleSystem\IndirectArgs\ParticleIndirectArgs.cpp" />
-    <ClCompile Include="Engine\Source\Resource\MultipleBuffer.cpp" />
+    <ClCompile Include="Engine\Source\ParticleSystem\Memory\ParticleIndirectArgs.cpp" />
     <ClCompile Include="Engine\Source\ParticleSystem\Action\ParticleAction.cpp" />
-    <ClCompile Include="Engine\Source\ParticleSystem\Particle\ParticleIdxTblBinary.cpp" />
-    <ClCompile Include="Engine\Source\ParticleSystem\Particle\ParticleBinary.cpp" />
-    <ClCompile Include="Engine\Source\ParticleSystem\Particle\ParticleHeaderBinary.cpp" />
-    <ClCompile Include="Engine\Source\ParticleSystem\Particle\ParticleRangeBinary.cpp" />
+    <ClCompile Include="Engine\Source\ParticleSystem\Memory\ParticleIdxTblBinary.cpp" />
+    <ClCompile Include="Engine\Source\ParticleSystem\Memory\ParticleBinary.cpp" />
+    <ClCompile Include="Engine\Source\ParticleSystem\Memory\ParticleHeaderBinary.cpp" />
+    <ClCompile Include="Engine\Source\ParticleSystem\Memory\ParticleRangeBinary.cpp" />
+    <ClCompile Include="Engine\Source\ParticleSystem\System\SceneParticleManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -172,11 +174,11 @@
     <ClCompile Include="Engine\Source\ParticleSystem\Item\Transform\Velocity3DItem.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\EmitterDataBinary.h" />
-    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\Builder\EmitterBuilder.h" />
-    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\EmitterIdxTblBinary.h" />
-    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\EmitterHeaderBinary.h" />
-    <ClInclude Include="Engine\Source\ParticleSystem\Emitter\EmitterBinary.h" />
+    <ClInclude Include="Engine\Source\ParticleSystem\Item\CommonItem\CommonItem.h" />
+    <ClInclude Include="Engine\Source\ParticleSystem\Memory\EmitterDataBinary.h" />
+    <ClInclude Include="Engine\Source\ParticleSystem\Memory\EmitterIdxTblBinary.h" />
+    <ClInclude Include="Engine\Source\ParticleSystem\Memory\EmitterHeaderBinary.h" />
+    <ClInclude Include="Engine\Source\ParticleSystem\Memory\EmitterBinary.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Effect\ParticleEffect.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Emitter\Emitter.h" />
     <ClInclude Include="Engine\Source\Component\DefaultComponents.h" />
@@ -202,14 +204,14 @@
     <ClInclude Include="Engine\Source\DynamicHeap\DefaultRawMemoryAllocator.h" />
     <ClInclude Include="Engine\Source\DynamicHeap\MemoryAllocator.h" />
     <ClInclude Include="Engine\Source\LifetimedMemory\LifetimedMemory.h" />
-    <ClInclude Include="Engine\ThirdParty\DirectXTex\include\BC.h" />
-    <ClInclude Include="Engine\ThirdParty\DirectXTex\include\BCDirectCompute.h" />
-    <ClInclude Include="Engine\ThirdParty\DirectXTex\include\d3dx12.h" />
-    <ClInclude Include="Engine\ThirdParty\DirectXTex\include\DDS.h" />
-    <ClInclude Include="Engine\ThirdParty\DirectXTex\include\DirectXTex.h" />
-    <ClInclude Include="Engine\ThirdParty\DirectXTex\include\DirectXTexP.h" />
-    <ClInclude Include="Engine\ThirdParty\DirectXTex\include\Filters.h" />
-    <ClInclude Include="Engine\ThirdParty\DirectXTex\include\scoped.h" />
+    <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\BC.h" />
+    <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\BCDirectCompute.h" />
+    <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\d3dx12.h" />
+    <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\DDS.h" />
+    <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTex.h" />
+    <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexP.h" />
+    <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\Filters.h" />
+    <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\scoped.h" />
     <ClInclude Include="Hashira.h" />
     <ClInclude Include="Engine\Source\Command\Core\CommandManager.h" />
     <ClInclude Include="Engine\Source\Primitive\Geometry\Cube.h" />
@@ -238,7 +240,7 @@
     <ClInclude Include="Engine\Source\Input\InputManager.h" />
     <ClInclude Include="Engine\Source\Math\Math.h" />
     <ClInclude Include="Engine\Source\Mesh\MeshHeap.h" />
-    <ClInclude Include="Engine\Source\PipelineState\PipelineStateObject.h" />
+    <ClInclude Include="Engine\Source\PIpelineState\PipelineStateObject.h" />
     <ClInclude Include="Engine\Source\Rendering\RenderingManager.h" />
     <ClInclude Include="Engine\Source\Rendering\SwapChain.h" />
     <ClInclude Include="Engine\Source\Resource\ConstantBuffer.h" />
@@ -272,13 +274,13 @@
     <ClInclude Include="Engine\Source\Command\State\GeometryState.h" />
     <ClInclude Include="Engine\Source\Command\State\TargetState.h" />
     <ClInclude Include="Engine\Source\RingBuffer\RingBuffer.h" />
-    <ClInclude Include="Engine\ThirdParty\imgui\imconfig.h" />
-    <ClInclude Include="Engine\ThirdParty\imgui\imgui.h" />
-    <ClInclude Include="Engine\ThirdParty\imgui\imgui_impl_dx12.h" />
-    <ClInclude Include="Engine\ThirdParty\imgui\imgui_internal.h" />
-    <ClInclude Include="Engine\ThirdParty\imgui\imstb_rectpack.h" />
-    <ClInclude Include="Engine\ThirdParty\imgui\imstb_textedit.h" />
-    <ClInclude Include="Engine\ThirdParty\imgui\imstb_truetype.h" />
+    <ClInclude Include="Engine\Source\ThirdParty\imgui\imconfig.h" />
+    <ClInclude Include="Engine\Source\ThirdParty\imgui\imgui.h" />
+    <ClInclude Include="Engine\Source\ThirdParty\imgui\imgui_impl_dx12.h" />
+    <ClInclude Include="Engine\Source\ThirdParty\imgui\imgui_internal.h" />
+    <ClInclude Include="Engine\Source\ThirdParty\imgui\imstb_rectpack.h" />
+    <ClInclude Include="Engine\Source\ThirdParty\imgui\imstb_textedit.h" />
+    <ClInclude Include="Engine\Source\ThirdParty\imgui\imstb_truetype.h" />
     <ClInclude Include="Engine\Source\Resource\Sampler.h" />
     <ClInclude Include="Engine\Source\Command\State\PipelineState.h" />
     <ClInclude Include="Engine\Source\Command\State\PipelineResourceTable.h" />
@@ -310,13 +312,16 @@
     <ClInclude Include="Engine\Source\ParticleSystem\Item\Transform\RotateAnimItem.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Item\Transform\ScaleAnimItem.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Item\Visual\ShaderSettingItem.h" />
-    <ClInclude Include="Engine\Source\ParticleSystem\IndirectArgs\ParticleIndirectArgs.h" />
+    <ClInclude Include="Engine\Source\ParticleSystem\Memory\ParticleIndirectArgs.h" />
     <ClInclude Include="Engine\Source\Resource\MultipleBuffer.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Action\ParticleAction.h" />
-    <ClInclude Include="Engine\Source\ParticleSystem\Particle\ParticleIdxTblBinary.h" />
-    <ClInclude Include="Engine\Source\ParticleSystem\Particle\ParticleBinary.h" />
-    <ClInclude Include="Engine\Source\ParticleSystem\Particle\ParticleHeaderBinary.h" />
-    <ClInclude Include="Engine\Source\ParticleSystem\Particle\ParticleRangeBinary.h" />
+    <ClInclude Include="Engine\Source\ParticleSystem\Memory\ParticleIdxTblBinary.h" />
+    <ClInclude Include="Engine\Source\ParticleSystem\Memory\ParticleBinary.h" />
+    <ClInclude Include="Engine\Source\ParticleSystem\Memory\ParticleHeaderBinary.h" />
+    <ClInclude Include="Engine\Source\ParticleSystem\Memory\ParticleRangeBinary.h" />
+    <ClInclude Include="Engine\Source\ParticleSystem\System\SceneParticleManager.h" />
+    <ClInclude Include="Engine\Source\Resource\L0Buffer.h" />
+    <ClInclude Include="Engine\Source\Resource\L1Buffer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Item\Transform\TransformItem.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Item\Transform\UVSequenceItem.h" />
@@ -370,7 +375,7 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <None Include="Engine\ThirdParty\DirectXTex\include\DirectXTex.inl" />
+    <None Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTex.inl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Engine\Source\ParticleSystem\ParticleSystemMemo.txt" />

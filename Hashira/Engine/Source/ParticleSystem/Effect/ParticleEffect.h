@@ -33,18 +33,6 @@ namespace Hashira {
 
 	protected:
 
-		std::shared_ptr<EmitterBinary> _emtBin;
-
-		std::unique_ptr<EmitterHeaderBinary> _emtHeaderBin;
-
-		std::unique_ptr<EmitterIdxTblBinary> _emtIdxTblBin;
-
-		std::shared_ptr<ParticleBinary> _ptBin;
-
-		std::unique_ptr<ParticleHeaderBinary> _ptHeaderBin;
-
-		std::unique_ptr<ParticleIdxTblBinary> _ptIdxTblBin;
-
 		std::vector<std::unique_ptr<Emitter>> _emitters;
 
 		std::vector<std::shared_ptr<Descriptor>> _descriptors;
@@ -58,9 +46,6 @@ namespace Hashira {
 		virtual ~ParticleEffect();
 
 		virtual void Initialize(std::shared_ptr < D3D12Device>& device, std::shared_ptr<GameHeap>& gameheap);
-
-		virtual void Initialize(std::shared_ptr < D3D12Device>& device, std::shared_ptr<GameHeap>& gameheap);
-
 
 		virtual void Update() = 0;
 
