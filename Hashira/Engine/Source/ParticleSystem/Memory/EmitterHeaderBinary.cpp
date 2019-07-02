@@ -27,7 +27,7 @@ HRESULT Hashira::EmitterHeaderBinary::Initialize(std::shared_ptr<D3D12Device> de
 
 void Hashira::EmitterHeaderBinary::Write(CPUEmitterHeader * emtHeader)
 {
-	if (this->_bin->GetResourceDesc().Width >= static_cast<UINT64>(_emtHeaderCount * sizeof(GPUEmitterHeader))) {
+	if ((this->_bin->GetResourceDesc().Width-sizeof(GPUEmitterHeader)) >= static_cast<UINT64>(_emtHeaderCount * sizeof(GPUEmitterHeader))) {
 #ifdef _DEBUG
 		DEBUG_LOG(std::string("EmtHeaderBin is Full"));
 #endif // _DEBUG
@@ -45,10 +45,7 @@ void Hashira::EmitterHeaderBinary::Write(CPUEmitterHeader * emtHeader)
 
 void Hashira::EmitterHeaderBinary::Delete(int emtIndex)
 {
-	--_emtHeaderCount;
-
-
-
+	
 }
 
 void Hashira::EmitterHeaderBinary::DiscardMemory()

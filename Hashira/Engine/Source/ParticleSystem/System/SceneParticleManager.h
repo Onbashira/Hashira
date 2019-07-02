@@ -1,7 +1,8 @@
 #pragma once
 namespace Hashira {
 
-	class EffectParticle;
+	class D3D12Device;
+	class ParticleEffect;
 	class EmitterBinary;
 	class EmitterDataBinary;
 	class EmitterHeaderBinary;
@@ -18,8 +19,8 @@ namespace Hashira {
 
 
 	struct SceneEffectParticleInitializeInfo {
-		size_t SceneEffectMaxCount; //シーンで発生させるエフェクトの最大数
-		std::shared_ptr<GameHeap>& Heap;
+		size_t sceneEffectMaxCount; //シーンで発生させるエフェクトの最大数 
+		std::shared_ptr<GameHeap>& heap;
 	};
 
 
@@ -30,35 +31,33 @@ namespace Hashira {
 	public:
 
 	private:
-		std::vector<std::unique_ptr<EffectParticle>> _sceneEffects;
-		std::shared_ptr<EmitterBinary> _sceneEmtMemory;
-		std::shared_ptr<EmitterDataBinary> _sceneEmtDataMemory;
-		std::shared_ptr<EmitterHeaderBinary> _sceneEmtHeaderMemory;
-		std::shared_ptr<EmitterIdxTblBinary> _sceneEmtIdxTblMemory;
-		std::shared_ptr<ParticleBinary> _scenePtMemory;
-		std::shared_ptr<ParticleHeaderBinary> _scenePtHeaderMemory;
-		std::shared_ptr<ParticleIdxTblBinary> _scenePtIdxTblMemory;
-		std::shared_ptr<ParticleRangeBinary> _scenePtRangeMemory;
-		std::shared_ptr<RenderContext> _renderContext;
+		std::vector<std::unique_ptr<ParticleEffect>>	_sceneParticleEffects;
+		std::shared_ptr<EmitterBinary>					_sceneEmtMemory;
+		std::shared_ptr<EmitterDataBinary>				_sceneEmtDataMemory;
+		std::shared_ptr<EmitterHeaderBinary>			_sceneEmtHeaderMemory;
+		std::shared_ptr<EmitterIdxTblBinary>			_sceneEmtIdxTblMemory;
+		std::shared_ptr<ParticleBinary>					_scenePtMemory;
+		std::shared_ptr<ParticleHeaderBinary>			_scenePtHeaderMemory;
+		std::shared_ptr<ParticleIdxTblBinary>			_scenePtIdxTblMemory;
+		std::shared_ptr<ParticleRangeBinary>			_scenePtRangeMemory;
+		std::shared_ptr<RenderContext>					_renderContext;
 	public:
 
 		SceneParticleManager();
 
 		~SceneParticleManager();
 
-		HRESULT Initialize(const SceneEffectParticleInitializeInfo& initializeInfo);
+		HRESULT Initialize(D3D12Device* device , const SceneEffectParticleInitializeInfo& initializeInfo);
 
-		void AddEffect(const EffectParticle& effectPt);
+		void AddEffect(const ParticleEffect& effectPt);
 
-		void UpdateParticles();
+		void UpdateParticles(RenderContext& rc);
 
-		void DrawParticles();
+		void DrawParticles( RenderContext& rc);
 
-		void FixParticle();
+		void FixParticle(RenderContext& rc);
 
 		void Discard();
-
-		
 
 	private:
 

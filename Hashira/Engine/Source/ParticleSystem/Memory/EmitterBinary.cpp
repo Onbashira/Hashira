@@ -41,7 +41,7 @@ void Hashira::EmitterBinary::Write(Emitter * emitter)
 	ptr = new char[binSize];
 
 	EmitterBinInfo binfo;
-	binfo.Begin = _offset;
+	binfo.begin = _offset;
 	{
 		size_t offset = 0;
 
@@ -56,14 +56,14 @@ void Hashira::EmitterBinary::Write(Emitter * emitter)
 
 	_bin->Update(ptr, binSize, _offset);
 	_offset += binSize;
-	binfo.End = _offset;
+	binfo.end = _offset;
 	_binInfoVec.push_back(binfo);
 	delete[] ptr;
 }
 
 void Hashira::EmitterBinary::Delete(int emtIndex)
 {
-
+	_bin->Discard();
 }
 
 void Hashira::EmitterBinary::DiscardMemory()

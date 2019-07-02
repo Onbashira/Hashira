@@ -15,9 +15,13 @@ namespace Hashira {
 
 		HRESULT Initalize(std::shared_ptr<D3D12Device>& device, size_t  bufferSize);
 
+
 		std::unique_ptr<L1Buffer>& GetBuffer() {
 			return _headerBuffer;
 		};
+
+		void DiscardMemory();
+
 	};
 
 }

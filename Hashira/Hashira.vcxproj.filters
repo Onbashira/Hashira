@@ -87,9 +87,6 @@
     <ClCompile Include="Engine\Source\Debug\Logger.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\DescriptorHeap\DescriptorHeap.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Source\Device\D3D12Device.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -147,9 +144,6 @@
     <ClCompile Include="Engine\Source\MemoryAllocator\VariableSizeAllocationManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\DescriptorHeap\Descriptor.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Source\Device\D3D11on12Device.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -190,9 +184,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Source\ParticleSystem\Item\Transform\ScaleAnimItem.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Item\Transform\TransformItem.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Source\ParticleSystem\Item\Transform\UVSequenceItem.cpp">
@@ -447,9 +438,6 @@
     <ClCompile Include="Engine\Source\ParticleSystem\Memory\EmitterIdxTblBinary.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleSystem\Item\CommonItem\CommonItem.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Source\ParticleSystem\Memory\ParticleIndirectArgs.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -457,6 +445,24 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Source\Resource\L1Buffer.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Item\CommonItem\TransformItem.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Item\CommonItem\SpawnItem.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem\Item\CommonItem\ParentOptionItem.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\DescriptorHeap\DescriptorSystem\Descriptor.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\DescriptorHeap\DescriptorSystem\DescriptorHeap.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DescriptorSet.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -542,9 +548,6 @@
     <ClInclude Include="Engine\Source\Debug\Logger.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Source\DescriptorHeap\DescriptorHeap.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Source\Device\D3D12Device.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -605,9 +608,6 @@
     <ClInclude Include="Engine\Source\MemoryAllocator\VariableSizeAllocationManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Source\DescriptorHeap\Descriptor.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Source\Device\D3D11on12Device.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -651,9 +651,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\ParticleSystem\Item\Transform\ScaleAnimItem.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\ParticleSystem\Item\Transform\TransformItem.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\ParticleSystem\Item\Transform\UVSequenceItem.h">
@@ -899,9 +896,6 @@
     <ClInclude Include="Engine\Source\ParticleSystem\Memory\EmitterIdxTblBinary.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Source\ParticleSystem\Item\CommonItem\CommonItem.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Source\ParticleSystem\Memory\ParticleIndirectArgs.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -909,6 +903,24 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\Resource\L1Buffer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleSystem\Item\CommonItem\TransformItem.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleSystem\Item\CommonItem\SpawnItem.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleSystem\Item\CommonItem\ParentOptionItem.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\DescriptorHeap\DescriptorSystem\Descriptor.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\DescriptorHeap\DescriptorSystem\DescriptorHeap.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DescriptorSet.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

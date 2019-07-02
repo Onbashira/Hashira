@@ -11,7 +11,6 @@ Hashira::DescriptorHeap::DescriptorHeap():
 	_cpuHandle.ptr = 0;
 }
 
-
 Hashira::DescriptorHeap::~DescriptorHeap()
 {
 

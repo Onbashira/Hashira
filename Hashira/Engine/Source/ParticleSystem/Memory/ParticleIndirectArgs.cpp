@@ -24,7 +24,7 @@ HRESULT Hashira::ParticleIndirectArgs::Initalize(std::shared_ptr<D3D12Device>& d
 	return hr;
 }
 
-void Hashira::ParticleIndirectArgs::Discard()
+void Hashira::ParticleIndirectArgs::DiscardMemory()
 {
 	_indirectArgsBuffer->Discard();
 }

@@ -18,10 +18,10 @@ namespace Hashira {
 	struct Descriptor;
 
 	struct EffectInitializeInfo {
-		UINT64 EmtBinarySize = 0;
-		UINT64 PtBinarySize = 0;
-		UINT64 EmtHeaderNum = 0;
-		UINT64 EmtCount = 0;
+		UINT64 emtBinarySize = 0;
+		UINT64 ptBinarySize = 0;
+		UINT64 emtHeaderNum = 0;
+		UINT64 emtCount = 0;
 
 	};
 
@@ -32,6 +32,8 @@ namespace Hashira {
 	public:
 
 	protected:
+
+		size_t _totalSize;
 
 		std::vector<std::unique_ptr<Emitter>> _emitters;
 
@@ -45,25 +47,19 @@ namespace Hashira {
 
 		virtual ~ParticleEffect();
 
-		virtual void Initialize(std::shared_ptr < D3D12Device>& device, std::shared_ptr<GameHeap>& gameheap);
+		virtual void Initialize(std::shared_ptr < D3D12Device>& device);
 
-		virtual void Update() = 0;
-
-		virtual void Draw() = 0;
-
-		virtual void Terminate() = 0;
+		virtual void Update();
 
 		//ƒGƒ~ƒbƒ^‚Ì“o˜^
 		virtual void RegistEmitter(std::unique_ptr<Emitter>& emitter);
 
-	protected:
-
-
-		virtual void FixPtIdxTbl();
-
-		virtual void FixPtBin();
+		size_t GetEffectSize();
 
 		virtual void Discard();
+
+	protected:
+
 
 	private:
 

@@ -22,3 +22,8 @@ HRESULT Hashira::ParticleIdxTblBinary::Initalize(std::shared_ptr<D3D12Device>& d
 
 	return hr;
 }
+
+void Hashira::ParticleIdxTblBinary::DiscardMemory()
+{
+	this->_idxTblBuffer->Discard();
+}

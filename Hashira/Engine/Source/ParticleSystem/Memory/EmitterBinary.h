@@ -7,8 +7,8 @@ namespace Hashira {
 
 	struct EmitterBinInfo
 	{
-		size_t Begin;
-		size_t End;
+		size_t begin;
+		size_t end;
 	};
 
 	//シーン単位でのエミッタのメモリ部を管理

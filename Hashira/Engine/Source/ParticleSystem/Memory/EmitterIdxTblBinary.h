@@ -19,6 +19,8 @@ namespace Hashira {
 		//GPUに配置するバイナリ本体
 		std::unique_ptr<L0Buffer> _bin;
 
+		//
+
 	public:
 		
 		EmitterIdxTblBinary();

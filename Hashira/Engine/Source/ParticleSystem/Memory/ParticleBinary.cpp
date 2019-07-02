@@ -22,3 +22,8 @@ HRESULT Hashira::ParticleBinary::Initalize(std::shared_ptr<D3D12Device>& device,
 
 	return hr;
 }
+
+void Hashira::ParticleBinary::DiscardMemory()
+{
+	this->_ptBuffer->Discard();
+}

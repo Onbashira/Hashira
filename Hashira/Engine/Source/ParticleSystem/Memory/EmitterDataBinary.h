@@ -1,7 +1,7 @@
 #pragma once
 namespace Hashira {
 	class Emitter;
-	class L0Buffer;
+	class L1Buffer;
 	class D3D12Device;
 
 	//シーン
@@ -12,10 +12,12 @@ namespace Hashira {
 
 	private:
 
+		unsigned int _emtCount;
+
 		UINT64 _offset;
 
 		//GPUに配置するバイナリ本体
-		std::unique_ptr<L0Buffer> _bin;
+		std::unique_ptr<L1Buffer> _bin;
 
 	public:
 
@@ -24,10 +26,6 @@ namespace Hashira {
 		~EmitterDataBinary();
 
 		HRESULT Initialize(std::shared_ptr<D3D12Device> device, UINT64 memorySize);
-
-		void Write(Emitter* emitter);
-
-		void Delete(int emtIndex);
 
 		void DiscardMemory();
 

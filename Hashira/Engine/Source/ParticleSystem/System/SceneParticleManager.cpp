@@ -2,11 +2,11 @@
 #include "SceneParticleManager.h"
 
 
-SceneParticleManager::SceneParticleManager()
+Hashira::SceneParticleManager::SceneParticleManager()
 {
 }
 
 
-SceneParticleManager::~SceneParticleManager()
+Hashira::SceneParticleManager::~SceneParticleManager()
 {
 }

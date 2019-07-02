@@ -10,24 +10,24 @@ namespace Hashira {
 	struct CPUEmitterHeader 
 	{
 		//エミッタ領域のヘッドアドレス
-		unsigned int EmitterBinHead = 0;
+		unsigned int emitterBinHead = 0;
 		//エミッタ領域のサイズ
-		unsigned int EmmiterBinSize = 0;
+		unsigned int emmiterBinSize = 0;
 		//パーティクルバイナリのヘッダアドレス
-		unsigned int ParticleBinHead = 0;
+		unsigned int particleBinHead = 0;
 		//パーティクルバイナリのサイズ
-		unsigned int ParticleBinSize = 0;
+		unsigned int particleBinSize = 0;
 		//パーティクルインデックス保持領域のインデックス番号
-		unsigned int ParticleIdxHead = 0;
+		unsigned int particleIdxHead = 0;
 		//パーティクルのサイズ
-		unsigned int ParticleSize = 0;
+		unsigned int particleSize = 0;
 
-		CPUEmitterHeader() : EmitterBinHead(0), EmmiterBinSize(0),
-			ParticleBinHead(0), ParticleIdxHead(0), ParticleSize(0) {};
+		CPUEmitterHeader() :emitterBinHead(0), emmiterBinSize(0),
+			particleBinHead(0), particleIdxHead(0), particleSize(0) {};
 
 		GPUEmitterHeader CreateGPUEmitterHeader()
 		{
-			return GPUEmitterHeader(EmitterBinHead,ParticleBinHead,ParticleIdxHead,ParticleSize );
+			return GPUEmitterHeader(emitterBinHead,particleBinHead,particleIdxHead,particleSize );
 		};
 
 		~CPUEmitterHeader() {};
@@ -38,19 +38,19 @@ namespace Hashira {
 	struct GPUEmitterHeader 
 	{
 		//エミッタの領域のヘッドアドレス
-		unsigned int EmitterBinHead = 0;
+		unsigned int emitterBinHead = 0;
 		//パーティクルバイナリのヘッダアドレス
-		unsigned int ParticleBinHead = 0;
+		unsigned int particleBinHead = 0;
 		//パーティクルインデックス保持領域のインデックス番号
-		unsigned int ParticleIdxHead = 0;
+		unsigned int particleIdxHead = 0;
 		//パーティクルのサイズ
-		unsigned int ParticleSize = 0;
+		unsigned int particleSize = 0;
 
-		GPUEmitterHeader() : EmitterBinHead(),
-			ParticleBinHead(), ParticleIdxHead(), ParticleSize() {};
+		GPUEmitterHeader() : emitterBinHead(),
+			particleBinHead(), particleIdxHead(), particleSize() {};
 
 		GPUEmitterHeader(unsigned int emtBinHead,unsigned int ptBinHead,unsigned int ptIdxHead,unsigned int ptSize) : 
-			EmitterBinHead(emtBinHead),ParticleBinHead(ptBinHead), ParticleIdxHead(ptIdxHead), ParticleSize(ptSize) {};
+			emitterBinHead(emtBinHead),particleBinHead(ptBinHead), particleIdxHead(ptIdxHead), particleSize(ptSize) {};
 		~GPUEmitterHeader() {};
 	};
 
@@ -58,11 +58,11 @@ namespace Hashira {
 	struct EmitterData
 	{
 		//メモリ位置
-		unsigned int SpawnHead = 0;
+		unsigned int epawnHead = 0;
 		//スポーン最大数
-		unsigned int SpawnMax = 0;
+		unsigned int epawnMax = 0;
 		//パーティクル数
-		unsigned int ParticleNum = 0;
+		unsigned int particleNum = 0;
 	};
 
 	enum EmitterState 
@@ -111,6 +111,8 @@ namespace Hashira {
 		//ローカル座標で変形かワールド座標で変形か
 		EmitterTransformMode TransformMode;
 
+		float LifeTime;
+
 		Vector3 Pos;
 
 		Vector2 Scale;
@@ -119,13 +121,15 @@ namespace Hashira {
 
 	};
 
-
 	class Emitter
 	{
 
 	public:
 
 	protected:
+
+		//生死判定用フラグ
+		bool _isDead;
 
 		//エミッタアイテム部のサイズ（Byte) (共通アイテム部サイズ　∔　ItemのGPU書き込み総サイズ
 		unsigned int _dataSize;
@@ -160,10 +164,7 @@ namespace Hashira {
 		//アイテムアップデータの変更
 		void SetCustomUpdater(std::function<void(void)> function);
 
-		//エミッタの情報のセット
-		void SetEmitterData(const EmitterData& emitterData);
-
-		void SetName(String& name);
+		void SetName(String& emtName);
 
 		//アイテム部サイズの取得
 		const unsigned int& GetBinSize();

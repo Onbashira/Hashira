@@ -22,3 +22,8 @@ HRESULT Hashira::ParticleRangeBinary::Initalize(std::shared_ptr<D3D12Device>& de
 
 	return hr;
 }
+
+void Hashira::ParticleRangeBinary::DiscardMemory()
+{
+	this->_rangeBuffer->Discard();
+}

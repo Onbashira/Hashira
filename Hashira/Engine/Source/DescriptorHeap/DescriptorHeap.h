@@ -5,6 +5,8 @@
 namespace Hashira {
 
 	class D3D12Device;
+	class CommandList;
+	
 
 	class DescriptorHeap
 	{
@@ -105,7 +107,7 @@ namespace Hashira {
 		* @param[in] pDesc デスクリプションへのポインタ
 		* @return リザルト　S_OKで成功
 		*/
-		HRESULT											Initialize(std::shared_ptr<D3D12Device>& device,D3D12_DESCRIPTOR_HEAP_DESC* pDesc);
+		HRESULT											Initialize(std::shared_ptr<D3D12Device>& device, D3D12_DESCRIPTOR_HEAP_DESC* pDesc);
 
 		/**
 		* @fn
@@ -144,5 +146,4 @@ namespace Hashira {
 
 	private:
 	};
-
 }

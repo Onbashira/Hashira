@@ -6,10 +6,72 @@
 #include <vector>
 #include <d3d12.h>
 
+
+namespace Hashira {
+
+	template <typename T>
+	void SafeDelete(T& p) {
+		if (p != nullptr) {
+
+			delete p;
+			p = nullptr;
+		}
+	}
+
+	template <typename T>
+	void SafeRelease(T& p) {
+		if (p != nullptr) {
+
+			delete p->Release();
+			p = nullptr;
+		}
+	}
+
+	template <typename T>
+	void SafeDeleteArray(T& p) {
+		if (p != nullptr) {
+
+			delete[] p;
+			p = nullptr;
+		}
+	}
+
+
+	constexpr Uint32 Fnv1aPrime32 = 16777619;
+	constexpr Uint32 Fnv1aSeed32 = 0x811c9dc5;
+	constexpr Uint64 Fnv1aPrime64 = 1099511628211L;
+	constexpr Uint64 Fnv1aSeed64 = 0xcbf29ce484222325;
+
+	inline Uint32 CalcFnv1a32(Uint8 oneByte, Uint32 hash = Fnv1aSeed32)
+	{
+		return (oneByte ^ hash) * Fnv1aPrime32;
+	}
+	inline Uint32 CalcFnv1a32(const void* data, size_t numBytes, Uint32 hash = Fnv1aSeed32)
+	{
+		assert(data);
+		const Uint8 * ptr = reinterpret_cast<const Uint8*>(data);
+		while (numBytes--)
+			hash = CalcFnv1a32(*ptr++, hash);
+		return hash;
+	}
+	inline Uint64 CalcFnv1a64(Uint8 oneByte, Uint64 hash = Fnv1aSeed64)
+	{
+		return (oneByte ^ hash) * Fnv1aPrime32;
+	}
+	inline Uint64 CalcFnv1a64(const void* data, size_t numBytes, Uint64 hash = Fnv1aSeed64)
+	{
+		assert(data);
+		const Uint8 * ptr = reinterpret_cast<const Uint8*>(data);
+		while (numBytes--)
+			hash = CalcFnv1a64(*ptr++, hash);
+		return hash;
+	}
+
+}
 namespace Hashira::Util {
 
 	//256バイトアライメント
-	inline size_t Alignment256Bytes(size_t size) {
+	size_t Alignment256Bytes(size_t size) {
 		if (size == 256) {
 			return 256;
 		}
@@ -17,13 +79,13 @@ namespace Hashira::Util {
 		return ret;
 	};
 
-	template <typename X>
-	X inline Align(X num, unsigned int ali) {
+	template <typename T>
+	T inline Align(T num, unsigned int ali) {
 		return ((num + ali - 1) / ali) * ali;
 	}
 
-	template <typename X>
-	X inline Align(X num, Uint64 ali) {
+	template <typename T>
+	T inline Align(T num, Uint64 ali) {
 		return ((num + ali - 1) / ali) * ali;
 	}
 

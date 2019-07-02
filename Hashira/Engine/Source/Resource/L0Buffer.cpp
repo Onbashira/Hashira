@@ -40,5 +40,11 @@ HRESULT Hashira::L0Buffer::Initialize(std::shared_ptr<D3D12Device>& device, size
 	SystemLogger::GetInstance().Log(LOG_LEVEL::Debug, hr);
 #endif
 
+	//Map 
+	D3D12_RANGE range = {};
+	range.Begin = 0;
+	range.End = 1;
+	this->Map(0, &range);
+
 	return hr;
 }

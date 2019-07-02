@@ -18,6 +18,9 @@ namespace Hashira {
 		std::unique_ptr<L1Buffer>& GetBuffer() {
 			return _idxTblBuffer;
 		};
+
+		void DiscardMemory();
+
 	};
 
 }

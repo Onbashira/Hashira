@@ -9,24 +9,24 @@ namespace Hashira {
 	class D3D12Device;
 
 	struct IAParticleSpawnCountInfo {
-		unsigned int PreParticleCount;
-		unsigned int CurParticleCount;
+		unsigned int preParticleCount;
+		unsigned int curParticleCount;
 	};
 
 	struct ParticleDispatchIndirectArg {
 
-		unsigned int X;
-		unsigned int Y;
-		unsigned int Z;
+		unsigned int x;
+		unsigned int y;
+		unsigned int z;
 
 	};
 
 	struct ParticleDrawIndirectArg {
 
-		unsigned int VertexCountPerInstance;
-		unsigned int InstanceCount;
-		unsigned int StartVertexLocation;
-		unsigned int StartInstanceLocation;
+		unsigned int vertexCountPerInstance;
+		unsigned int instanceCount;
+		unsigned int startVertexLocation;
+		unsigned int startInstanceLocation;
 
 	};
 
@@ -51,7 +51,7 @@ namespace Hashira {
 			return _indirectArgsBuffer;
 		};
 
-		void Discard();
+		void DiscardMemory();
 
 	private:
 

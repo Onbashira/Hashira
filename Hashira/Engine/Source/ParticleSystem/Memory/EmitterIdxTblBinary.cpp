@@ -47,6 +47,17 @@ void Hashira::EmitterIdxTblBinary::Write(int emtIndex)
 
 void Hashira::EmitterIdxTblBinary::Delete(int emtIndex)
 {
+
+	//インデックステーブルへの削除要求
+	auto ret = std::find_if(this->_emtIdxTbl.begin(), _emtIdxTbl.end(), [emtIndex](const int a) { return ( a == emtIndex); });
+	_emtIdxTbl.erase(ret);
+	_emtIdxTbl.shrink_to_fit();
+	_bin->Discard();
+
+	_bin->Update(_emtIdxTbl.data(), sizeof(int) * _emtIdxTbl.size(), 0);
+
+
+
 }
 
 void Hashira::EmitterIdxTblBinary::Sort()

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Descriptor.h"
 #include "Engine/Source/CommandList/CommandList.h"
+#include "DescriptorHeap.h"
 
 void BindCPUDescriptor(unsigned int rootParam,Hashira::Descriptor::BindType bindType ,Hashira::Descriptor& descriptor, std::shared_ptr<Hashira::CommandList> list);
 
