@@ -18,20 +18,20 @@ Hashira::PrimitiveRenderer::~PrimitiveRenderer()
 void Hashira::PrimitiveRenderer::Draw(std::shared_ptr<CommandList>& cmdList, GameObject * ojcet, GeometryState * geometryState, ModelMesh * mesh)
 {
 
-	auto& descriptorsItr = mesh->GetDescriptors().begin();
-	//Camera View Set
-	cmdList->SetGraphicsRootDescriptorTable(0, descriptorsItr->lock()->gpuAddress);
-	//transform View Set
-	++descriptorsItr;
-	cmdList->SetGraphicsRootDescriptorTable(1, descriptorsItr->lock()->gpuAddress);
+	//auto& descriptorsItr = mesh->GetDescriptors().begin();
+	////Camera View Set
+	//cmdList->SetGraphicsRootDescriptorTable(0, descriptorsItr->lock()->gpuAddress);
+	////transform View Set
+	//++descriptorsItr;
+	//cmdList->SetGraphicsRootDescriptorTable(1, descriptorsItr->lock()->gpuAddress);
 
-	//IA Stage
-	auto& gState = mesh->GetGeometryState();
-	cmdList->IASetIndexBuffer(gState->GetIndexBufferView());
-	cmdList->IASetVertexBuffers(0,1,gState->GetVertexBufferView()->data());
-	cmdList->IASetPrimitiveTopology(D3D12_PRIMITIVE_TOPOLOGY::D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	////IA Stage
+	//auto& gState = mesh->GetGeometryState();
+	//cmdList->IASetIndexBuffer(gState->GetIndexBufferView());
+	//cmdList->IASetVertexBuffers(0,1,gState->GetVertexBufferView()->data());
+	//cmdList->IASetPrimitiveTopology(D3D12_PRIMITIVE_TOPOLOGY::D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	cmdList->DrawIndexedInstanced(static_cast<unsigned int >(mesh->GetIndexBuffer()->GetElementCount()), 1, 0, 0,0);
+	//cmdList->DrawIndexedInstanced(static_cast<unsigned int >(mesh->GetIndexBuffer()->GetElementCount()), 1, 0, 0,0);
 
 }
 

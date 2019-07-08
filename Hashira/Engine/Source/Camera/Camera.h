@@ -234,9 +234,9 @@ namespace Hashira {
 		* @fn
 		* @brief コマンドリストにカメラ情報をセット
 		* @oaram[in] list　セット先
-		* @oaram[in] paramaterIndex　パラメータのインデックス
+		* @oaram[in] parameterIndex　パラメータのインデックス
 		*/
-		void SetCameraParamater(std::weak_ptr<CommandList> list, unsigned int paramaterIndex = 0);
+		void SetCameraParameter(std::weak_ptr<CommandList> list, unsigned int parameterIndex = 0);
 
 		/**
 		* @fn

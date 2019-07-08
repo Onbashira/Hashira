@@ -13,14 +13,12 @@ namespace Hashira {
 	class ParticleRangeBinary;
 	class OfflineDescriptorHeap;
 	class OnlineDescriptorHeap;
-	class GameHeap;
 	class CommandList;
 	class RenderContext;
 
 
 	struct SceneEffectParticleInitializeInfo {
 		size_t sceneEffectMaxCount; //シーンで発生させるエフェクトの最大数 
-		std::shared_ptr<GameHeap>& heap;
 	};
 
 

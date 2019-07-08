@@ -138,9 +138,6 @@
     <ClCompile Include="Engine\Source\Component\PhysicsComponent\PhysicsComponent.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\DescriptorHeap\GameHeap.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Source\MemoryAllocator\VariableSizeAllocationManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -210,31 +207,7 @@
     <ClCompile Include="Engine\Source\PIpelineState\PipelineStateObject.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\Primitive\DefaultComponent\PrimitiveInputComponent.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Primitive\DefaultComponent\PrimitivePhysicsComponent.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Primitive\DefaultComponent\PrimitiveRenderer.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Primitive\Geometry\Cube.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Primitive\Geometry\Plane.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Primitive\Geometry\Sphere.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Primitive\Object\PrimitiveObject.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Source\Rendering\RenderContext\RenderContext.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Rendering\RenderingPass\RenderingPass.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Source\Rendering\RenderingManager.cpp">
@@ -456,13 +429,16 @@
     <ClCompile Include="Engine\Source\ParticleSystem\Item\CommonItem\ParentOptionItem.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\DescriptorHeap\DescriptorSystem\Descriptor.cpp">
+    <ClCompile Include="Engine\Source\DescriptorHeap\Descriptor.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\DescriptorHeap\DescriptorSystem\DescriptorHeap.cpp">
+    <ClCompile Include="Engine\Source\DescriptorHeap\DescriptorHeap.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="DescriptorSet.cpp">
+    <ClCompile Include="Engine\Source\DescriptorHeap\DescriptorSet.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ShaderObject\Shader.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -602,9 +578,6 @@
     <ClInclude Include="Engine\Source\Component\PhysicsComponent\PhysicsComponent.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Source\DescriptorHeap\GameHeap.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Source\MemoryAllocator\VariableSizeAllocationManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -680,31 +653,7 @@
     <ClInclude Include="Engine\Source\PIpelineState\PipelineStateObject.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Source\Primitive\DefaultComponent\PrimitiveInputComponent.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Primitive\DefaultComponent\PrimitivePhysicsComponent.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Primitive\DefaultComponent\PrimitiveRenderer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Primitive\Geometry\Cube.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Primitive\Geometry\Plane.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Primitive\Geometry\Sphere.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Primitive\Object\PrimitiveObject.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Source\Rendering\RenderContext\RenderContext.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Rendering\RenderingPass\RenderingPass.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\Rendering\RenderingManager.h">
@@ -914,13 +863,16 @@
     <ClInclude Include="Engine\Source\ParticleSystem\Item\CommonItem\ParentOptionItem.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Source\DescriptorHeap\DescriptorSystem\Descriptor.h">
+    <ClInclude Include="Engine\Source\DescriptorHeap\Descriptor.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Source\DescriptorHeap\DescriptorSystem\DescriptorHeap.h">
+    <ClInclude Include="Engine\Source\DescriptorHeap\DescriptorHeap.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="DescriptorSet.h">
+    <ClInclude Include="Engine\Source\DescriptorHeap\DescriptorSet.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ShaderObject\Shader.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

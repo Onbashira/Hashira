@@ -7,6 +7,8 @@ namespace Hashira {
 	class HLSLIncluder : public ID3DInclude
 	{
 		friend class ShaderHelper;
+		friend class Shader;
+
 	public:
 
 	private:

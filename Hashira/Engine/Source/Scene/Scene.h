@@ -4,7 +4,7 @@ namespace Hashira {
 	class RenderContext;
 	class RenderingDevice;
 	class RenderingPassHolder;
-	class GameHeap;
+	class GlobalDescriptorHeap;
 	class Camera;
 
 	//シーンを構成する基底クラス

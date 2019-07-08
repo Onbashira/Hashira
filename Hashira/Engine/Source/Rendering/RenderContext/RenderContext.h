@@ -1,4 +1,6 @@
 #pragma once
+#include "Engine/Source/DescriptorHeap/DescriptorHeap.h"
+
 namespace Hashira {
 
 	class CommandList;
@@ -10,8 +12,14 @@ namespace Hashira {
 	class SwapChain;
 	class RenderingManager;
 
+	class DescriptorAllocator;
+	class GlobalDescriptorHeap;
+	class Descriptor;
+	class DescriptorInfo;
+
+
+
 	// 各シーン毎のレンダーコンテキスト
-	//このクラスはスクリーンクリア用、スクリーンフリップ用、シーンのコマンドリストアロケータ
 	//一時
 	class RenderContext
 	{
@@ -54,6 +62,15 @@ namespace Hashira {
 
 		std::function<bool(INT64,INT64,bool)> _flushFunc;
 
+		std::unique_ptr<GlobalDescriptorHeap> _globalDescriptorHeap;
+		std::unique_ptr<DescriptorAllocator> _viewHeapAllocator;
+		std::unique_ptr<DescriptorAllocator> _samplerHeapAllocator;
+		std::unique_ptr<DescriptorAllocator> _rtvHeapAllocator;
+		std::unique_ptr<DescriptorAllocator> _dsvHeapAllocator;
+		DescriptorInfo _defaultViewDescriptorInfo;
+		DescriptorInfo _defaultSamplerDescriptorInfo;
+
+
 	public:
 
 		virtual ~RenderContext();
@@ -75,8 +92,15 @@ namespace Hashira {
 		Hashira::Fence& GetCurrentFence();
 
 		std::weak_ptr<CommandQueue> GetCommandQueue();
-
 		std::shared_ptr<Hashira::SwapChain> GetSwapChain();
+
+		std::unique_ptr<GlobalDescriptorHeap>& GetGlobalDescriptorHeap();
+		std::unique_ptr<DescriptorAllocator>& GetViewDescriptorHeap();
+		std::unique_ptr<DescriptorAllocator>& GetSamplerDescriptorHeap();
+		std::unique_ptr<DescriptorAllocator>& GetRtvDescriptorHeap();
+		std::unique_ptr<DescriptorAllocator>& GetDsvDescriptorHeap();
+		DescriptorInfo& GetViewDescriptorHeapInfo();
+		DescriptorInfo& GetSamplerDescriptorHeapInfo();
 
 		void PushFrontCmdList(std::shared_ptr<CommandList> list);
 

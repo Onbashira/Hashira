@@ -73,9 +73,9 @@ HRESULT Hashira::Camera::InitializeCameraDepthStencill(DXGI_FORMAT depthFormat, 
 
 }
 
-void Hashira::Camera::SetCameraParamater(std::weak_ptr<CommandList> list, unsigned int paramaterIndex)
+void Hashira::Camera::SetCameraParameter(std::weak_ptr<CommandList> list, unsigned int parameterIndex)
 {
-	list.lock()->GetCommandList()->SetGraphicsRootConstantBufferView(paramaterIndex, _cameraMatrixBuffer.GetResource()->GetGPUVirtualAddress());
+	list.lock()->GetCommandList()->SetGraphicsRootConstantBufferView(parameterIndex, _cameraMatrixBuffer.GetResource()->GetGPUVirtualAddress());
 }
 
 void Hashira::Camera::Discard()

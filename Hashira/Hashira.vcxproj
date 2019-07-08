@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DescriptorSet.cpp" />
-    <ClCompile Include="Engine\Source\DescriptorHeap\DescriptorSystem\Descriptor.cpp" />
-    <ClCompile Include="Engine\Source\DescriptorHeap\DescriptorSystem\DescriptorHeap.cpp" />
+    <ClCompile Include="Engine\Source\DescriptorHeap\DescriptorSet.cpp" />
+    <ClCompile Include="Engine\Source\DescriptorHeap\Descriptor.cpp" />
+    <ClCompile Include="Engine\Source\DescriptorHeap\DescriptorHeap.cpp" />
     <ClCompile Include="Engine\Source\ParticleSystem\Item\CommonItem\TransformItem.cpp" />
     <ClCompile Include="Engine\Source\ParticleSystem\Memory\EmitterDataBinary.cpp" />
     <ClCompile Include="Engine\Source\ParticleSystem\Memory\EmitterIdxTblBinary.cpp" />
@@ -69,7 +69,6 @@
       <DeploymentContent>true</DeploymentContent>
     </ClCompile>
     <ClCompile Include="Engine\Source\Command\Core\CommandManager.cpp" />
-    <ClCompile Include="Engine\Source\Primitive\Geometry\Cube.cpp" />
     <ClCompile Include="Engine\Source\Async\Fence.cpp" />
     <ClCompile Include="Engine\Source\Audio\Audio.cpp" />
     <ClCompile Include="Engine\Source\Audio\AudioCallBack.cpp" />
@@ -116,8 +115,6 @@
     <ClCompile Include="Engine\Source\Utility\NonCopyable.cpp" />
     <ClCompile Include="Engine\Source\Window\Window.cpp" />
     <ClCompile Include="Engine\Source\Window\WindowManager.cpp" />
-    <ClCompile Include="Engine\Source\Primitive\Geometry\Plane.cpp" />
-    <ClCompile Include="Engine\Source\Primitive\Geometry\Sphere.cpp" />
     <ClCompile Include="Engine\Source\Command\Core\InternalCommandCreater.cpp" />
     <ClCompile Include="Engine\Source\Command\Core\InternalCommand.cpp" />
     <ClCompile Include="Engine\Source\Command\State\GeometryState.cpp" />
@@ -139,14 +136,8 @@
     <ClCompile Include="Engine\Source\Command\Core\InternalCommandAllocator.cpp" />
     <ClCompile Include="Engine\Source\Component\PhysicsComponent\PhysicsComponent.cpp" />
     <ClCompile Include="Engine\Source\Scene\Scene.cpp" />
-    <ClCompile Include="Engine\Source\DescriptorHeap\GameHeap.cpp" />
     <ClCompile Include="Engine\Source\Rendering\RenderContext\RenderContext.cpp" />
     <ClCompile Include="Engine\Source\Utility\Singleton.cpp" />
-    <ClCompile Include="Engine\Source\Primitive\Object\PrimitiveObject.cpp" />
-    <ClCompile Include="Engine\Source\Primitive\DefaultComponent\PrimitiveRenderer.cpp" />
-    <ClCompile Include="Engine\Source\Primitive\DefaultComponent\PrimitiveInputComponent.cpp" />
-    <ClCompile Include="Engine\Source\Primitive\DefaultComponent\PrimitivePhysicsComponent.cpp" />
-    <ClCompile Include="Engine\Source\Rendering\RenderingPass\RenderingPass.cpp" />
     <ClCompile Include="Engine\Source\Texture\TextureObject.cpp" />
     <ClCompile Include="Engine\Source\MemoryAllocator\VariableSizeAllocationManager.cpp" />
     <ClCompile Include="Engine\Source\TextUI\TextUI.cpp" />
@@ -168,6 +159,7 @@
     <ClCompile Include="Engine\Source\ParticleSystem\System\SceneParticleManager.cpp" />
     <ClCompile Include="Engine\Source\ParticleSystem\Item\CommonItem\SpawnItem.cpp" />
     <ClCompile Include="Engine\Source\ParticleSystem\Item\CommonItem\ParentOptionItem.cpp" />
+    <ClCompile Include="Engine\Source\ShaderObject\Shader.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -176,9 +168,9 @@
     <ClCompile Include="Engine\Source\ParticleSystem\Item\Transform\Velocity3DItem.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DescriptorSet.h" />
-    <ClInclude Include="Engine\Source\DescriptorHeap\DescriptorSystem\Descriptor.h" />
-    <ClInclude Include="Engine\Source\DescriptorHeap\DescriptorSystem\DescriptorHeap.h" />
+    <ClInclude Include="Engine\Source\DescriptorHeap\DescriptorSet.h" />
+    <ClInclude Include="Engine\Source\DescriptorHeap\Descriptor.h" />
+    <ClInclude Include="Engine\Source\DescriptorHeap\DescriptorHeap.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Memory\EmitterDataBinary.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Memory\EmitterIdxTblBinary.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Memory\EmitterHeaderBinary.h" />
@@ -217,7 +209,6 @@
     <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\scoped.h" />
     <ClInclude Include="Hashira.h" />
     <ClInclude Include="Engine\Source\Command\Core\CommandManager.h" />
-    <ClInclude Include="Engine\Source\Primitive\Geometry\Cube.h" />
     <ClInclude Include="Engine\Source\Async\Fence.h" />
     <ClInclude Include="Engine\Source\Async\ThreadPool.h" />
     <ClInclude Include="Engine\Source\Audio\Audio.h" />
@@ -269,8 +260,6 @@
     <ClInclude Include="Engine\Source\Utility\Utility.h" />
     <ClInclude Include="Engine\Source\Window\Window.h" />
     <ClInclude Include="Engine\Source\Window\WindowManager.h" />
-    <ClInclude Include="Engine\Source\Primitive\Geometry\Plane.h" />
-    <ClInclude Include="Engine\Source\Primitive\Geometry\Sphere.h" />
     <ClInclude Include="Engine\Source\Command\Core\InternalCommandCreater.h" />
     <ClInclude Include="Engine\Source\Command\Core\InternalCommand.h" />
     <ClInclude Include="Engine\Source\Command\State\GeometryState.h" />
@@ -294,14 +283,8 @@
     <ClInclude Include="Engine\Source\Command\Core\InternalCommandAllocator.h" />
     <ClInclude Include="Engine\Source\Component\PhysicsComponent\PhysicsComponent.h" />
     <ClInclude Include="Engine\Source\Scene\Scene.h" />
-    <ClInclude Include="Engine\Source\DescriptorHeap\GameHeap.h" />
     <ClInclude Include="Engine\Source\Rendering\RenderContext\RenderContext.h" />
     <ClInclude Include="Engine\Source\Utility\Singleton.h" />
-    <ClInclude Include="Engine\Source\Primitive\Object\PrimitiveObject.h" />
-    <ClInclude Include="Engine\Source\Primitive\DefaultComponent\PrimitiveRenderer.h" />
-    <ClInclude Include="Engine\Source\Primitive\DefaultComponent\PrimitiveInputComponent.h" />
-    <ClInclude Include="Engine\Source\Primitive\DefaultComponent\PrimitivePhysicsComponent.h" />
-    <ClInclude Include="Engine\Source\Rendering\RenderingPass\RenderingPass.h" />
     <ClInclude Include="Engine\Source\Texture\TextureObject.h" />
     <ClInclude Include="Engine\Source\MemoryAllocator\VariableSizeAllocationManager.h" />
     <ClInclude Include="Engine\Source\TextUI\TextUI.h" />
@@ -326,6 +309,7 @@
     <ClInclude Include="Engine\Source\Resource\L1Buffer.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Item\CommonItem\SpawnItem.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Item\CommonItem\ParentOptionItem.h" />
+    <ClInclude Include="Engine\Source\ShaderObject\Shader.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Item\CommonItem\TransformItem.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Item\Transform\UVSequenceItem.h" />

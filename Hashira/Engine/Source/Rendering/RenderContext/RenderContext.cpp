@@ -141,6 +141,41 @@ std::shared_ptr<Hashira::SwapChain> Hashira::RenderContext::GetSwapChain()
 	return _swapChain;
 }
 
+std::unique_ptr < Hashira::GlobalDescriptorHeap > & Hashira::RenderContext::GetGlobalDescriptorHeap()
+{
+	return this->_globalDescriptorHeap;
+}
+
+std::unique_ptr<Hashira::DescriptorAllocator>& Hashira::RenderContext::GetViewDescriptorHeap()
+{
+	return _viewHeapAllocator;
+}
+
+std::unique_ptr<Hashira::DescriptorAllocator>& Hashira::RenderContext::GetSamplerDescriptorHeap()
+{
+	return _samplerHeapAllocator;
+}
+
+std::unique_ptr<Hashira::DescriptorAllocator>& Hashira::RenderContext::GetRtvDescriptorHeap()
+{
+	return _rtvHeapAllocator;
+}
+
+std::unique_ptr<Hashira::DescriptorAllocator>& Hashira::RenderContext::GetDsvDescriptorHeap()
+{
+	return _dsvHeapAllocator;
+}
+
+Hashira::DescriptorInfo & Hashira::RenderContext::GetViewDescriptorHeapInfo()
+{
+	return this->_defaultViewDescriptorInfo;
+}
+
+Hashira::DescriptorInfo & Hashira::RenderContext::GetSamplerDescriptorHeapInfo()
+{
+	return this->_defaultSamplerDescriptorInfo;
+}
+
 void Hashira::RenderContext::PushFrontCmdList(std::shared_ptr<CommandList> list)
 {
 	this->_listsVector[_currentIndex].insert(_listsVector[_currentIndex].begin(),list);

@@ -20,6 +20,8 @@ namespace Hashira {
 
 	public:
 
+		inline static Uint32 FrameBufferMax = 3u;
+
 	private:
 		unsigned int _bufferNum;
 

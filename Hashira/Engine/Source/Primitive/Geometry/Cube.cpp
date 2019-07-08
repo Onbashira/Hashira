@@ -6,7 +6,6 @@
 #include "Engine/Source/Mesh/MeshBuffer.h"
 #include "Engine/Source/Mesh/MeshHeap.h"
 #include "Engine/Source/Mesh/ModelMesh.h"
-#include "Engine/Source/DescriptorHeap/GameHeap.h"
 Hashira::Cube::Cube(std::shared_ptr<GameHeap>& heap) :
 	PrimitiveObject(new PrimitiveRenderer(), new PrimitiveInputComponent(), new PrimitivePhysicsComponent(), heap)
 {
@@ -103,13 +102,13 @@ void Hashira::Cube::CreateIndices()
 }
 void Hashira::Cube::CreateDescriptors()
 {
-	D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc;
-	//デフォルトカメラデスクリプタの取得(register0
-	this->_modelMesh->AddDescriptor(_gameHeap->GetDescriptorHandle(GameHeap::HeapType::CPU, 0));
-	cbvDesc.BufferLocation = this->_transformBuffer.GetResource()->GetGPUVirtualAddress();
-	cbvDesc.SizeInBytes = Util::ConstantBufferAlign(sizeof(Transform));
-	//register1
-	this->_modelMesh->AddDescriptor(_gameHeap->CreateCBView(cbvDesc));
+	//D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc;
+	////デフォルトカメラデスクリプタの取得(register0
+	//this->_modelMesh->AddDescriptor(_gameHeap->GetDescriptorHandle(GameHeap::HeapType::CPU, 0));
+	//cbvDesc.BufferLocation = this->_transformBuffer.GetResource()->GetGPUVirtualAddress();
+	//cbvDesc.SizeInBytes = Util::ConstantBufferAlign(sizeof(Transform));
+	////register1
+	//this->_modelMesh->AddDescriptor(_gameHeap->CreateCBView(cbvDesc));
 
 }
 

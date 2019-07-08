@@ -3,62 +3,81 @@ namespace Hashira {
 
 	class CommandList;
 
-	struct Descriptor {
 
-		enum class ViewType {
-			 EMPTY, CBV, SRV, UAV, RTV, DSV, SAMP
-		};
+	class Descriptor {
 
-		enum class BindType {
-			Graphics,Compute
-		};
+		friend class DescriptorHeap;
 
-		//ヒープ先頭からのオフセット
-		unsigned int offset;
-		//このビューのタイプ
-		Descriptor::ViewType viewType;
+	public:
+
+	private:
+
+		//ヒープのインデックス
+		unsigned int _index;
 		//CPUデスクリプタハンドル
-		D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle;
+		D3D12_CPU_DESCRIPTOR_HANDLE _cpuHandle;
 		//GPUデスクリプタハンドル
-		D3D12_GPU_DESCRIPTOR_HANDLE gpuAddress;
+		D3D12_GPU_DESCRIPTOR_HANDLE _gpuHandle;
+		//親ヒープ
+		DescriptorHeap* _parentHeap;
+		//前
+		Descriptor* _prev;
+		//次
+		Descriptor* _next;
+
+	public:
 
 		Descriptor() :
-			offset(0), viewType(Descriptor::ViewType::EMPTY), cpuHandle(D3D12_CPU_DESCRIPTOR_HANDLE()), gpuAddress(D3D12_GPU_DESCRIPTOR_HANDLE()) {};
+			_index(0), _cpuHandle(D3D12_CPU_DESCRIPTOR_HANDLE()), _gpuHandle(D3D12_GPU_DESCRIPTOR_HANDLE()) {};
 
-		Descriptor(unsigned int offset, Descriptor::ViewType viewType,const D3D12_CPU_DESCRIPTOR_HANDLE& cpuHandle, const D3D12_GPU_DESCRIPTOR_HANDLE& gpuAddress) :
-			offset(offset), viewType(viewType), cpuHandle(cpuHandle), gpuAddress(gpuAddress) {};
+		Descriptor(unsigned int offset, const D3D12_CPU_DESCRIPTOR_HANDLE& cpuHandle, const D3D12_GPU_DESCRIPTOR_HANDLE& gpuAddress) :
+			_index(offset), _cpuHandle(cpuHandle), _gpuHandle(gpuAddress) {};
 
 		Descriptor(Descriptor&& other) {
 			*this = std::move(other);
-
 		};
-
-		Descriptor& operator= (Descriptor&& other) {
-			*this = other;
-
-			other.offset = 0;
-			other.viewType = Descriptor::ViewType::EMPTY;
-			other.gpuAddress = D3D12_GPU_DESCRIPTOR_HANDLE();
-			other.cpuHandle = D3D12_CPU_DESCRIPTOR_HANDLE();
-
-			return *this;
-		};
-
-		void BindShader(unsigned int rootParamater,BindType bindType,std::shared_ptr<Hashira::CommandList> list);
-
-	private:
 
 		Descriptor(const Descriptor& other) {
 			*this = other;
 		};
 
+		~Descriptor() {
+			Release();
+		};
+
 		Descriptor& operator= (const Descriptor& other) {
-			offset = other.offset;
-			viewType = other.viewType;
-			gpuAddress = other.gpuAddress;
-			cpuHandle = other.cpuHandle;
+			_index = other._index;
+			_gpuHandle = other._gpuHandle;
+			_cpuHandle = other._cpuHandle;
 			return *this;
 		};
-	};
 
+		Descriptor& operator= (Descriptor&& other) {
+			*this = other;
+
+			other._index = 0;
+			other._gpuHandle = D3D12_GPU_DESCRIPTOR_HANDLE();
+			other._cpuHandle = D3D12_CPU_DESCRIPTOR_HANDLE();
+
+			return *this;
+		};
+
+		D3D12_CPU_DESCRIPTOR_HANDLE GetCpuHandle()
+		{
+			return _cpuHandle;
+		};
+
+		D3D12_GPU_DESCRIPTOR_HANDLE GetGpuHandle()
+		{
+			return _gpuHandle;
+		};
+
+		void Discard();
+
+		void Release();
+
+	private:
+
+
+	};
 }

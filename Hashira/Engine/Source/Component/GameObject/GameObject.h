@@ -8,7 +8,6 @@
 namespace Hashira {
 
 	class CommandList;
-	class GameHeap;
 	class GraphicsComponent;
 	class InputComponent;
 	class PhysicsComponent;
@@ -32,7 +31,6 @@ namespace Hashira {
 
 		std::unique_ptr<PhysicsComponent> _physicsComponent;
 
-		std::shared_ptr<GameHeap> _gameHeap;
 
 	private:
 
@@ -41,7 +39,6 @@ namespace Hashira {
 		GameObject(GraphicsComponent* graphicsComponent,
 			InputComponent* inputComponent,
 			PhysicsComponent* physicsComponent,
-			std::shared_ptr<GameHeap>& gameHeap
 		);
 
 		virtual ~GameObject();
@@ -57,8 +54,6 @@ namespace Hashira {
 		bool IsEnable();
 
 		Transform& GetTransform();
-
-		void SetGameHeap(std::shared_ptr<GameHeap>& gameHeap);
 
 		virtual std::unique_ptr<GraphicsComponent>& GetGraphicsComponent();
 

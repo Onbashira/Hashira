@@ -13,7 +13,12 @@
 
 Hashira::CommandList::CommandList() :
 	_commandList(),
-	_commandListName("UnNamed_CommandList")
+	_commandListName("UnNamed_CommandList"),
+	_descriptorStackList(nullptr),
+	_currSamplerHeap(nullptr),
+	_currViewHeap(nullptr),
+	_samplerDescCache(nullptr),
+	_heapChanged(true)
 {
 
 }
@@ -31,6 +36,7 @@ HRESULT Hashira::CommandList::Initialize(std::weak_ptr<D3D12Device> device, unsi
 	if (commandAllocator->GetAllocator().Get() == nullptr) {
 		return E_ACCESSDENIED;
 	}
+	this->_parentAllocator = commandAllocator;
 	_listType = listType;
 	result = device.lock()->GetDevice()->CreateCommandList(nodeMask, _listType, commandAllocator->GetAllocator().Get(), nullptr, IID_PPV_ARGS(&_commandList));
 	if (result != S_OK) {
@@ -80,10 +86,30 @@ HRESULT Hashira::CommandList::ResetCommandList(std::shared_ptr<CommandAllocator>
 	return hr;
 }
 
+HRESULT Hashira::CommandList::ResetCommandList(ID3D12PipelineState * pInitialState)
+{
+	auto hr = _commandList->Reset(_parentAllocator->GetAllocator().Get(), pInitialState);
+	return hr;
+}
+
 HRESULT Hashira::CommandList::CloseCommandList()
 {
 	auto hr = _commandList->Close();
 	return hr;
+}
+
+void Hashira::CommandList::SetUavBarrier(Resource * res)
+{
+	if (res == nullptr)
+		return;
+	D3D12_RESOURCE_BARRIER barrier;
+
+	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE::D3D12_RESOURCE_BARRIER_TYPE_UAV;
+	barrier.Flags = D3D12_RESOURCE_BARRIER_FLAGS::D3D12_RESOURCE_BARRIER_FLAG_NONE;
+	barrier.UAV.pResource = res->GetResource().Get();
+	
+	this->_commandList->ResourceBarrier(1, &barrier);
+
 }
 
 void Hashira::CommandList::Discard()

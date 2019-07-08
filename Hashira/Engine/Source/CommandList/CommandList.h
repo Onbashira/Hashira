@@ -21,6 +21,10 @@ namespace Hashira {
 	class RootSignature;
 	class D3D12Device;
 	class CommandAllocator;
+	class DescriptorSet;
+	class SamplerDescriptorCache;
+	class DescriptorStackList;
+	class RaytracingDescriptorManager;
 
 
 	class CommandList
@@ -39,6 +43,24 @@ namespace Hashira {
 
 		//!リストのタイプ
 		D3D12_COMMAND_LIST_TYPE _listType;
+
+		//親コマンドキュー
+		std::shared_ptr<CommandQueue> _parentQueue;
+
+		//スタックリスト
+		DescriptorStackList* _descriptorStackList;
+
+		//現在のサンプラーヒープ
+		DescriptorHeap* _currSamplerHeap;
+
+		//現在のビューヒープ
+		DescriptorHeap* _currViewHeap;
+
+		SamplerDescriptorCache* _samplerDescCache;
+
+		std::shared_ptr<Hashira::CommandAllocator> _parentAllocator;
+
+		bool _heapChanged;
 
 	public:
 
@@ -95,10 +117,29 @@ namespace Hashira {
 
 		/**
 		* @fn
+		* @brief 親コマンドアロケータでリストのリセット
+		* @param[in] allocator　コマンドアロケーター
+		* @param[in] pInitialState　パイプラインステート
+		* @return リザルト　S_OKで成功
+		*/
+		HRESULT	ResetCommandList(ID3D12PipelineState* pInitialState = nullptr);
+
+		/**
+		* @fn
 		* @brief コマンドリストのクローズ
 		* @return リザルト　S_OKで成功
 		*/
 		HRESULT	CloseCommandList();
+
+		/**
+		* @fn
+		* @brief UAVバリア
+		*/
+		void SetUavBarrier(Resource* res);
+
+		void SetGraphcisRootSignatureAndDescriptors(RootSignature* rs, DescriptorSet* descSet);
+
+		void SetComputeRootSignatureAndDescriptors(RootSignature* rs, DescriptorSet* descSet);
 
 		/**
 		* @fn
