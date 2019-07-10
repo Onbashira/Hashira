@@ -1,6 +1,6 @@
 #pragma once
 #include <d3d12.h>
-#include <DirectXTex/include/DirectXTex.h>
+#include "Engine/Source/ThirdParty/DirectXTex/include/DirectXTex.h"
 
 namespace Hashira {
 

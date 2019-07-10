@@ -6,8 +6,6 @@ Hashira::MeshHeap::MeshHeap()  :
 	_textureStartPoint(0),
 	_materialStartPoint(0)
 {
-	_descriptors.clear();
-	_descriptors.shrink_to_fit();
 }
 
 
@@ -74,20 +72,8 @@ Hashira::MeshHeap & Hashira::MeshHeap::AddTextureRef(std::weak_ptr<Hashira::Text
 	return *this;
 }
 
-std::vector<std::weak_ptr<Hashira::Descriptor>>& Hashira::MeshHeap::GetDescriptors()
-{
-	return  _descriptors;
-}
-
-void Hashira::MeshHeap::AddDescriptor(std::weak_ptr<Descriptor>& descriptor)
-{
-	_descriptors.push_back(descriptor);
-}
-
 void Hashira::MeshHeap::Discard()
 {
-	_descriptors.clear();
-	_descriptors.shrink_to_fit();
 	_materialBuffer.Discard();
 	_textureResource.clear();
 	_textureResource.shrink_to_fit();

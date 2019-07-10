@@ -38,10 +38,6 @@ namespace Hashira {
 
 		MeshHeap& AddTextureRef(std::weak_ptr<Hashira::TextureObject> textureRef);
 
-		std::vector <std::weak_ptr<Hashira::Descriptor>>& GetDescriptors();
-
-		void AddDescriptor(std::weak_ptr<Hashira::Descriptor> descriptor);
-
 		void Discard();
 
 	};

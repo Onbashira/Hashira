@@ -1,7 +1,7 @@
 #pragma once
 #include "MemoryAllocator.h"
 
-namespace K3D
+namespace Hashira
 {
 
 	class DefaultRawMemoryAllocator : public IMemoryAllocator

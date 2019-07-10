@@ -1,8 +1,8 @@
 #include "Camera.h"
 #include "Engine/Source/Component/Transform/Transform.h"
 #include "Engine/Source/Component/DefaultComponents.h"
-Hashira::Camera::Camera(std::shared_ptr<GameHeap>& heap) : 
-	GameObject(new DefaultGraphicsComponent() , new DefaultInputComponent() , new DefaultPhysicsComponent(), heap),
+Hashira::Camera::Camera() : 
+	GameObject(new DefaultGraphicsComponent() , new DefaultInputComponent() , new DefaultPhysicsComponent()),
 	_mode(CAMERA_MODE::Perspective), _aspectRatio(0.0f)
 {
 
@@ -64,10 +64,10 @@ void Hashira::Camera::InitializeCameraFOV(const float fov, const float width, co
 	Update();
 }
 
-HRESULT Hashira::Camera::InitializeCameraDepthStencill(DXGI_FORMAT depthFormat, unsigned int windowWidth, unsigned int windowHeight)
+HRESULT Hashira::Camera::InitializeCameraDepthStencill(std::shared_ptr<D3D12Device>& device,DXGI_FORMAT depthFormat, unsigned int windowWidth, unsigned int windowHeight)
 {
 	_depthStencillRersource.Discard();
-	auto hr = _depthStencillRersource.Initialize(windowWidth, windowHeight, depthFormat, depthFormat);
+	auto hr = _depthStencillRersource.Initialize(device,windowWidth, windowHeight, depthFormat, depthFormat);
 	_depthStencillRersource.SetName("CameraDepthStencill");
 	return hr;
 

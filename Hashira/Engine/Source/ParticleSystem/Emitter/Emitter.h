@@ -6,6 +6,26 @@ namespace Hashira {
 	class ParticleItem;
 	struct GPUEmitterHeader;
 
+	//GPUに投げる際にいったんこの形式にコンバートする
+	struct GPUEmitterHeader 
+	{
+		//エミッタの領域のヘッドアドレス
+		unsigned int emitterBinHead = 0;
+		//パーティクルバイナリのヘッダアドレス
+		unsigned int particleBinHead = 0;
+		//パーティクルインデックス保持領域のインデックス番号
+		unsigned int particleIdxHead = 0;
+		//パーティクルのサイズ
+		unsigned int particleSize = 0;
+
+		GPUEmitterHeader() : emitterBinHead(),
+			particleBinHead(), particleIdxHead(), particleSize() {};
+
+		GPUEmitterHeader(unsigned int emtBinHead,unsigned int ptBinHead,unsigned int ptIdxHead,unsigned int ptSize) : 
+			emitterBinHead(emtBinHead),particleBinHead(ptBinHead), particleIdxHead(ptIdxHead), particleSize(ptSize) {};
+		~GPUEmitterHeader() {};
+	};
+
 	//エミッタ共通のアイテム(CPU側）
 	struct CPUEmitterHeader 
 	{
@@ -34,25 +54,7 @@ namespace Hashira {
 	};
 
 
-	//GPUに投げる際にいったんこの形式にコンバートする
-	struct GPUEmitterHeader 
-	{
-		//エミッタの領域のヘッドアドレス
-		unsigned int emitterBinHead = 0;
-		//パーティクルバイナリのヘッダアドレス
-		unsigned int particleBinHead = 0;
-		//パーティクルインデックス保持領域のインデックス番号
-		unsigned int particleIdxHead = 0;
-		//パーティクルのサイズ
-		unsigned int particleSize = 0;
 
-		GPUEmitterHeader() : emitterBinHead(),
-			particleBinHead(), particleIdxHead(), particleSize() {};
-
-		GPUEmitterHeader(unsigned int emtBinHead,unsigned int ptBinHead,unsigned int ptIdxHead,unsigned int ptSize) : 
-			emitterBinHead(emtBinHead),particleBinHead(ptBinHead), particleIdxHead(ptIdxHead), particleSize(ptSize) {};
-		~GPUEmitterHeader() {};
-	};
 
 	//エミッタデータ（GPU内でのみ読み書きされるメモリのフォーマット
 	struct EmitterData

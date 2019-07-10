@@ -46,3 +46,8 @@ float & Hashira::Material::GetMetalness()
 {
 	return _metalness;
 }
+
+std::vector<std::weak_ptr<Hashira::TextureObject>>& Hashira::Material::GetTextures()
+{
+	return _textures;
+}

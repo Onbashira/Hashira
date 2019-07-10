@@ -25,3 +25,9 @@ struct EmitterRange
     uint DeadEnd;
 };
 
+struct VertexData
+{
+    float3 pos : POSITION;
+    float3 normal : NORMAL;
+    float2 texcoord : TEXCOORD;
+};

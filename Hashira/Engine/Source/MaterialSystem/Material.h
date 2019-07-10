@@ -2,6 +2,8 @@
 
 namespace Hashira {
 
+	class TextureObject;
+
 	class Material
 	{
 	public:
@@ -19,6 +21,8 @@ namespace Hashira {
 		float _roughness;
 		//金属度合いパラメーター 0.0f～1.0f
 		float _metalness;
+
+		std::vector<std::weak_ptr<TextureObject>> _textures;
 
 	public:
 
@@ -43,6 +47,8 @@ namespace Hashira {
 		float& GetRoughness();
 
 		float& GetMetalness();
+
+		std::vector<std::weak_ptr<TextureObject>>& GetTextures();
 
 	private:
 

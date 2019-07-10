@@ -23,14 +23,12 @@
 #include "./Engine/Source/Resource/IndexBuffer.h"
 #include "./Engine/Source/Resource/VertexBuffer.h"
 #include "./Engine/Source/Resource/ShaderResource.h"
-#include "./Engine/Source/Resource/StructuredBuffer.h"
-#include "./Engine/Source/Resource/UnorderedAccessValue.h"
+
 #include "./Engine/Source/Resource/DepthStencilBuffer.h"
 
 //Rendering
 #include "./Engine/Source/Rendering/RenderContext/RenderContext.h"
 #include "./Engine/Source/Rendering/RenderingManager.h"
-#include "./Engine/Source/Rendering/RenderingPass/RenderingPass.h"
 #include "./Engine/Source/Rendering/SwapChain.h"
 
 //Shaders
@@ -89,22 +87,13 @@
 
 //Heap
 #include "./Engine/Source/DescriptorHeap/Descriptor.h"
-#include "./Engine/Source/DescriptorHeap/GameHeap.h"
 
 //Primitive
-#include "./Engine/Source/Primitive/Object/PrimitiveObject.h"
-#include "./Engine/Source/Primitive/Geometry/Cube.h"
-#include "./Engine/Source/Primitive/Geometry/Plane.h"
-#include "./Engine/Source/Primitive/Geometry/Sphere.h"
-#include "./Engine/Source/Primitive/DefaultComponent/PrimitiveInputComponent.h"
-#include "./Engine/Source/Primitive/DefaultComponent/PrimitivePhysicsComponent.h"
-#include "./Engine/Source/Primitive/DefaultComponent/PrimitiveRenderer.h"
 
 //Scene 
 #include "./Engine/Source/Scene/Scene.h"
 
 //Sprite
-#include "./Engine/Source/Sprite/Sprite.h"
 
 //Model
 
@@ -134,9 +123,5 @@
 #include "./Engine/Source/Texture/TextureLoader.h"
 #include "./Engine/Source/Texture/TextureManager.h"
 #include "./Engine/Source/Texture/TextureObject.h"
-
-#include "./Engine/ThirdParty/DirectXTex/include/DirectXTex.h"
-
-
 
 #endif

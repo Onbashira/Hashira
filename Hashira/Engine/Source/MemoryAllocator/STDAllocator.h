@@ -5,7 +5,7 @@
 #include <utility>
 #include "Engine/Source/MemoryAllocator/MemoryAllocator.h"
 #include "Engine/Source/Utility/BasicTypes.h"
-namespace K3D
+namespace Hashira
 {
 
 	template <typename T>

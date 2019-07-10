@@ -22,7 +22,7 @@ namespace Hashira {
 	void SafeRelease(T& p) {
 		if (p != nullptr) {
 
-			delete p->Release();
+			p->Release();
 			p = nullptr;
 		}
 	}

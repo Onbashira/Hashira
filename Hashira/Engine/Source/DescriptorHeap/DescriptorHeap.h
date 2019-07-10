@@ -79,14 +79,7 @@ namespace Hashira {
 			return allocator == nullptr;
 		}
 
-		void Free()
-		{
-			if (IsValid())
-			{
-				allocator->FreeDescriptor(*this);
-				allocator = nullptr;
-			}
-		};
+		void Free();
 
 	};
 

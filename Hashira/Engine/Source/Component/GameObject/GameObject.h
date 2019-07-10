@@ -38,7 +38,7 @@ namespace Hashira {
 
 		GameObject(GraphicsComponent* graphicsComponent,
 			InputComponent* inputComponent,
-			PhysicsComponent* physicsComponent,
+			PhysicsComponent* physicsComponent
 		);
 
 		virtual ~GameObject();

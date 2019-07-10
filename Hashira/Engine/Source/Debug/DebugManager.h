@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Source/Debug/DebugWindow.h"
 #include "Engine/Source/Debug/Logger.h"
-#include "Engine/ThirdParty/imgui/imgui.h"
+#include "Engine/Source/ThirdParty/imgui/imgui.h"
 #include <Windows.h>
 
 namespace Hashira {

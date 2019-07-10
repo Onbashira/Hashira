@@ -12,6 +12,10 @@ Hashira::ParticleEffect::~ParticleEffect()
 	Discard();
 }
 
+void Hashira::ParticleEffect::Initialize(std::shared_ptr<D3D12Device>& device)
+{
+}
+
 void Hashira::ParticleEffect::Update()
 {
 	for (auto& emt : _emitters)

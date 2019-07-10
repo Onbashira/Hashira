@@ -52,37 +52,48 @@ HRESULT Hashira::SwapChain::CreateSwapChain(CommandQueue & commandQueue, std::sh
 
 HRESULT Hashira::SwapChain::CreateRenderTargets(std::shared_ptr<D3D12Device>& device, unsigned int bufferNum)
 {
-	this->_bufferNum = bufferNum;
+	this->_bufferNum = Min(SwapChain::FrameBufferMax, Max(SwapChain::FrameBufferMax, bufferNum));;
 	D3D12_DESCRIPTOR_HEAP_DESC desc{};
-	desc.NumDescriptors = bufferNum;
+	desc.NumDescriptors = _bufferNum;
 	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAGS::D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE::D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
-	_rtResource.resize(bufferNum);
+	_rtResource.resize(_bufferNum);
 
-
+	_localRtHeap = std::make_unique<DescriptorAllocator>();
+	_allocatedDesc.clear();
+	_allocatedDesc.resize(_bufferNum);
 	//レンダーターゲットビュー用のヒープの作成
 	{
-		if (FAILED(_rtHeap.Initialize(&desc)))
+		if (FAILED(_localRtHeap->Initialize(device, desc)))
 			return E_FAIL;
-		_rtHeap.SetName("RendertargetsHeap ");
 	}
 	//レンダーターゲットの作成
 	{
-		for (UINT i = 0; i < bufferNum; i++) {
+		for (UINT i = 0; i < _bufferNum; i++) {
 			_rtResource[i] = Resource::CreateShared();
 			//ディスプレイバッファの取得
 			if (FAILED(_swapChain->GetBuffer(i, IID_PPV_ARGS(this->_rtResource[i]->GetResource().GetAddressOf()))))
 			{
 				Util::Comment(L"バックバッファの作成に失敗しました　エラーログを見てね");
 
-				return FALSE;
+				return E_FAIL;
 			}
 			//レンダーターゲットビューの作成
-			device->GetDevice()->CreateRenderTargetView(_rtResource[i]->GetResource().Get(), nullptr, _rtHeap.GetCPUHandle(i));
+			_allocatedDesc.push_back(_localRtHeap->Allocate());
+			auto&& descInfo = _allocatedDesc.back();
+			device->GetDevice()->CreateRenderTargetView(_rtResource[i]->GetResource().Get(), nullptr, descInfo.cpuHandle);
+			
+			if (descInfo.IsValid()) {
+				return E_FAIL;
+			}
+			
 			_rtResource[i]->SetResourceState(D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_COMMON);
+			
 			std::stringstream ss;
 			ss << "RenderTargetResource " << i;
 			_rtResource[i]->SetName(ss.str());
+			
+
 		}
 	}
 	return S_OK;
@@ -105,6 +116,12 @@ unsigned int Hashira::SwapChain::GetBufferNum()
 unsigned int Hashira::SwapChain::GetCurrentBuckBuffer()
 {
 	return _currentIndex;
+}
+
+std::unique_ptr<Hashira::DescriptorAllocator>& Hashira::SwapChain::GetLocalRtDescriptortAlolocator()
+{
+	return _localRtHeap;
+
 }
 
 HRESULT Hashira::SwapChain::SetStatePresent(std::shared_ptr<CommandList> list)
@@ -144,7 +161,7 @@ HRESULT Hashira::SwapChain::CopyToRenderTarget(std::shared_ptr<CommandList> list
 
 void Hashira::SwapChain::SetRenderTarget(std::shared_ptr<CommandList> list, D3D12_CPU_DESCRIPTOR_HANDLE* depthHandle)
 {
-	list->GetCommandList()->OMSetRenderTargets(1, &this->_rtHeap.GetCPUHandle(_currentIndex), true, depthHandle);
+	list->GetCommandList()->OMSetRenderTargets(1, &_allocatedDesc[_currentIndex].cpuHandle, true, depthHandle);
 
 }
 
@@ -158,7 +175,7 @@ void Hashira::SwapChain::ClearScreen(std::shared_ptr<CommandList> list)
 	//testCode CleacolorChange
 	float tempColor[4] = { 0.5f,0.0f,0.5f,1.0f };
 
-	list->GetCommandList()->ClearRenderTargetView(_rtHeap.GetCPUHandle(_currentIndex), tempColor, 0, nullptr);
+	list->GetCommandList()->ClearRenderTargetView(_allocatedDesc[_currentIndex].cpuHandle, tempColor, 0, nullptr);
 
 
 }
@@ -173,13 +190,14 @@ void Hashira::SwapChain::ReSizeRenderTarget(std::shared_ptr<D3D12Device>& device
 	if (width > 0 && height > 0) {
 		_width = width;
 		_height = height;
-		_bufferNum = backBufferNum;
+		_bufferNum = Min(SwapChain::FrameBufferMax,Max(SwapChain::FrameBufferMax,backBufferNum));
 	}
 	else
 	{
 		Util::Comment(L"スクリーンバッファのリサイズに失敗　サイズは0以上である必要があります");
 		assert(0);
 	}
+
 
 	_swapChain->ResizeBuffers(
 		_bufferNum,
@@ -188,6 +206,15 @@ void Hashira::SwapChain::ReSizeRenderTarget(std::shared_ptr<D3D12Device>& device
 		DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM,
 		DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH
 	);
+	this->_bufferNum = Min(SwapChain::FrameBufferMax, Max(SwapChain::FrameBufferMax, _bufferNum));;
+	D3D12_DESCRIPTOR_HEAP_DESC desc{};
+	desc.NumDescriptors = _bufferNum;
+	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAGS::D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE::D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+	
+	_localRtHeap->Discard();
+	_localRtHeap->Initialize(device, desc);
+	_rtResource.resize(this->_bufferNum);
 
 	//レンダーターゲットの作成
 	{
@@ -201,7 +228,9 @@ void Hashira::SwapChain::ReSizeRenderTarget(std::shared_ptr<D3D12Device>& device
 
 			}
 			//レンダーターゲットビューの作成
-			device->GetDevice()->CreateRenderTargetView(_rtResource[i]->GetResource().Get(), nullptr, _rtHeap.GetCPUHandle(i));
+			_allocatedDesc.push_back(_localRtHeap->Allocate());
+			auto&& descInfo = _allocatedDesc.back();
+			device->GetDevice()->CreateRenderTargetView(_rtResource[i]->GetResource().Get(), nullptr, descInfo.cpuHandle);
 			_rtResource[i]->SetResourceState(D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_PRESENT);
 			_rtResource[i]->SetName(std::string("RenderTargetResource " + i));
 		}
@@ -228,5 +257,5 @@ void Hashira::SwapChain::Discard()
 	for (auto& res : _rtResource) {
 		res->Discard();
 	}
-	_rtHeap.Discard();
+	_localRtHeap->Discard();
 }

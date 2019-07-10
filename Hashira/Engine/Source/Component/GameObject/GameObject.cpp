@@ -1,17 +1,14 @@
 #include "GameObject.h"
 #include "Engine/Source/CommandList/CommandList.h"
-#include "Engine/Source/DescriptorHeap/GameHeap.h"
 #include "Engine/Source/Component/GraphicsComponent/GraphicsComponent.h"
 #include "Engine/Source/Component/InputComponent/InputComponent.h"
 #include "Engine/Source/Component/PhysicsComponent/PhysicsComponent.h"
 
 Hashira::GameObject::GameObject(Hashira::GraphicsComponent* graphicsComponent, 
 	Hashira::InputComponent* inputComponent,
-	Hashira::PhysicsComponent* physicsComponent,
-	std::shared_ptr<GameHeap>& gameHeap):
+	Hashira::PhysicsComponent* physicsComponent):
 	_transform({}), 
 	_isEnable(true),
-	_gameHeap(gameHeap),
 	_graphicsComponent(graphicsComponent),
 	_inputComponent(inputComponent),
 	_physicsComponent(physicsComponent)
@@ -44,11 +41,6 @@ bool Hashira::GameObject::IsEnable()
 Hashira::Transform & Hashira::GameObject::GetTransform()
 {
 	return _transform;
-}
-
-void Hashira::GameObject::SetGameHeap(std::shared_ptr<GameHeap>& gameHeap)
-{
-	_gameHeap = gameHeap;
 }
 
 std::unique_ptr<Hashira::GraphicsComponent>& Hashira::GameObject::GetGraphicsComponent()

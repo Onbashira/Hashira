@@ -25,7 +25,7 @@ namespace Hashira {
 				Uint32 maxCount;
 				void Reset()
 				{
-					memset(cpuHandles, 0 sizeof(cpuHandles));
+					memset(cpuHandles, 0,sizeof(cpuHandles));
 					maxCount = 0;
 				}
 

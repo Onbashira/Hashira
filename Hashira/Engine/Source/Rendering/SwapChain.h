@@ -35,7 +35,9 @@ namespace Hashira {
 
 		std::vector<std::shared_ptr<Resource>> _rtResource;
 
-		DescriptorHeap _rtHeap;
+		std::unique_ptr<DescriptorAllocator> _localRtHeap;
+
+		std::vector<DescriptorInfo> _allocatedDesc;
 
 	public:
 
@@ -48,6 +50,8 @@ namespace Hashira {
 		unsigned int GetBufferNum();
 
 		unsigned int GetCurrentBuckBuffer();
+
+		std::unique_ptr<DescriptorAllocator>& GetLocalRtDescriptortAlolocator();
 
 		HRESULT SetStatePresent(std::shared_ptr<CommandList> list);
 

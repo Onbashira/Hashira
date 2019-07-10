@@ -1,13 +1,12 @@
 #include "TextureLoader.h"
 #include "TextureManager.h"
-#include "Engine/ThirdParty/DirectXTex/include/DirectXTex.h"
+#include "Engine/Source/ThirdParty/DirectXTex/include/DirectXTex.h"
 #include "Engine/Source/CoreSystem/Framework.h"
 #include "Engine/Source/CommandList/CommandList.h"
 #include "Engine/Source/CommandQueue/CommandQueue.h"
 #include "Engine/Source/Resource/ShaderResource.h"
 #include "Engine/Source/Texture/TextureObject.h"
 #include "Engine/Source/Rendering/RenderContext/RenderContext.h"
-#include "Engine/ThirdParty/DirectXTex/include/DirectXTex.h"
 
 
 Hashira::TextureLoader::TextureLoader()

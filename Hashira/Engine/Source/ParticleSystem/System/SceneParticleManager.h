@@ -1,4 +1,6 @@
 #pragma once
+#include "Engine/Source/ParticleSystem/Effect/ParticleEffect.h"
+
 namespace Hashira {
 
 	class D3D12Device;
@@ -29,7 +31,7 @@ namespace Hashira {
 	public:
 
 	private:
-		std::vector<std::unique_ptr<ParticleEffect>>	_sceneParticleEffects;
+		std::vector<std::shared_ptr<ParticleEffect>>	_sceneParticleEffects;
 		std::shared_ptr<EmitterBinary>					_sceneEmtMemory;
 		std::shared_ptr<EmitterDataBinary>				_sceneEmtDataMemory;
 		std::shared_ptr<EmitterHeaderBinary>			_sceneEmtHeaderMemory;

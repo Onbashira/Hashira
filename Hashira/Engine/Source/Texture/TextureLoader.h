@@ -1,8 +1,8 @@
 #pragma once
 #include "Engine/Source/DescriptorHeap/DescriptorHeap.h"
+#include "Engine/Source/ThirdParty/DirectXTex/include/DirectXTex.h"
 #include <vector>
 #include <string>
-#include "Engine/ThirdParty/DirectXTex/include/DirectXTex.h"
 
 namespace Hashira {
 

@@ -71,7 +71,7 @@ namespace Hashira {
 
 	public:
 
-		Camera(std::shared_ptr<GameHeap>& heap);
+		Camera();
 
 		~Camera();
 
@@ -228,7 +228,7 @@ namespace Hashira {
 		* @oaram[in] windowHeight　カメラの画面高さ
 		* @return リザルト S_OKで成功
 		*/
-		HRESULT InitializeCameraDepthStencill(DXGI_FORMAT depthFormat, unsigned int windowWidth, unsigned int windowHeight);
+		HRESULT InitializeCameraDepthStencill(std::shared_ptr<D3D12Device>& device,DXGI_FORMAT depthFormat, unsigned int windowWidth, unsigned int windowHeight);
 
 		/**
 		* @fn

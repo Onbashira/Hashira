@@ -1,6 +1,6 @@
 #pragma once
 
-namespace K3D
+namespace Hashira
 {
 	/// Base interface for a raw memory allocator
 	class IMemoryAllocator

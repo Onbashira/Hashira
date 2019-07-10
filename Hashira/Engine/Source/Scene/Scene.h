@@ -17,9 +17,6 @@ namespace Hashira {
 
 	protected:
 
-		//!デスクリプタヒープ
-		std::shared_ptr<GameHeap> _gameHeap;
-
 		std::shared_ptr<RenderingDevice>& _renderingDevice;
 
 		std::shared_ptr<RenderContext> _renderContext;

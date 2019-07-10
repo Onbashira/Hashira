@@ -16,9 +16,10 @@ namespace Hashira {
 		
 		int _emtHeaderCount;
 
+		std::unique_ptr<L0Buffer> _bin;
+
 		std::vector<GPUEmitterHeader> _headers;
 
-		std::unique_ptr<L0Buffer> _bin;
 
 	public:
 		EmitterHeaderBinary();

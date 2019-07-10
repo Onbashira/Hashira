@@ -52,16 +52,6 @@ Hashira::MeshHeap & Hashira::ModelMesh::AddTextureRef(std::weak_ptr<Hashira::Tex
 	return _meshHeap->AddTextureRef(textureRef);
 }
 
-std::vector<std::weak_ptr<Hashira::Descriptor>>& Hashira::ModelMesh::GetDescriptors()
-{
-	return _meshHeap->GetDescriptors();
-}
-
-void Hashira::ModelMesh::AddDescriptor(std::weak_ptr<Descriptor> descriptor)
-{
-	_meshHeap->AddDescriptor(descriptor);
-}
-
 void Hashira::ModelMesh::Discard()
 {
 	_meshHeap->Discard();

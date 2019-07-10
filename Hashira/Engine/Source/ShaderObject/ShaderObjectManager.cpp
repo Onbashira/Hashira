@@ -78,7 +78,7 @@ HRESULT Hashira::ShaderObjectManager::CreateRootSignature(std::string rsName, ID
 {
 	if (_rootSignaturelibrary.find(rsName) == _rootSignaturelibrary.end()) {
 		this->_rootSignaturelibrary[rsName] = std::make_shared<Hashira::RootSignature>();
-		auto hr = this->_rootSignaturelibrary[rsName]->CreateFromShader(signature);
+		auto hr = this->_rootSignaturelibrary[rsName]->InitializeFromShader(signature);
 		this->_rootSignaturelibrary[rsName]->SetName(rsName);
 
 		if (SUCCEEDED(hr)) {
@@ -95,7 +95,7 @@ HRESULT Hashira::ShaderObjectManager::CreateRootSignature(std::string rsName, D3
 {
 	if (_rootSignaturelibrary.find(rsName) == _rootSignaturelibrary.end()) {
 		this->_rootSignaturelibrary[rsName] = std::make_shared<Hashira::RootSignature>();
-		auto hr = this->_rootSignaturelibrary[rsName]->CreateFromDesc(desc);
+		auto hr = this->_rootSignaturelibrary[rsName]->InitializeFromDesc(desc);
 		this->_rootSignaturelibrary[rsName]->SetName(rsName);
 
 		if (SUCCEEDED(hr)) {

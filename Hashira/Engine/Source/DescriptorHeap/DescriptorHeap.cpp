@@ -35,13 +35,13 @@ HRESULT Hashira::DescriptorHeap::Initialize(std::shared_ptr<D3D12Device>& device
 	_heapDesc = desc;
 	_descriptorSize = device->GetDevice()->GetDescriptorHandleIncrementSize(desc.Type);
 
-	Descriptor* p = _unusedDescriptorsList +1;
+	Descriptor* p = _unusedDescriptorsList + 1;
 
 	D3D12_CPU_DESCRIPTOR_HANDLE hCpu = _heap->GetCPUDescriptorHandleForHeapStart();
 	D3D12_GPU_DESCRIPTOR_HANDLE hGpu = _heap->GetGPUDescriptorHandleForHeapStart();
 
-	for (int i = 0; i < desc.NumDescriptors; i++,p++ ,hCpu.ptr += _descriptorSize , hGpu.ptr += _descriptorSize) {
-		
+	for (int i = 0; i < desc.NumDescriptors; i++, p++, hCpu.ptr += _descriptorSize, hGpu.ptr += _descriptorSize) {
+
 		//親ヒープ及びハンドル、インデックスを設定
 		p->_parentHeap = this;
 		p->_cpuHandle = hCpu;
@@ -108,6 +108,17 @@ void Hashira::DescriptorHeap::Discard()
 	SafeRelease(this->_heap);
 }
 
+void Hashira::DescriptorInfo::Free()
+{
+
+	if (IsValid())
+	{
+		allocator->FreeDescriptor(*this);
+		allocator = nullptr;
+	}
+
+}
+
 Hashira::DescriptorAllocator::DescriptorAllocator()
 {
 }
@@ -160,6 +171,7 @@ Hashira::DescriptorInfo Hashira::DescriptorAllocator::Allocate()
 
 	if (_allocateCount == _heapDesc.NumDescriptors)
 	{
+		ret.allocator = nullptr;
 		return ret;
 	}
 
@@ -226,7 +238,7 @@ bool Hashira::DescriptorStack::Allocate(Uint32 count, D3D12_CPU_DESCRIPTOR_HANDL
 	cpuHandle.ptr += prev * _descSize;
 	gpuHandle = _gpuHandleStartPos;
 	gpuHandle.ptr += prev * _descSize;
-	
+
 	return true;
 }
 
@@ -282,7 +294,7 @@ bool Hashira::GlobalDescriptorHeap::Initialize(std::shared_ptr<D3D12Device>& dev
 {
 
 	auto hr = device->GetDevice()->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&_heap));
-	if(FAILED(hr))
+	if (FAILED(hr))
 	{
 		return hr;
 	}
@@ -302,7 +314,7 @@ bool Hashira::GlobalDescriptorHeap::AllocateStack(DescriptorStack & stack, Uint3
 
 	std::lock_guard<std::mutex> lock(_mutex);
 
-	if (_allocateCount + count > _heapDesc.NumDescriptors) 
+	if (_allocateCount + count > _heapDesc.NumDescriptors)
 	{
 		return false;
 	}
@@ -310,7 +322,7 @@ bool Hashira::GlobalDescriptorHeap::AllocateStack(DescriptorStack & stack, Uint3
 	//スタックに自身が持つヒープのメモリアドレスの開始地点を割り当てる
 
 	stack._cpuHandleStartPos = _cpuHandleStartPos;
-	stack._cpuHandleStartPos.ptr += _descSize* _allocateCount;
+	stack._cpuHandleStartPos.ptr += _descSize * _allocateCount;
 	stack._gpuHandleStartPos = _gpuHandleStartPos;
 	stack._gpuHandleStartPos.ptr += _descSize * _allocateCount;
 	stack._descSize = _descSize;
@@ -318,7 +330,7 @@ bool Hashira::GlobalDescriptorHeap::AllocateStack(DescriptorStack & stack, Uint3
 	stack._stackPosition = 0;
 
 	_allocateCount += count;
-	
+
 	return true;
 }
 
@@ -377,7 +389,7 @@ void Hashira::SamplerDescriptorHeap::Discard()
 bool Hashira::SamplerDescriptorCache::Initialize(std::shared_ptr<D3D12Device>& device)
 {
 	this->_device = device;
-	
+
 	return AddHeap();
 }
 
@@ -447,14 +459,14 @@ Hashira::RaytracingDescriptorHeap::~RaytracingDescriptorHeap()
 
 bool Hashira::RaytracingDescriptorHeap::Initialize(std::shared_ptr<D3D12Device>& device, const DXRDescriptorHeapInitializeInfo & info)
 {
-	
-	
+
+
 	this->_info = info;
 
-	_info.bufferCount = Max(info.bufferCount,Hashira::SwapChain::FrameBufferMax);
+	_info.bufferCount = Max(info.bufferCount, Hashira::SwapChain::FrameBufferMax);
 
 	this->_localCBVCount = CbvMaxCount - info.globalCBVCount;
-	this->_localSRVCount = SrvMaxCount -info.asCount -info.globalSRVCount;
+	this->_localSRVCount = SrvMaxCount - info.asCount - info.globalSRVCount;
 	this->_localUAVCount = UavMaxCount - info.globalUAVCount;
 	this->_localSamplerCount = SamplerMaxCount - info.globalSamplerCount;
 
@@ -528,7 +540,7 @@ void Hashira::RaytracingDescriptorHeap::GetLocalViewHandleStart(Uint32 frameInde
 	Uint32 globalCount = GetGlobalViewCount() * _info.bufferCount;
 	Uint32 localMax = (_viewDescMaxCount - globalCount) / _info.bufferCount;
 	cpu = _viewCpuHandleStart;
-	cpu.ptr += (globalCount  + localMax * frameIndex) * _viewDescSize;
+	cpu.ptr += (globalCount + localMax * frameIndex) * _viewDescSize;
 	gpu = _viewGpuHandleStart;
 	gpu.ptr += (globalCount + localMax * frameIndex) * _viewDescSize;
 }
@@ -571,7 +583,7 @@ void Hashira::RaytracingDescriptorHeap::Discard()
 }
 
 Hashira::RaytracingDescriptorManager::KillPendingHeap::KillPendingHeap(RaytracingDescriptorHeap * heap) :
-	heap(heap) , killCount(Hashira::SwapChain::FrameBufferMax)
+	heap(heap), killCount(Hashira::SwapChain::FrameBufferMax)
 {
 }
 
@@ -610,7 +622,7 @@ void Hashira::RaytracingDescriptorManager::BeginNewFrame()
 {
 	for (auto itr = _heapsBeforKill.begin(); itr != _heapsBeforKill.end(); itr++) {
 
-		if (itr->Kill()) 
+		if (itr->Kill())
 		{
 			itr = _heapsBeforKill.erase(itr);
 		}
@@ -630,13 +642,13 @@ bool Hashira::RaytracingDescriptorManager::ResizeMaterialCount(Uint32 count)
 	DXRDescriptorHeapInitializeInfo hInfo{};
 	hInfo.asCount = prevHeap->GetASCount();
 	hInfo.bufferCount = prevHeap->GetBufferCount();
-	hInfo.globalCBVCount = prevHeap->GetGlobalCBVCount;
-	hInfo.globalSRVCount = prevHeap->GetGlobalSRVCount;
-	hInfo.globalUAVCount = prevHeap->GetGlobalUAVCount;
-	hInfo.globalSamplerCount = prevHeap->GetGlobalSamplerCount;
+	hInfo.globalCBVCount = prevHeap->GetGlobalCBVCount();
+	hInfo.globalSRVCount = prevHeap->GetGlobalSRVCount();
+	hInfo.globalUAVCount = prevHeap->GetGlobalUAVCount();
+	hInfo.globalSamplerCount = prevHeap->GetGlobalSamplerCount();
 	hInfo.materialCount = count;
 
-	if (!_currentHeap->Initialize(_device , hInfo)) {
+	if (!_currentHeap->Initialize(_device, hInfo)) {
 
 		delete _currentHeap;
 		_currentHeap = prevHeap;
@@ -650,8 +662,8 @@ bool Hashira::RaytracingDescriptorManager::ResizeMaterialCount(Uint32 count)
 
 void Hashira::RaytracingDescriptorManager::SetHeapToCommandList(std::shared_ptr<CommandList>& list)
 {
-	
-	ID3D12DescriptorHeap* heaps[]= 
+
+	ID3D12DescriptorHeap* heaps[] =
 	{
 		_currentHeap->GetViewHeap().Get(),
 		_currentHeap->GetSamplerHeap().Get(),
@@ -661,7 +673,7 @@ void Hashira::RaytracingDescriptorManager::SetHeapToCommandList(std::shared_ptr<
 
 }
 
-Hashira::RaytracingDescriptorManager::HandleStart 
+Hashira::RaytracingDescriptorManager::HandleStart
 Hashira::RaytracingDescriptorManager::InclementGlobalHandleStart()
 {
 	HandleStart ret;
@@ -672,7 +684,7 @@ Hashira::RaytracingDescriptorManager::InclementGlobalHandleStart()
 	return ret;
 }
 
-Hashira::RaytracingDescriptorManager::HandleStart 
+Hashira::RaytracingDescriptorManager::HandleStart
 Hashira::RaytracingDescriptorManager::InclementLocalHandleStart()
 {
 	HandleStart ret;
@@ -684,10 +696,12 @@ Hashira::RaytracingDescriptorManager::InclementLocalHandleStart()
 }
 
 void Hashira::RaytracingDescriptorManager::Discard()
-{	
+{
 	for (auto itr = _heapsBeforKill.begin(); itr != _heapsBeforKill.end(); itr++) {
 		itr->ForceKill();
 	}
 	_heapsBeforKill.clear();
 	SafeDelete(_currentHeap);
 }
+
+

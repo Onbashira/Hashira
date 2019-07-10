@@ -8,8 +8,12 @@
 
 
 Hashira::Audio::Audio() :
-	_seekPoint(0), _isLoop(false), _isDiscarded(false), _audioLength(0),
-	_loopHead(0),_loopTail(0)
+	_seekPoint(0), 
+	_audioLength(0),
+	_isLoop(false), 
+	_loopHead(0),
+	_isDiscarded(false),
+	_loopTail(0)
 {
 }
 
@@ -28,14 +32,14 @@ void Hashira::Audio::BulkSubmit()
 	_audioBuffer.pAudioData = reinterpret_cast<BYTE*>(&_rawData.lock()->GetWave()[_loopHead]);
 	SubmitBuffer();
 
-	this->_callBack.SetOnBufferEnd([this](void* context) {
+	this->_callBack.SetOnBufferEnd([this](void*) {
 		this->DirectBulkSubmit();
 	});
 }
 
 void Hashira::Audio::StreamSubmit()
 {
-	_callBack.SetOnBufferEnd([this](void* context) {
+	_callBack.SetOnBufferEnd([this](void*) {
 
 		this->DirectStreamSubmit();
 	});
@@ -44,7 +48,7 @@ void Hashira::Audio::StreamSubmit()
 void Hashira::Audio::DirectBulkSubmit()
 {
 	if (_isDiscarded) {
-		this->_callBack.SetOnBufferEnd([](void* context) {});
+		this->_callBack.SetOnBufferEnd([](void*) {});
 		return;
 	}
 
@@ -59,14 +63,14 @@ void Hashira::Audio::DirectStreamSubmit()
 {
 	if (_isDiscarded)
 	{
-		this->_callBack.SetOnBufferEnd([](void* context) {});
+		this->_callBack.SetOnBufferEnd([](void*) {});
 		return;
 	}
 
 	UpdateState();
 
 	//もしキュー内のバッファがQ設定数値以下ならバッファに対して新しいデータを供給する
-	int cycle = AUDIO_BUFFER_QUEUE_MAX - _voiceState.BuffersQueued;
+	int cycle = static_cast<int>(AUDIO_BUFFER_QUEUE_MAX - _voiceState.BuffersQueued);
 	// 44.1k * byte * channel
 	unsigned int seekValue = _rawData.lock()->GetWaveFormat().nSamplesPerSec * _rawData.lock()->GetWaveFormat().nChannels;
 	unsigned int audioBytePerSec = _rawData.lock()->GetWaveFormat().nAvgBytesPerSec;
@@ -163,7 +167,7 @@ void Hashira::Audio::SetLoopPoints(float headPointTime, float tailPointTime)
 	SetLoopHeadPoint(headPointTime);
 	SetLoopTailPoint(tailPointTime);
 	this->_sourceVoice->Stop();
-	this->_callBack.SetOnBufferEnd([](void* context) {});
+	this->_callBack.SetOnBufferEnd([](void* ) {});
 
 	this->_sourceVoice->FlushSourceBuffers();
 	this->DirectStreamSubmit();
@@ -203,7 +207,7 @@ void Hashira::Audio::Discard()
 {
 	if (this->_sourceVoice != nullptr) {
 		Stop();
-		this->_callBack.SetOnBufferEnd([](void* context) {});
+		this->_callBack.SetOnBufferEnd([](void*) {});
 		_sourceVoice->FlushSourceBuffers();
 		_sourceVoice->Discontinuity();
 		_sourceVoice->DestroyVoice();
