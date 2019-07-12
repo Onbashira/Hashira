@@ -4,14 +4,17 @@
 #include "Engine/Source/CoreSystem/Framework.h"
 #include "Engine/Source/CommandList/CommandList.h"
 #include "Engine/Source/CommandQueue/CommandQueue.h"
-#include "Engine/Source/Resource/ShaderResource.h"
+#include "Engine/Source/Buffer/ShaderResource.h"
 #include "Engine/Source/Texture/TextureObject.h"
 #include "Engine/Source/Rendering/RenderContext/RenderContext.h"
 
 
 Hashira::TextureLoader::TextureLoader()
 {
-	CoInitializeEx(NULL, COINIT_MULTITHREADED);
+	auto ret = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+	if (FAILED(ret)) {
+		assert(0 ," I TextureLoader Initialize " );
+	}
 }
 
 
@@ -80,7 +83,7 @@ HRESULT Hashira::TextureLoader::UpdateSubResource(std::shared_ptr<CommandList> l
 		1
 	};
 
-	std::unique_ptr<Resource> uploadHeap = std::make_unique<Resource>(props, D3D12_HEAP_FLAG_NONE, uploadDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr);
+	std::unique_ptr<Buffer> uploadHeap = std::make_unique<Buffer>(props, D3D12_HEAP_FLAG_NONE, uploadDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr);
 
 	uploadHeap->SetName(path + "_UploadHeap");
 
@@ -125,7 +128,7 @@ HRESULT Hashira::TextureLoader::WriteToSubResource(std::shared_ptr<CommandList> 
 	heapProp.VisibleNodeMask = 1;
 
 	int count = resource.lock()->GetResource().Reset();
-	std::unique_ptr<Resource> destRes = std::make_unique<Resource>(heapProp, D3D12_HEAP_FLAG_NONE, desc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr);
+	std::unique_ptr<Buffer> destRes = std::make_unique<Buffer>(heapProp, D3D12_HEAP_FLAG_NONE, desc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr);
 
 
 	D3D12_BOX box = {};

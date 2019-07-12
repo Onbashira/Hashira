@@ -40,13 +40,13 @@ namespace Hashira {
 
 		void FlipScreen();
 
-		void CopyToRenderTarget(std::weak_ptr<CommandList> list, Resource* src);
+		void CopyToRenderTarget(std::weak_ptr<CommandList> list, Buffer* src);
 
 		void SetStatePresentRT(std::shared_ptr<CommandList> list);
 
 		void Present(unsigned int sysncInterval, unsigned int flags);
 
-		std::vector<std::shared_ptr<Hashira::Resource>> GetDisplayRenderTargets();
+		std::vector<std::shared_ptr<Hashira::Buffer>> GetDisplayRenderTargets();
 
 		std::shared_ptr<CommandQueue> GetQueue();
 

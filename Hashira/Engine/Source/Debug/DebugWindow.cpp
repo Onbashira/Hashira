@@ -1,6 +1,6 @@
 #include "DebugWindow.h"
 #include "Engine/Source/ThirdParty/imgui/imgui_impl_dx12.h"
-#include "Engine/Source/Resource/ShaderResource.h"
+#include "Engine/Source/Buffer/ShaderResource.h"
 #include "Engine/Source/DescriptorHeap/DescriptorHeap.h"
 #include "Engine/Source/CommandList/CommandList.h"
 #include "Engine/Source/Device/D3D12Device.h"

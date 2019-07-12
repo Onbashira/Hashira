@@ -38,7 +38,7 @@ HRESULT Hashira::IndexBuffer::Initialize(ULONG64 size, DXGI_FORMAT format, const
 		D3D12_RESOURCE_FLAG_NONE
 	};
 
-	auto hr = Resource::Initialize(props,D3D12_HEAP_FLAG_NONE,desc,D3D12_RESOURCE_STATE_GENERIC_READ);
+	auto hr = Buffer::Initialize(props,D3D12_HEAP_FLAG_NONE,desc,D3D12_RESOURCE_STATE_GENERIC_READ);
 
 	if (FAILED(hr))
 	{
@@ -92,7 +92,7 @@ void Hashira::IndexBuffer::Discard()
 	_view.BufferLocation = 0;
 	_view.SizeInBytes = 0;
 	_view.Format = DXGI_FORMAT_UNKNOWN;
-	Resource::Discard();
+	Buffer::Discard();
 }
 
 D3D12_INDEX_BUFFER_VIEW Hashira::IndexBuffer::GetView() const

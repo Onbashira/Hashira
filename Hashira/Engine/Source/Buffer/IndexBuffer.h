@@ -1,9 +1,9 @@
 #pragma once
 #include "Engine/Source/Utility/D3D12Common.h"
-#include "Resource.h"
+#include "Buffer.h"
 
 namespace Hashira {
-	class IndexBuffer : public Resource
+	class IndexBuffer : public Buffer
 	{
 		D3D12_INDEX_BUFFER_VIEW _view;
 

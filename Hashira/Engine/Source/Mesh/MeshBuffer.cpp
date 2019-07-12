@@ -20,8 +20,8 @@ void Hashira::MeshBuffer::CreateIndexBuffer(size_t elementSize, size_t elementNu
 	
 	D3D12_VERTEX_BUFFER_VIEW view{};
 	view.BufferLocation = _vertexBuffers.back()->GetResource()->GetGPUVirtualAddress();
-	view.SizeInBytes = elementSize * elementNum;
-	view.StrideInBytes = elementSize;
+	view.SizeInBytes = static_cast<UINT>(elementSize * elementNum);
+	view.StrideInBytes = static_cast<UINT>(elementSize);
 
 	this->_geometryState->AddVertexBufferView(view);
 }
@@ -32,7 +32,7 @@ void Hashira::MeshBuffer::AddVertexBuffer( size_t elementSize, size_t elementNum
 	D3D12_INDEX_BUFFER_VIEW view;
 	view.BufferLocation = _indexBuffer->GetResource()->GetGPUVirtualAddress();
 	view.Format = _indexBuffer->GetResourceDesc().Format;
-	view.SizeInBytes = elementSize * elementNum;
+	view.SizeInBytes = static_cast<UINT>(elementSize * elementNum);
 
 	_geometryState->SetIndexBufferView(view);
 }

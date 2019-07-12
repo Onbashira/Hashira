@@ -23,7 +23,7 @@ Microsoft::WRL::ComPtr<ID3DBlob>& Hashira::Shader::GetShader(Type type)
 
 		return _shaderMap[type];
 	}
-	return Microsoft::WRL::ComPtr<ID3DBlob>();
+	return _shaderMap[Type::SHADER_TYPE_VERTEX];
 }
 
 void Hashira::Shader::AddShaderMacro(std::string name, std::string definition)
@@ -80,8 +80,8 @@ HRESULT Hashira::Shader::CompileShader(Type type, std::string shaderPath, std::s
 	}
 	if (error != nullptr) {
 		OutputDebugStringA((char*)error->GetBufferPointer());
-		return E_FAIL;
 		error->Release();
+		return E_FAIL;
 
 	}
 

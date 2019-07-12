@@ -1,7 +1,7 @@
 #include <memory>
 #include "Engine/Source/CommandList/CommandList.h"
 #include "DepthStencilBuffer.h"
-#include "Resource.h"
+#include "Buffer.h"
 #include "Engine/Source/CoreSystem/Framework.h"
 
 
@@ -45,12 +45,12 @@ HRESULT Hashira::DepthStencil::Initialize(std::shared_ptr<D3D12Device>& device, 
 	clearValue.DepthStencil.Depth = 1.0f;
 	clearValue.DepthStencil.Stencil = 0;
 
-	CHECK_RESULT(Resource::Initialize(heapProp, D3D12_HEAP_FLAGS::D3D12_HEAP_FLAG_NONE, resDesc, D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_DEPTH_WRITE, &clearValue));
+	CHECK_RESULT(Buffer::Initialize(heapProp, D3D12_HEAP_FLAGS::D3D12_HEAP_FLAG_NONE, resDesc, D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_DEPTH_WRITE, &clearValue));
 
 	return S_OK;
 }
 
 void Hashira::DepthStencil::Discard()
 {
-	Resource::Discard();
+	Buffer::Discard();
 }

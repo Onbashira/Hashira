@@ -61,9 +61,9 @@ HRESULT Hashira::D3D12Device::Initialize(Factory* factory, bool useWarpDevice)
 			if (_adapterDesc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE)
 				continue;
 
-			for (auto i : FeatureLevels) {
-				if (SUCCEEDED(D3D12CreateDevice(adapter.Get(), i, _uuidof(ID3D12Device3), nullptr))) {
-					_featureLevel = i;
+			for (auto level : FeatureLevels) {
+				if (SUCCEEDED(D3D12CreateDevice(adapter.Get(), level, _uuidof(ID3D12Device3), nullptr))) {
+					_featureLevel = level;
 					hardwareAdapter = adapter;
 					for (auto& spec : GPU_CARD_SPEC_LIST) {
 						if (spec == std::wstring(&_adapterDesc.Description[0])) {

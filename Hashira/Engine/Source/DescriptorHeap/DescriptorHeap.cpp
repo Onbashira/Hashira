@@ -296,7 +296,7 @@ bool Hashira::GlobalDescriptorHeap::Initialize(std::shared_ptr<D3D12Device>& dev
 	auto hr = device->GetDevice()->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&_heap));
 	if (FAILED(hr))
 	{
-		return hr;
+		return false;
 	}
 
 	_cpuHandleStartPos = _heap->GetCPUDescriptorHandleForHeapStart();
@@ -306,7 +306,7 @@ bool Hashira::GlobalDescriptorHeap::Initialize(std::shared_ptr<D3D12Device>& dev
 	_descSize = device->GetDevice()->GetDescriptorHandleIncrementSize(desc.Type);
 	_allocateCount = 0;
 
-	return hr;
+	return true;
 }
 
 bool Hashira::GlobalDescriptorHeap::AllocateStack(DescriptorStack & stack, Uint32 count)

@@ -3,7 +3,7 @@
 #include "Engine/Source/ParticleSystem/Emitter/Emitter.h"
 #include "Engine/Source/ParticleSystem/Item/ParticleItem.h"
 
-#include "Engine/Source/Resource/L0Buffer.h"
+#include "Engine/Source/Buffer/L0Buffer.h"
 #include "Engine/Source/Device/D3D12Device.h"
 
 Hashira::EmitterBinary::EmitterBinary()

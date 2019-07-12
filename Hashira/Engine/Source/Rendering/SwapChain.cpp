@@ -4,7 +4,7 @@
 #include "Engine/Source/CommandList/CommandList.h"
 #include "Engine/Source/CommandQueue/CommandQueue.h"
 #include "Engine/Source/Window/Window.h"
-#include "Engine/Source/Resource/Resource.h"
+#include "Engine/Source/Buffer/Buffer.h"
 
 
 constexpr float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
@@ -70,7 +70,7 @@ HRESULT Hashira::SwapChain::CreateRenderTargets(std::shared_ptr<D3D12Device>& de
 	//レンダーターゲットの作成
 	{
 		for (UINT i = 0; i < _bufferNum; i++) {
-			_rtResource[i] = Resource::CreateShared();
+			_rtResource[i] = Buffer::CreateShared();
 			//ディスプレイバッファの取得
 			if (FAILED(_swapChain->GetBuffer(i, IID_PPV_ARGS(this->_rtResource[i]->GetResource().GetAddressOf()))))
 			{
@@ -153,7 +153,7 @@ HRESULT Hashira::SwapChain::SetStateGenericRead(std::shared_ptr<CommandList> lis
 	return hr;
 }
 
-HRESULT Hashira::SwapChain::CopyToRenderTarget(std::shared_ptr<CommandList> list, Resource* pSrc)
+HRESULT Hashira::SwapChain::CopyToRenderTarget(std::shared_ptr<CommandList> list, Buffer* pSrc)
 {
 	list->GetCommandList()->CopyResource(this->_rtResource[_currentIndex]->GetResource().Get(), pSrc->GetResource().Get());
 	return S_OK;
@@ -219,7 +219,7 @@ void Hashira::SwapChain::ReSizeRenderTarget(std::shared_ptr<D3D12Device>& device
 	//レンダーターゲットの作成
 	{
 		for (UINT i = 0; i < _bufferNum; i++) {
-			//_rtResource[i] = Resource::CreateShared();
+			//_rtResource[i] = Buffer::CreateShared();
 			//ディスプレイバッファの取得
 			if (FAILED(_swapChain->GetBuffer(i, IID_PPV_ARGS(this->_rtResource[i]->GetResource().GetAddressOf()))))
 			{

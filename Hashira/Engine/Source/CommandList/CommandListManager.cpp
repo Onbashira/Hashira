@@ -21,7 +21,8 @@ HRESULT Hashira::CommandListManager::Create(std::string commandListName, std::sh
 {
 	if (_library.find(commandListName) == _library.end()) {
 		this->_library[commandListName] = std::make_shared<CommandList>();
-		auto hr = this->_library[commandListName]->Initialize(device->GetD3D12Device(),nodeMask, listType,renderContext->GetCurrentCmdAllocator().lock());
+		auto allocater = renderContext->GetCurrentCmdAllocator().lock();
+		auto hr = this->_library[commandListName]->Initialize(device->GetD3D12Device(),nodeMask, listType, allocater);
 		this->_library[commandListName]->SetName(commandListName);
 		if (SUCCEEDED(hr)) {
 			DEBUG_LOG(std::string( "CommandList‚ª³í‚Éì¬E“o˜^‚³‚ê‚Ü‚µ‚½ : " + commandListName));

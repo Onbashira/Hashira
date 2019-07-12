@@ -2,7 +2,7 @@
 #include "EmitterIdxTblBinary.h"
 
 
-#include "Engine/Source/Resource/L0Buffer.h"
+#include "Engine/Source/Buffer/L0Buffer.h"
 #include "Engine/Source/Device/D3D12Device.h"
 
 Hashira::EmitterIdxTblBinary::EmitterIdxTblBinary()

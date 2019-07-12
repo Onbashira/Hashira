@@ -1,12 +1,12 @@
 #pragma once
 #include "Engine/Source/Utility/D3D12Common.h"
-#include "Resource.h"
+#include "Buffer.h"
 
 namespace Hashira {
 
 	class DescriptorHeap;
 
-	class ConstantBuffer : public Resource
+	class ConstantBuffer : public Buffer
 	{
 
 	public:

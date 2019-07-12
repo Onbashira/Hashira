@@ -166,7 +166,7 @@ HRESULT Hashira::Framework::InitDevice()
 	_device = std::make_shared<D3D12Device>();
 	ret = _device->Initialize(&_factory, _useWarpDevice);
 
-	if (ret) {
+	if (FAILED(ret)) {
 
 		Util::Comment(L"D3D12Device‚Ì‰Šú‰»‚É¸”s");
 		return ret;

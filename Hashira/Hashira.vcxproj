@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Source\Buffer\BufferView.cpp" />
     <ClCompile Include="Engine\Source\DescriptorHeap\DescriptorSet.cpp" />
     <ClCompile Include="Engine\Source\DescriptorHeap\Descriptor.cpp" />
     <ClCompile Include="Engine\Source\DescriptorHeap\DescriptorHeap.cpp" />
@@ -50,8 +51,8 @@
     <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexTGA.cpp" />
     <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexUtil.cpp" />
     <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexWIC.cpp" />
-    <ClCompile Include="Engine\Source\Resource\L0Buffer.cpp" />
-    <ClCompile Include="Engine\Source\Resource\L1Buffer.cpp" />
+    <ClCompile Include="Engine\Source\Buffer\L0Buffer.cpp" />
+    <ClCompile Include="Engine\Source\Buffer\L1Buffer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Source\Component\DefaultComponents\DefaultPhysicsComponent.cpp" />
     <ClCompile Include="Engine\Source\Component\DefaultComponents\DefaultInputComponent.cpp" />
@@ -89,12 +90,12 @@
     <ClCompile Include="Engine\Source\PIpelineState\PipelineStateObject.cpp" />
     <ClCompile Include="Engine\Source\Rendering\RenderingManager.cpp" />
     <ClCompile Include="Engine\Source\Rendering\SwapChain.cpp" />
-    <ClCompile Include="Engine\Source\Resource\ConstantBuffer.cpp" />
-    <ClCompile Include="Engine\Source\Resource\DepthStencilBuffer.cpp" />
-    <ClCompile Include="Engine\Source\Resource\IndexBuffer.cpp" />
-    <ClCompile Include="Engine\Source\Resource\Resource.cpp" />
-    <ClCompile Include="Engine\Source\Resource\ShaderResource.cpp" />
-    <ClCompile Include="Engine\Source\Resource\VertexBuffer.cpp" />
+    <ClCompile Include="Engine\Source\Buffer\ConstantBuffer.cpp" />
+    <ClCompile Include="Engine\Source\Buffer\DepthStencilBuffer.cpp" />
+    <ClCompile Include="Engine\Source\Buffer\IndexBuffer.cpp" />
+    <ClCompile Include="Engine\Source\Buffer\Buffer.cpp" />
+    <ClCompile Include="Engine\Source\Buffer\ShaderResource.cpp" />
+    <ClCompile Include="Engine\Source\Buffer\VertexBuffer.cpp" />
     <ClCompile Include="Engine\Source\ShaderObject\HLSLIncluder.cpp" />
     <ClCompile Include="Engine\Source\ShaderObject\ShaderHelper.cpp" />
     <ClCompile Include="Engine\Source\ShaderObject\ShaderObjectManager.cpp" />
@@ -117,7 +118,7 @@
     <ClCompile Include="Engine\Source\ThirdParty\imgui\imgui_draw.cpp" />
     <ClCompile Include="Engine\Source\ThirdParty\imgui\imgui_impl_dx12.cpp" />
     <ClCompile Include="Engine\Source\ThirdParty\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="Engine\Source\Resource\Sampler.cpp" />
+    <ClCompile Include="Engine\Source\Buffer\Sampler.cpp" />
     <ClCompile Include="Engine\Source\Command\State\PipelineState.cpp" />
     <ClCompile Include="Engine\Source\Command\State\PipelineResourceTable.cpp" />
     <ClCompile Include="Engine\Source\Device\RenderingDevice.cpp" />
@@ -159,6 +160,7 @@
     <ClCompile Include="Engine\Source\ParticleSystem\Item\Transform\Velocity3DItem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Source\Buffer\BufferView.h" />
     <ClInclude Include="Engine\Source\DescriptorHeap\DescriptorSet.h" />
     <ClInclude Include="Engine\Source\DescriptorHeap\Descriptor.h" />
     <ClInclude Include="Engine\Source\DescriptorHeap\DescriptorHeap.h" />
@@ -183,7 +185,6 @@
     <ClInclude Include="Engine\Source\Utility\BasicTypes.h" />
     <ClInclude Include="Engine\Source\DynamicHeap\DefaultRawMemoryAllocator.h" />
     <ClInclude Include="Engine\Source\DynamicHeap\MemoryAllocator.h" />
-    <ClInclude Include="Engine\Source\LifetimedMemory\LifetimedMemory.h" />
     <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\BC.h" />
     <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\BCDirectCompute.h" />
     <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\d3dx12.h" />
@@ -221,13 +222,13 @@
     <ClInclude Include="Engine\Source\PIpelineState\PipelineStateObject.h" />
     <ClInclude Include="Engine\Source\Rendering\RenderingManager.h" />
     <ClInclude Include="Engine\Source\Rendering\SwapChain.h" />
-    <ClInclude Include="Engine\Source\Resource\ConstantBuffer.h" />
-    <ClInclude Include="Engine\Source\Resource\DepthStencilBuffer.h" />
-    <ClInclude Include="Engine\Source\Resource\IndexBuffer.h" />
-    <ClInclude Include="Engine\Source\Resource\Resource.h" />
-    <ClInclude Include="Engine\Source\Resource\ShaderResource.h" />
-    <ClInclude Include="Engine\Source\Resource\UploadBuffer.h" />
-    <ClInclude Include="Engine\Source\Resource\VertexBuffer.h" />
+    <ClInclude Include="Engine\Source\Buffer\ConstantBuffer.h" />
+    <ClInclude Include="Engine\Source\Buffer\DepthStencilBuffer.h" />
+    <ClInclude Include="Engine\Source\Buffer\IndexBuffer.h" />
+    <ClInclude Include="Engine\Source\Buffer\Buffer.h" />
+    <ClInclude Include="Engine\Source\Buffer\ShaderResource.h" />
+    <ClInclude Include="Engine\Source\Buffer\UploadBuffer.h" />
+    <ClInclude Include="Engine\Source\Buffer\VertexBuffer.h" />
     <ClInclude Include="Engine\Source\ShaderObject\HLSLIncluder.h" />
     <ClInclude Include="Engine\Source\ShaderObject\ShaderHelper.h" />
     <ClInclude Include="Engine\Source\ShaderObject\ShaderObjectManager.h" />
@@ -255,7 +256,7 @@
     <ClInclude Include="Engine\Source\ThirdParty\imgui\imstb_rectpack.h" />
     <ClInclude Include="Engine\Source\ThirdParty\imgui\imstb_textedit.h" />
     <ClInclude Include="Engine\Source\ThirdParty\imgui\imstb_truetype.h" />
-    <ClInclude Include="Engine\Source\Resource\Sampler.h" />
+    <ClInclude Include="Engine\Source\Buffer\Sampler.h" />
     <ClInclude Include="Engine\Source\Command\State\PipelineState.h" />
     <ClInclude Include="Engine\Source\Command\State\PipelineResourceTable.h" />
     <ClInclude Include="Engine\Source\Device\RenderingDevice.h" />
@@ -280,15 +281,15 @@
     <ClInclude Include="Engine\Source\ParticleSystem\Item\Transform\ScaleAnimItem.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Item\Visual\ShaderSettingItem.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Memory\ParticleIndirectArgs.h" />
-    <ClInclude Include="Engine\Source\Resource\MultipleBuffer.h" />
+    <ClInclude Include="Engine\Source\Buffer\MultipleBuffer.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Action\ParticleAction.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Memory\ParticleIdxTblBinary.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Memory\ParticleBinary.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Memory\ParticleHeaderBinary.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Memory\ParticleRangeBinary.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\System\SceneParticleManager.h" />
-    <ClInclude Include="Engine\Source\Resource\L0Buffer.h" />
-    <ClInclude Include="Engine\Source\Resource\L1Buffer.h" />
+    <ClInclude Include="Engine\Source\Buffer\L0Buffer.h" />
+    <ClInclude Include="Engine\Source\Buffer\L1Buffer.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Item\CommonItem\SpawnItem.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Item\CommonItem\ParentOptionItem.h" />
     <ClInclude Include="Engine\Source\ShaderObject\Shader.h" />
@@ -354,7 +355,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{11157C5A-E0AB-4D5D-BE59-199EF72C8766}</ProjectGuid>
     <RootNamespace>Hashira</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
     <ProjectName>Hashira</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -405,6 +406,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(ProjectName)\lib\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(ProjectName)\$(Configuration)\</IntDir>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(ProjectName)\lib\$(Configuration)\</OutDir>
@@ -420,12 +422,11 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>false</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalOptions>-std:c++17 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(SolutionDir)Hashira/Engine/ThirdParty;$(SolutionDir)Hashira/</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -436,6 +437,9 @@
       <AdditionalLibraryDirectories>$(SolutionDir)Hashira/Engine/ThirdParty/DirectXTex/lib/Debug</AdditionalLibraryDirectories>
       <AdditionalDependencies>DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

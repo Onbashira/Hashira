@@ -71,7 +71,7 @@ namespace Hashira {
 namespace Hashira::Util {
 
 	//256バイトアライメント
-	size_t Alignment256Bytes(size_t size) {
+	inline size_t Alignment256Bytes(size_t size) {
 		if (size == 256) {
 			return 256;
 		}

@@ -4,12 +4,18 @@
 #include "Engine/Source/CommandList/CommandList.h"
 #include "Engine/Source/CommandQueue/CommandQueue.h"
 #include "Engine/Source/Device/D3D12Device.h"
-#include "Engine/Source/Resource/Resource.h"
+#include "Engine/Source/Buffer/Buffer.h"
 #include "Engine/Source/Rendering/SwapChain.h"
+#include "Engine/Source/Device/RenderingDevice.h"
 
-Hashira::RenderContext::RenderContext() : 
-	_frameNum(0),_currentIndex(0),_node(0),_currentFence(0),
-	_isDiscarded(false)
+Hashira::RenderContext::RenderContext()noexcept :
+	_frameNum(0),
+	_currentIndex(0),
+	_node(0),
+	_currentFence(0),
+	_isDiscarded(false),
+	_defaultViewDescriptorInfo(),
+	_defaultSamplerDescriptorInfo()
 {
 
 }
@@ -20,8 +26,9 @@ Hashira::RenderContext::~RenderContext()
 	Discard();
 }
 
-HRESULT Hashira::RenderContext::Initialize(std::shared_ptr<D3D12Device>& device, int frameNum, int nodeMask, std::shared_ptr<CommandQueue>& queue, std::shared_ptr<SwapChain>& swapChain)
+HRESULT Hashira::RenderContext::Initialize(std::shared_ptr<RenderingDevice>& device, int frameNum, int nodeMask, std::shared_ptr<CommandQueue>& queue, std::shared_ptr<SwapChain>& swapChain)
 {
+	_parentDevice = device;
 	this->_currentIndex = 0;
 	this->_currentFence = 0LL;
 	this->_node = nodeMask;
@@ -53,7 +60,7 @@ HRESULT Hashira::RenderContext::Initialize(std::shared_ptr<D3D12Device>& device,
 	for (unsigned int i = 0; i < frameNum; ++i) {
 		_cmdAllocators[i] = std::make_shared<CommandAllocator>();
 
-		hret = _cmdAllocators[i]->Initialize(device, D3D12_COMMAND_LIST_TYPE::D3D12_COMMAND_LIST_TYPE_DIRECT);
+		hret = _cmdAllocators[i]->Initialize(device->GetD3D12Device(), D3D12_COMMAND_LIST_TYPE::D3D12_COMMAND_LIST_TYPE_DIRECT);
 		if (FAILED(hret))
 			return hret;
 		std::stringstream ss;
@@ -62,14 +69,14 @@ HRESULT Hashira::RenderContext::Initialize(std::shared_ptr<D3D12Device>& device,
 		_cmdLists[i][0u] = std::make_shared<CommandList>();
 		_cmdLists[i][1u] = std::make_shared<CommandList>();
 
-		_cmdLists[i][0u]->Initialize(device, nodeMask,
+		_cmdLists[i][0u]->Initialize(device->GetD3D12Device(), nodeMask,
 			D3D12_COMMAND_LIST_TYPE::D3D12_COMMAND_LIST_TYPE_DIRECT, _cmdAllocators[i]);
 		if (FAILED(hret))
 			return hret;
 		//多重レコードの回避のためのClose
 		_cmdLists[i][0u]->CloseCommandList();
 
-		_cmdLists[i][1u]->Initialize(device, nodeMask,
+		_cmdLists[i][1u]->Initialize(device->GetD3D12Device(), nodeMask,
 			D3D12_COMMAND_LIST_TYPE::D3D12_COMMAND_LIST_TYPE_DIRECT, _cmdAllocators[i]);
 		if (FAILED(hret))
 			return hret;
@@ -94,6 +101,17 @@ HRESULT Hashira::RenderContext::CreateCommandList(std::shared_ptr<D3D12Device>& 
 		commandList = std::make_shared < CommandList>();
 	}
 	CHECK_RESULT(commandList->Initialize(device, device->GetDevice()->GetNodeCount(), type, _cmdAllocators[_currentIndex]));
+	_listsVector[_currentIndex].push_back(commandList);
+	return S_OK;
+}
+
+HRESULT Hashira::RenderContext::CreateCommandList(D3D12_COMMAND_LIST_TYPE type, std::shared_ptr<CommandList>& commandList)
+{
+
+	if (commandList == nullptr) {
+		commandList = std::make_shared < CommandList>();
+	}
+	CHECK_RESULT(commandList->Initialize(_parentDevice->GetD3D12Device(), _parentDevice->GetD3D12Device()->GetDevice()->GetNodeCount(), type, _cmdAllocators[_currentIndex]));
 	_listsVector[_currentIndex].push_back(commandList);
 	return S_OK;
 }
@@ -139,6 +157,11 @@ std::weak_ptr<Hashira::CommandQueue> Hashira::RenderContext::GetCommandQueue()
 std::shared_ptr<Hashira::SwapChain> Hashira::RenderContext::GetSwapChain()
 {
 	return _swapChain;
+}
+
+std::shared_ptr<Hashira::RenderingDevice>& Hashira::RenderContext::GetRenderingDevice()
+{
+	return _parentDevice;
 }
 
 std::unique_ptr < Hashira::GlobalDescriptorHeap > & Hashira::RenderContext::GetGlobalDescriptorHeap()
@@ -269,7 +292,7 @@ void Hashira::RenderContext::Discard()
 		this->_cmdAllocators[i]->Discard();
 		this->_cmdAllocators[i].reset();
 		this->_fences[i].Discard();
-		for (int j = 2; j < 2; ++j) {
+		for (int j = 0; j < 2; ++j) {
 			this->_cmdLists[i][j]->Discard();
 			this->_cmdLists[i][j].reset();
 		}

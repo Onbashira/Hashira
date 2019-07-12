@@ -306,6 +306,7 @@ std::shared_ptr<Hashira::AudioWaveSource> Hashira::AudioLoader::LoadAudioEx(std:
 			return nullptr;
 
 		}
+#ifdef _DEBUG
 		std::stringstream ss;
 
 		ss << "Format = " << format.wFormatTag;
@@ -323,7 +324,7 @@ std::shared_ptr<Hashira::AudioWaveSource> Hashira::AudioLoader::LoadAudioEx(std:
 		ss << "BytePerSec = " << format.nAvgBytesPerSec;
 		DEBUG_LOG(std::string(ss.str()));
 		ss.str("");
-
+#endif
 	}
 	//ŠK‘w‚ðˆê‚Âã‚É
 	mmioAscend(mmio, &chunk, 0);

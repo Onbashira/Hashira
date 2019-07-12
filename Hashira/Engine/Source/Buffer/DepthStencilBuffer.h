@@ -9,7 +9,7 @@ namespace Hashira {
 	class CommandList;
 	class D3D12Device;
 
-	class DepthStencil : public Resource
+	class DepthStencil : public Buffer
 	{
 	private:
 

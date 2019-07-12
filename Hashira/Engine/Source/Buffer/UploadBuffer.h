@@ -1,12 +1,12 @@
 #pragma once
 #include "Engine/Source/Utility/D3D12Common.h"
 #include "Engine/Source/CoreSystem/Framework.h"
-#include "Resource.h"
+#include "Buffer.h"
 #include "Engine/Source/Utility/Utility.h"
 
 namespace Hashira {
 	template <typename T>
-	class UploadBuffer : public Resource
+	class UploadBuffer : public Buffer
 	{
 	private:
 
@@ -61,19 +61,19 @@ namespace Hashira {
 			desc.Layout = D3D12_TEXTURE_LAYOUT::D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 			desc.Flags = flags;
 
-			auto hr = Resource::Initialize(prop, D3D12_HEAP_FLAGS::D3D12_HEAP_FLAG_NONE, desc, D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_GENERIC_READ);
+			auto hr = Buffer::Initialize(prop, D3D12_HEAP_FLAGS::D3D12_HEAP_FLAG_NONE, desc, D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_GENERIC_READ);
 			Map(0, nullptr);
 			return hr;
 		};
 
 		void CopyData(unsigned int elementIndex, const T& data)
 		{
-			Resource::Update(&data, _elementByteSize, _elementByteSize * elementIndex);
+			Buffer::Update(&data, _elementByteSize, _elementByteSize * elementIndex);
 		};
 
 		void CopyArray(int arraySiz, const T* data)
 		{
-			Resource::Update(&data, _elementByteSize*arraySiz, 0);
+			Buffer::Update(&data, _elementByteSize*arraySiz, 0);
 		};
 
 		void CreateView(D3D12_CONSTANT_BUFFER_VIEW_DESC& cbvDesc, D3D12_CPU_DESCRIPTOR_HANDLE cpuDescriptorHandle)

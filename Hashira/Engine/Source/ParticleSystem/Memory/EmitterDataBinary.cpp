@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "EmitterDataBinary.h"
 #include "Engine/Source/ParticleSystem/Emitter/Emitter.h"
-#include "Engine/Source/Resource/L1Buffer.h"
+#include "Engine/Source/Buffer/L1Buffer.h"
 #include "Engine/Source/Device/D3D12Device.h"
 
 Hashira::EmitterDataBinary::EmitterDataBinary() : _offset(0)

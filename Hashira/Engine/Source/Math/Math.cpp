@@ -3447,9 +3447,9 @@ Hashira::Matrix Hashira::Matrix::CreateLookAtObject(const Hashira::Vector3 & pos
 	//Ç‡Çµíçñ⁄êÊÇ∆UpVectroÇ™àÍèèÇ»ÇÁÇŒäÓñ{å≈íËé≤ÇïœçX,Ç®ÇÊÇ—é≤ÇÃçƒê∂ê¨
 	if (zaxis == upward) {
 		fixAxia = rightward;
-		auto yaxis = Hashira::Vector3::Cross(zaxis, fixAxia);
+		yaxis = Hashira::Vector3::Cross(zaxis, fixAxia);
 		yaxis.Normalize();
-		auto xaxis = Hashira::Vector3::Cross(yaxis, zaxis);
+		xaxis = Hashira::Vector3::Cross(yaxis, zaxis);
 		xaxis.Normalize();
 	}
 
@@ -5045,3 +5045,21 @@ float Hashira::Easing::Circuler::InOut(float startValue, float changeValue, floa
 	time -= 2.0f;
 	return changeValue / 2.0f * (std::sqrtf(1.0f - time * time) + 1.0f) + startValue;
 }
+
+DirectX::XMFLOAT3 operator-(const DirectX::XMFLOAT3& a, const DirectX::XMFLOAT3& b)
+{
+	return DirectX::XMFLOAT3(a.x - b.x, a.y - b.y, a.z - b.z);
+}
+
+inline DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3& a, const DirectX::XMFLOAT3& b)
+{
+	return DirectX::XMFLOAT3(a.x + b.x, a.y + b.y, a.z + b.z);
+}
+inline DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3& a)
+{
+	return DirectX::XMFLOAT3(a.x, a.y, a.z);
+}
+inline DirectX::XMFLOAT3 operator-(const DirectX::XMFLOAT3& a)
+{
+	return DirectX::XMFLOAT3(-a.x, -a.y, -a.z);
+};

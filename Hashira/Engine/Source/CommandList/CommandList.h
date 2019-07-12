@@ -11,7 +11,7 @@ namespace Hashira {
 	class PipelineStateObject;
 	class CommandListManager;
 	class DepthStencillBuffer;
-	class Resource;
+	class Buffer;
 	class ShaderResource;
 	class CostantBuffer;
 	class StructuredBuffer;
@@ -97,7 +97,7 @@ namespace Hashira {
 		* @param[in] afterState 新しい状態
 		* @return リザルト　S_OKで成功
 		*/
-		HRESULT SetResourceBarrie(Resource * resource, D3D12_RESOURCE_STATES beforeState, D3D12_RESOURCE_STATES afterState);
+		HRESULT SetResourceBarrie(Buffer* resource, D3D12_RESOURCE_STATES beforeState, D3D12_RESOURCE_STATES afterState);
 
 		/**
 		* @fn
@@ -135,7 +135,7 @@ namespace Hashira {
 		* @fn
 		* @brief UAVバリア
 		*/
-		void SetUavBarrier(Resource* res);
+		void SetUavBarrier(Buffer* res);
 
 		void SetGraphcisRootSignatureAndDescriptors(RootSignature* rs, DescriptorSet* descSet);
 
@@ -171,23 +171,23 @@ namespace Hashira {
 		void ClearState(std::shared_ptr<PipelineStateObject> pPipelineState);
 
 		void ClearUnorderedAccessViewFloat(D3D12_GPU_DESCRIPTOR_HANDLE ViewGPUHandleInCurrentHeap, D3D12_CPU_DESCRIPTOR_HANDLE ViewCPUHandle,
-			Resource *pResource, const float Values[4], unsigned int NumRects, const D3D12_RECT *pRects);
+			Buffer *pResource, const float Values[4], unsigned int NumRects, const D3D12_RECT *pRects);
 
 		void ClearUnorderedAccessViewUint(D3D12_GPU_DESCRIPTOR_HANDLE ViewGPUHandleInCurrentHeap, D3D12_CPU_DESCRIPTOR_HANDLE ViewCPUHandle,
-			Resource *pResource, const unsigned int Values[4], unsigned int NumRects, const D3D12_RECT *pRects);
+			Buffer *pResource, const unsigned int Values[4], unsigned int NumRects, const D3D12_RECT *pRects);
 
-		void CopyBufferRegion(Resource *pDstBuffer, UINT64 DstOffset,
-			Resource *pSrcBuffer, UINT64 SrcOffset, UINT64 NumBytes);
+		void CopyBufferRegion(Buffer *pDstBuffer, UINT64 DstOffset,
+			Buffer *pSrcBuffer, UINT64 SrcOffset, UINT64 NumBytes);
 
-		void CopyResource(Resource *pDstResource, Resource *pSrcResource);
+		void CopyResource(Buffer *pDstResource, Buffer *pSrcResource);
 
 		void CopyTextureRegion(const D3D12_TEXTURE_COPY_LOCATION *pDst, unsigned int DstX, unsigned int DstY, unsigned int DstZ,
 			const D3D12_TEXTURE_COPY_LOCATION *pSrc, const D3D12_BOX *pSrcBox);
 
-		void CopyTiles(Resource *pTiledResource, const D3D12_TILED_RESOURCE_COORDINATE *pTileRegionStartCoordinate, const D3D12_TILE_REGION_SIZE *pTileRegionSize,
-			Resource *pBuffer, UINT64 BufferStartOffsetInBytes, D3D12_TILE_COPY_FLAGS Flags);
+		void CopyTiles(Buffer *pTiledResource, const D3D12_TILED_RESOURCE_COORDINATE *pTileRegionStartCoordinate, const D3D12_TILE_REGION_SIZE *pTileRegionSize,
+			Buffer *pBuffer, UINT64 BufferStartOffsetInBytes, D3D12_TILE_COPY_FLAGS Flags);
 
-		void DiscardResource(Resource *pResource, const D3D12_DISCARD_REGION *pRegion);
+		void DiscardResource(Buffer *pResource, const D3D12_DISCARD_REGION *pRegion);
 
 		void Dispatch(unsigned int ThreadGroupCountX, unsigned int ThreadGroupCountY, unsigned int ThreadGroupCountZ);
 
@@ -203,8 +203,8 @@ namespace Hashira {
 
 		void ExecuteBundle(CommandList* bundle);
 
-		void ExecuteIndirect(ID3D12CommandSignature *pCommandSignature, unsigned int MaxCommandCount, Resource *pArgumentBuffer,
-			UINT64 ArgumentBufferOffset, Resource *pCountBuffer, UINT64 CountBufferOffset);
+		void ExecuteIndirect(ID3D12CommandSignature *pCommandSignature, unsigned int MaxCommandCount, Buffer *pArgumentBuffer,
+			UINT64 ArgumentBufferOffset, Buffer *pCountBuffer, UINT64 CountBufferOffset);
 
 		void IASetIndexBuffer(const D3D12_INDEX_BUFFER_VIEW *pView);
 
@@ -220,11 +220,11 @@ namespace Hashira {
 		void OMSetStencilRef(unsigned int StencilRef);
 
 		void ResolveQueryData(ID3D12QueryHeap  *pQueryHeap, D3D12_QUERY_TYPE Type,
-			unsigned int StartIndex, unsigned int NumQueries, Resource *pDestinationBuffer,
+			unsigned int StartIndex, unsigned int NumQueries, Buffer *pDestinationBuffer,
 			UINT64 AlignedDestinationBufferOffset);
 
-		void ResolveSubresource(Resource *pDstResource, unsigned int DstSubresource,
-			Resource *pSrcResource, unsigned int SrcSubresource, DXGI_FORMAT Format);
+		void ResolveSubresource(Buffer *pDstResource, unsigned int DstSubresource,
+			Buffer *pSrcResource, unsigned int SrcSubresource, DXGI_FORMAT Format);
 
 		void ResourceBarrier(unsigned int NumBarriers, const D3D12_RESOURCE_BARRIER *pBarriers);
 
@@ -268,7 +268,7 @@ namespace Hashira {
 
 		void SetPipelineState(std::shared_ptr<PipelineStateObject> pRootSignature);
 
-		void SetPredication(Resource *pBuffer, UINT64 AlignedBufferOffset, D3D12_PREDICATION_OP Operation);
+		void SetPredication(Buffer *pBuffer, UINT64 AlignedBufferOffset, D3D12_PREDICATION_OP Operation);
 
 		void SOSetTargets(unsigned int StartSlot, unsigned int NumViews, const D3D12_STREAM_OUTPUT_BUFFER_VIEW *pViews);
 

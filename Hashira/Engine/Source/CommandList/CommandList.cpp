@@ -9,7 +9,7 @@
 #include "Engine/Source/Signature/CommandSignature.h"
 #include "Engine/Source/Device/D3D12Device.h"
 #include "Engine/Source/CommandAllocator/CommandAllocator.h"
-#include "Engine/Source/Resource/Resource.h"
+#include "Engine/Source/Buffer/Buffer.h"
 
 Hashira::CommandList::CommandList() :
 	_commandList(),
@@ -60,7 +60,7 @@ HRESULT Hashira::CommandList::SetResourceBarrie(ID3D12Resource * resource, D3D12
 	return S_OK;
 }
 
-HRESULT Hashira::CommandList::SetResourceBarrie(Resource * resource, D3D12_RESOURCE_STATES beforeState, D3D12_RESOURCE_STATES afterState)
+HRESULT Hashira::CommandList::SetResourceBarrie(Buffer * resource, D3D12_RESOURCE_STATES beforeState, D3D12_RESOURCE_STATES afterState)
 {
 	D3D12_RESOURCE_BARRIER resource_barrier{};
 
@@ -98,7 +98,7 @@ HRESULT Hashira::CommandList::CloseCommandList()
 	return hr;
 }
 
-void Hashira::CommandList::SetUavBarrier(Resource * res)
+void Hashira::CommandList::SetUavBarrier(Buffer * res)
 {
 	if (res == nullptr)
 		return;
@@ -156,22 +156,22 @@ void Hashira::CommandList::ClearState(std::shared_ptr<PipelineStateObject> pPipe
 	this->_commandList->ClearState(pPipelineState->GetPSO().Get());
 }
 
-void Hashira::CommandList::ClearUnorderedAccessViewFloat(D3D12_GPU_DESCRIPTOR_HANDLE ViewGPUHandleInCurrentHeap, D3D12_CPU_DESCRIPTOR_HANDLE ViewCPUHandle, Resource * pResource, const float Values[4], unsigned int NumRects, const D3D12_RECT * pRects)
+void Hashira::CommandList::ClearUnorderedAccessViewFloat(D3D12_GPU_DESCRIPTOR_HANDLE ViewGPUHandleInCurrentHeap, D3D12_CPU_DESCRIPTOR_HANDLE ViewCPUHandle, Buffer * pResource, const float Values[4], unsigned int NumRects, const D3D12_RECT * pRects)
 {
 	this->_commandList->ClearUnorderedAccessViewFloat(ViewGPUHandleInCurrentHeap, ViewCPUHandle, pResource->GetResource().Get(), Values, NumRects, pRects);
 }
 
-void Hashira::CommandList::ClearUnorderedAccessViewUint(D3D12_GPU_DESCRIPTOR_HANDLE ViewGPUHandleInCurrentHeap, D3D12_CPU_DESCRIPTOR_HANDLE ViewCPUHandle, Resource * pResource, const unsigned int Values[4], unsigned int NumRects, const D3D12_RECT * pRects)
+void Hashira::CommandList::ClearUnorderedAccessViewUint(D3D12_GPU_DESCRIPTOR_HANDLE ViewGPUHandleInCurrentHeap, D3D12_CPU_DESCRIPTOR_HANDLE ViewCPUHandle, Buffer * pResource, const unsigned int Values[4], unsigned int NumRects, const D3D12_RECT * pRects)
 {
 	this->_commandList->ClearUnorderedAccessViewUint(ViewGPUHandleInCurrentHeap, ViewCPUHandle, pResource->GetResource().Get(), Values, NumRects, pRects);
 }
 
-void Hashira::CommandList::CopyBufferRegion(Resource * pDstBuffer, UINT64 DstOffset, Resource * pSrcBuffer, UINT64 SrcOffset, UINT64 NumBytes)
+void Hashira::CommandList::CopyBufferRegion(Buffer * pDstBuffer, UINT64 DstOffset, Buffer * pSrcBuffer, UINT64 SrcOffset, UINT64 NumBytes)
 {
 	this->_commandList->CopyBufferRegion(pDstBuffer->GetResource().Get(), DstOffset, pSrcBuffer->GetResource().Get(), SrcOffset, NumBytes);
 }
 
-void Hashira::CommandList::CopyResource(Resource * pDstResource, Resource * pSrcResource)
+void Hashira::CommandList::CopyResource(Buffer * pDstResource, Buffer * pSrcResource)
 {
 	this->_commandList->CopyResource(pDstResource->GetResource().Get(), pSrcResource->GetResource().Get());
 }
@@ -182,13 +182,13 @@ void Hashira::CommandList::CopyTextureRegion(const D3D12_TEXTURE_COPY_LOCATION *
 
 }
 
-void Hashira::CommandList::CopyTiles(Resource * pTiledResource, const D3D12_TILED_RESOURCE_COORDINATE * pTileRegionStartCoordinate, const D3D12_TILE_REGION_SIZE * pTileRegionSize, Resource * pBuffer, UINT64 BufferStartOffsetInBytes, D3D12_TILE_COPY_FLAGS Flags)
+void Hashira::CommandList::CopyTiles(Buffer * pTiledResource, const D3D12_TILED_RESOURCE_COORDINATE * pTileRegionStartCoordinate, const D3D12_TILE_REGION_SIZE * pTileRegionSize, Buffer * pBuffer, UINT64 BufferStartOffsetInBytes, D3D12_TILE_COPY_FLAGS Flags)
 {
 	this->_commandList->CopyTiles(pTiledResource->GetResource().Get(), pTileRegionStartCoordinate, pTileRegionSize, pBuffer->GetResource().Get(), BufferStartOffsetInBytes, Flags);
 
 }
 
-void Hashira::CommandList::DiscardResource(Resource * pResource, const D3D12_DISCARD_REGION * pRegion)
+void Hashira::CommandList::DiscardResource(Buffer * pResource, const D3D12_DISCARD_REGION * pRegion)
 {
 	this->_commandList->DiscardResource(pResource->GetResource().Get(), pRegion);
 
@@ -229,7 +229,7 @@ void Hashira::CommandList::ExecuteBundle(CommandList * bundle)
 
 }
 
-void Hashira::CommandList::ExecuteIndirect(ID3D12CommandSignature * pCommandSignature, unsigned int MaxCommandCount, Resource * pArgumentBuffer, UINT64 ArgumentBufferOffset, Resource * pCountBuffer, UINT64 CountBufferOffset)
+void Hashira::CommandList::ExecuteIndirect(ID3D12CommandSignature * pCommandSignature, unsigned int MaxCommandCount, Buffer * pArgumentBuffer, UINT64 ArgumentBufferOffset, Buffer * pCountBuffer, UINT64 CountBufferOffset)
 {
 	this->_commandList->ExecuteIndirect(pCommandSignature, MaxCommandCount, pArgumentBuffer->GetResource().Get(), ArgumentBufferOffset,
 		pCountBuffer->GetResource().Get(), CountBufferOffset);
@@ -269,13 +269,13 @@ void Hashira::CommandList::OMSetStencilRef(unsigned int StencilRef)
 	this->_commandList->OMSetStencilRef(StencilRef);
 }
 
-void Hashira::CommandList::ResolveQueryData(ID3D12QueryHeap * pQueryHeap, D3D12_QUERY_TYPE Type, unsigned int StartIndex, unsigned int NumQueries, Resource * pDestinationBuffer, UINT64 AlignedDestinationBufferOffset)
+void Hashira::CommandList::ResolveQueryData(ID3D12QueryHeap * pQueryHeap, D3D12_QUERY_TYPE Type, unsigned int StartIndex, unsigned int NumQueries, Buffer * pDestinationBuffer, UINT64 AlignedDestinationBufferOffset)
 {
 	this->_commandList->ResolveQueryData(pQueryHeap, Type, StartIndex, NumQueries, pDestinationBuffer->GetResource().Get(), AlignedDestinationBufferOffset);
 
 }
 
-void Hashira::CommandList::ResolveSubresource(Resource * pDstResource, unsigned int DstSubresource, Resource * pSrcResource, unsigned int SrcSubresource, DXGI_FORMAT Format)
+void Hashira::CommandList::ResolveSubresource(Buffer * pDstResource, unsigned int DstSubresource, Buffer * pSrcResource, unsigned int SrcSubresource, DXGI_FORMAT Format)
 {
 	this->_commandList->ResolveSubresource(pDstResource->GetResource().Get(), DstSubresource, pSrcResource->GetResource().Get(), SrcSubresource, Format);
 
@@ -400,7 +400,7 @@ void Hashira::CommandList::SetPipelineState(std::shared_ptr<PipelineStateObject>
 
 }
 
-void Hashira::CommandList::SetPredication(Resource * pBuffer, UINT64 AlignedBufferOffset, D3D12_PREDICATION_OP Operation)
+void Hashira::CommandList::SetPredication(Buffer * pBuffer, UINT64 AlignedBufferOffset, D3D12_PREDICATION_OP Operation)
 {
 	this->_commandList->SetPredication(pBuffer->GetResource().Get(), AlignedBufferOffset, Operation);
 

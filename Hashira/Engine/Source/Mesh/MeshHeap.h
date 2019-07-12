@@ -1,6 +1,6 @@
 #pragma once
 #include "Engine/Source/DescriptorHeap/Descriptor.h"
-#include "Engine/Source/Resource/ConstantBuffer.h"
+#include "Engine/Source/Buffer/ConstantBuffer.h"
 #include <memory>
 #include <vector>
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Engine/Source/Resource/VertexBuffer.h"
-#include "Engine/Source/Resource/IndexBuffer.h"
+#include "Engine/Source/Buffer/VertexBuffer.h"
+#include "Engine/Source/Buffer/IndexBuffer.h"
 #include "Engine/Source/Command/State/GeometryState.h"
 
 namespace Hashira {

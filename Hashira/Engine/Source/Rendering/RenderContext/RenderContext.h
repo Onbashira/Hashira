@@ -7,15 +7,15 @@ namespace Hashira {
 	class CommandAllocator;
 	class Fence;
 	class CommandQueue;
-	class D3D12Device;
-	class Resource;
+	class RenderingDevice;
+	class Buffer;
 	class SwapChain;
 	class RenderingManager;
 
 	class DescriptorAllocator;
 	class GlobalDescriptorHeap;
 	class Descriptor;
-	class DescriptorInfo;
+	struct DescriptorInfo;
 
 
 
@@ -46,6 +46,8 @@ namespace Hashira {
 		
 		bool _isDiscarded;
 
+		std::shared_ptr<RenderingDevice> _parentDevice;
+
 		std::vector<std::array<std::shared_ptr<CommandList>, 2>> _cmdLists;
 		
 		std::mutex _allocatorMutex;
@@ -75,9 +77,10 @@ namespace Hashira {
 
 		virtual ~RenderContext();
 
-		HRESULT Initialize(std::shared_ptr<D3D12Device>& device,int frameNum, int nodeMask,std::shared_ptr<CommandQueue>& queue,std::shared_ptr<SwapChain>& swapChain);
+		HRESULT Initialize(std::shared_ptr<RenderingDevice>& device,int frameNum, int nodeMask,std::shared_ptr<CommandQueue>& queue,std::shared_ptr<SwapChain>& swapChain);
 
 		HRESULT CreateCommandList(std::shared_ptr<D3D12Device>& device,D3D12_COMMAND_LIST_TYPE type, std::shared_ptr<CommandList>& commandList);
+		HRESULT CreateCommandList(D3D12_COMMAND_LIST_TYPE type, std::shared_ptr<CommandList>& commandList);
 
 		int GetCurrentIndex();
 
@@ -93,7 +96,7 @@ namespace Hashira {
 
 		std::weak_ptr<CommandQueue> GetCommandQueue();
 		std::shared_ptr<Hashira::SwapChain> GetSwapChain();
-
+		std::shared_ptr<RenderingDevice>& GetRenderingDevice();
 		std::unique_ptr<GlobalDescriptorHeap>& GetGlobalDescriptorHeap();
 		std::unique_ptr<DescriptorAllocator>& GetViewDescriptorHeap();
 		std::unique_ptr<DescriptorAllocator>& GetSamplerDescriptorHeap();
@@ -126,7 +129,7 @@ namespace Hashira {
 
 	private:
 
-		RenderContext();
+		RenderContext()noexcept;
 
 	};
 

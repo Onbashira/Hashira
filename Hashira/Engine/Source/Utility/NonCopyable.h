@@ -10,10 +10,10 @@ namespace Hashira{
 	public:
 	private:
 	protected:
-		void operator =(const NonCopyable& ) {};
-		NonCopyable(const NonCopyable& ) {};
-		void operator =(NonCopyable&& ) {};
-		NonCopyable(NonCopyable&& )  {};
+		void operator =(const NonCopyable& )noexcept {};
+		NonCopyable(const NonCopyable& )noexcept {};
+		void operator =(NonCopyable&& )noexcept {};
+		NonCopyable(NonCopyable&& ) noexcept {};
 	public:
 	};
 }

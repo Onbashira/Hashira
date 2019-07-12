@@ -11,7 +11,7 @@ namespace Hashira {
 	class Window;
 	class D3D12Device;
 	class RenderinDevice;
-	class Resource;
+	class Buffer;
 
 	class SwapChain
 	{
@@ -33,7 +33,7 @@ namespace Hashira {
 
 		Microsoft::WRL::ComPtr<IDXGISwapChain4> _swapChain;
 
-		std::vector<std::shared_ptr<Resource>> _rtResource;
+		std::vector<std::shared_ptr<Buffer>> _rtResource;
 
 		std::unique_ptr<DescriptorAllocator> _localRtHeap;
 
@@ -61,7 +61,7 @@ namespace Hashira {
 
 		HRESULT	SetStateGenericRead(std::shared_ptr<CommandList> list);
 
-		HRESULT	CopyToRenderTarget(std::shared_ptr<CommandList> list, Resource* pSrc);
+		HRESULT	CopyToRenderTarget(std::shared_ptr<CommandList> list, Buffer* pSrc);
 
 		void SetRenderTarget(std::shared_ptr<CommandList> list, D3D12_CPU_DESCRIPTOR_HANDLE* depthHandle = nullptr);
 

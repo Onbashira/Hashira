@@ -16,15 +16,15 @@
 #include "./Engine/Source/CommandList/CommandList.h"
 #include "./Engine/Source/DescriptorHeap/DescriptorHeap.h"
 
-//Resource
-#include "./Engine/Source/Resource/Resource.h"
-#include "./Engine/Source/Resource/UploadBuffer.h"
-#include "./Engine/Source/Resource/ConstantBuffer.h"
-#include "./Engine/Source/Resource/IndexBuffer.h"
-#include "./Engine/Source/Resource/VertexBuffer.h"
-#include "./Engine/Source/Resource/ShaderResource.h"
+//Buffer
+#include "./Engine/Source/Buffer/Buffer.h"
+#include "./Engine/Source/Buffer/UploadBuffer.h"
+#include "./Engine/Source/Buffer/ConstantBuffer.h"
+#include "./Engine/Source/Buffer/IndexBuffer.h"
+#include "./Engine/Source/Buffer/VertexBuffer.h"
+#include "./Engine/Source/Buffer/ShaderResource.h"
 
-#include "./Engine/Source/Resource/DepthStencilBuffer.h"
+#include "./Engine/Source/Buffer/DepthStencilBuffer.h"
 
 //Rendering
 #include "./Engine/Source/Rendering/RenderContext/RenderContext.h"
@@ -109,7 +109,6 @@
 #include "./Engine/Source/Utility/Utility.h"
 #include "./Engine/Source/Utility/NonCopyable.h"
 #include "./Engine/Source/Utility/D3D12Common.h"
-#include "./Engine/Source/LifetimedMemory/LifetimedMemory.h"
 #include "./Engine/Source/Math/Math.h"
 #include "./Engine/Source/Utility/d3dx12.h"
 

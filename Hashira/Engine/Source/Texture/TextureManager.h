@@ -73,13 +73,13 @@ namespace Hashira {
 
 		TextureManager();
 
-		TextureManager & operator=(const TextureManager& value) { return *this; };
+		TextureManager & operator=(const TextureManager& value)noexcept { return *this; };
 
-		TextureManager & operator=(TextureManager&& value) { return *this; };
+		TextureManager & operator=(TextureManager&& value)noexcept { return *this; };
 
-		TextureManager(const TextureManager& other) {};
+		TextureManager(const TextureManager& other)noexcept {};
 
-		TextureManager(TextureManager&& other) {};
+		TextureManager(TextureManager&& other)noexcept {};
 
 		void CreateBlackTexture();
 

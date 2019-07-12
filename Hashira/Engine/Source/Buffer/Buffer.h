@@ -1,6 +1,5 @@
 #pragma once
 #include "Engine/Source/Utility/D3D12Common.h"
-#include "Engine/Source/LifetimedMemory/LifetimedMemory.h"
 #include <tuple>
 #include <string>
 
@@ -9,7 +8,19 @@ namespace Hashira {
 
 	class CommandList;
 	class D3D12Device;
-	class Resource
+
+	struct BufferUsage {
+		enum Type {
+			Constant,
+			ShaderResource,
+			UnorderedAccess,
+			Rnedertarget,
+			DepthStencill,
+			Max,
+		};
+	};
+
+	class Buffer
 	{
 
 	private:
@@ -19,14 +30,28 @@ namespace Hashira {
 		//!現在のリソースステート
 		D3D12_RESOURCE_STATES _currentResourceState;
 
+		BufferUsage::Type _bufferUsage;
+
 		//!マップされたポインタ
 		UCHAR* _pDst;
 
 		//!クリアバリュー
 		D3D12_CLEAR_VALUE _clearValue;
 
-		//!レジスタ番号
-		unsigned int _shaderRegisterNumber;
+		//!UAV
+		bool _isUAV;
+
+		bool _isDynamic;
+
+		size_t _stride;
+
+		size_t _size;
+		
+		D3D12_HEAP_DESC _heapDesc;
+
+		D3D12_RESOURCE_DESC _resDesc;
+
+		D3D12_HEAP_PROPERTIES _heapProp;
 
 		//!リソース本体
 		Microsoft::WRL::ComPtr<ID3D12Resource> _resource;
@@ -39,38 +64,31 @@ namespace Hashira {
 	public:
 
 
-		Resource(const D3D12_HEAP_PROPERTIES& heapProps, const D3D12_HEAP_FLAGS& flags, const D3D12_RESOURCE_DESC& resourceDesc, const D3D12_RESOURCE_STATES& state, D3D12_CLEAR_VALUE* clearValue = nullptr);
+		Buffer(const D3D12_HEAP_PROPERTIES& heapProps, const D3D12_HEAP_FLAGS& flags, const D3D12_RESOURCE_DESC& resourceDesc, const D3D12_RESOURCE_STATES& state, D3D12_CLEAR_VALUE* clearValue = nullptr);
 
-		Resource(const Resource& other);
+		Buffer(const Buffer& other);
 
-		Resource(Resource&& value);
+		Buffer(Buffer&& value);
 
-		Resource& operator= (const Resource& value);
+		Buffer& operator= (const Buffer& value);
 
-		Resource& operator= (Resource&& value);
+		Buffer& operator= (Buffer&& value);
 
-		virtual ~Resource();
+		virtual ~Buffer();
 
 		/**
 		* @fn
 		* @brief 未初期化のバッファのユニークなポインタの取得
 		* @return ユニークポインタ
 		*/
-		static  std::unique_ptr<Hashira::Resource> CreateUnique();
+		static  std::unique_ptr<Hashira::Buffer> CreateUnique();
 
 		/**
 		* @fn
 		* @brief 未初期化のバッファの強参照の取得
 		* @return 強参照
 		*/
-		static  std::shared_ptr<Hashira::Resource> CreateShared();
-
-		/**
-		* @fn
-		* @brief 未初期化のバッファの生存保証つき強参照の取得
-		* @return 生存保証つき強参照
-		*/
-		static  LifetimedShared_Ptr<Resource> CreateLifetimedShared();
+		static  std::shared_ptr<Hashira::Buffer> CreateShared();
 
 		/**
 		* @fn
@@ -84,6 +102,34 @@ namespace Hashira {
 		*/
 		virtual HRESULT Initialize(const D3D12_HEAP_PROPERTIES& heapProps, const D3D12_HEAP_FLAGS& flags, const D3D12_RESOURCE_DESC& resourceDesc, const D3D12_RESOURCE_STATES& state, D3D12_CLEAR_VALUE* clearValue = nullptr);
 
+
+		/**
+		* @fn
+		* @brief バッファの作成
+		* @param[in] device デバイス
+		* @param[in] size サイズ
+		* @param[in] stride ストライド
+		* @param[in] usage バッファの使われ方
+		* @param[in] isDynamic ヒープフラグ
+		* @param[in] isUAV バッファのデスクリプション
+		* @return リザルト
+		*/
+		virtual HRESULT Initialize(std::shared_ptr<D3D12Device>& device, size_t size, size_t stride, BufferUsage::Type usage, bool isDynamic, bool isUAV);
+		
+		/**
+		* @fn
+		* @brief バッファの作成
+		* @param[in] device デバイス
+		* @param[in] size サイズ
+		* @param[in] stride ストライド
+		* @param[in] usage バッファの使われ方
+		* @param[in] state 初期ステート
+		* @param[in] isDynamic ヒープフラグ
+		* @param[in] isUAV バッファのデスクリプション
+		* @return リザルト
+		*/
+		virtual HRESULT Initialize(std::shared_ptr<D3D12Device>& device,size_t size,size_t stride, BufferUsage::Type usage,const D3D12_RESOURCE_STATES& state, bool isDynamic, bool isUAV);
+		
 		/**
 		* @fn
 		* @brief バッファの作成
@@ -195,6 +241,13 @@ namespace Hashira {
 
 		/**
 		* @fn
+		* @brief バッファステートのフェッチ
+		* @return ステート
+		*/
+		const BufferUsage::Type& GetBufferUsage();
+
+		/**
+		* @fn
 		* @brief バッファステートのセット
 		* @param[in] state バッファステート
 		*/
@@ -232,17 +285,9 @@ namespace Hashira {
 		*/
 		void SetName(std::string name);
 
-		/**
-		* @fn
-		* @brief レジスタ番号の設定
-		* @param[in] number レジスタ番号
-		*/
-		void RegisterShaderSlot(unsigned int number);
-
-
 	protected:
 
-		Resource();
+		Buffer();
 
 	private:
 

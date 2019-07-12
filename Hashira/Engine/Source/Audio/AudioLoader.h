@@ -82,7 +82,7 @@ namespace Hashira {
 
 		void operator = (const AudioLoader& value) {};
 
-		void operator = (AudioLoader&&value) {};
+		void operator = (AudioLoader&&value)noexcept {};
 	};
 
 

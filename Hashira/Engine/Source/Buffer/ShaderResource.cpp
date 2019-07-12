@@ -46,7 +46,7 @@ HRESULT Hashira::ShaderResource::Initialize(UINT texHeight, UINT texWidth, UINT 
 	clearValue.Color[2] = clearColor.z;
 	clearValue.Color[3] = clearColor.w;
 
-	auto hr = Resource::Initialize(props, D3D12_HEAP_FLAG_NONE, resDesc,
+	auto hr = Buffer::Initialize(props, D3D12_HEAP_FLAG_NONE, resDesc,
 		(D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE | D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE), &clearValue);
 
 	return hr;
@@ -84,7 +84,7 @@ UINT64 Hashira::ShaderResource::GetDepthOfArarry()
 
 void Hashira::ShaderResource::Discard()
 {
-	Resource::Discard();
+	Buffer::Discard();
 }
 
 

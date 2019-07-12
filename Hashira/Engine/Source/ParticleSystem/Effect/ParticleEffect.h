@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Engine/Source/Resource/MultipleBuffer.h"
+#include "Engine/Source/Buffer/MultipleBuffer.h"
 
 namespace Hashira {
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Source/Resource/ConstantBuffer.h"
+#include "Engine/Source/Buffer/ConstantBuffer.h"
 #include "Engine/Source/Component/Transform/Transform.h"
 
 #include <memory>

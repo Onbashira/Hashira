@@ -7,7 +7,7 @@
 #include "Engine/Source/Rendering/RenderContext/RenderContext.h"
 #include "Engine/Source/Scene/Scene.h"
 #include "Engine/Source/DescriptorHeap/DescriptorHeap.h"
-#include "Engine/Source/Resource/Resource.h"
+#include "Engine/Source/Buffer/Buffer.h"
 
 Hashira::RenderingManager::~RenderingManager()
 {
@@ -50,7 +50,7 @@ void Hashira::RenderingManager::FlipScreen()
 	_swapChain->FlipScreen();
 }
 
-void Hashira::RenderingManager::CopyToRenderTarget(std::weak_ptr<CommandList> list, Resource* src)
+void Hashira::RenderingManager::CopyToRenderTarget(std::weak_ptr<CommandList> list, Buffer* src)
 {
 	src->ResourceTransition(list, D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_COPY_DEST);
 	this->_swapChain->CopyToRenderTarget(list.lock(), src);
@@ -68,7 +68,7 @@ void Hashira::RenderingManager::Present(unsigned int sysncInterval, unsigned int
 	_swapChain->Present(sysncInterval, flags);
 }
 
-std::vector<std::shared_ptr<Hashira::Resource>> Hashira::RenderingManager::GetDisplayRenderTargets()
+std::vector<std::shared_ptr<Hashira::Buffer>> Hashira::RenderingManager::GetDisplayRenderTargets()
 {
 	return _swapChain->_rtResource;
 }
@@ -86,7 +86,7 @@ std::shared_ptr<Hashira::RenderingDevice>& Hashira::RenderingManager::GetRenderi
 std::shared_ptr<Hashira::RenderContext>  Hashira::RenderingManager::CreateRenderContext()
 {
 	std::shared_ptr<RenderContext> ret(new RenderContext());
-	ret->Initialize(this->_renderingDevice->GetD3D12Device(), _swapChain->_bufferNum, 0, _masterQueue,_swapChain);
+	ret->Initialize(_renderingDevice, _swapChain->_bufferNum, 0, _masterQueue,_swapChain);
 	return std::move(ret);
 }
 

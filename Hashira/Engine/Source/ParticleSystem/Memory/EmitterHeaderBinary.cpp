@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "EmitterHeaderBinary.h"
 #include "Engine/Source/ParticleSystem/Emitter/Emitter.h"
-#include "Engine/Source/Resource/L0Buffer.h"
+#include "Engine/Source/Buffer/L0Buffer.h"
 #include "Engine/Source/Device/D3D12Device.h"
 
 Hashira::EmitterHeaderBinary::EmitterHeaderBinary()

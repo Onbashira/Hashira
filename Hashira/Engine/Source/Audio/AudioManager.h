@@ -72,13 +72,13 @@ namespace Hashira {
 
 		AudioManager();
 
-		AudioManager(const AudioManager&) {};
+		AudioManager(const AudioManager&)noexcept {};
 
-		AudioManager(AudioManager&&) {};
+		AudioManager(AudioManager&&)noexcept {};
 
-		void operator = (const AudioManager& ) {};
+		void operator = (const AudioManager& )noexcept {};
 
-		void operator = (AudioManager&&) {};
+		void operator = (AudioManager&&)noexcept {};
 
 		/**
 		* @fn

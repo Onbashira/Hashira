@@ -1,9 +1,9 @@
 #pragma once
-#include "Resource.h"
+#include "Buffer.h"
 
 namespace Hashira {
-	class L0Buffer :
-		public Resource
+	class L1Buffer :
+		public Buffer
 	{
 	public:
 
@@ -11,11 +11,12 @@ namespace Hashira {
 
 	public:
 
-		L0Buffer();
+		L1Buffer();
 
-		virtual ~L0Buffer();
+		virtual ~L1Buffer();
 
 		HRESULT Initialize(std::shared_ptr<D3D12Device>& device, size_t bufferSize, const D3D12_RESOURCE_STATES& state, D3D12_CLEAR_VALUE* clearValue = nullptr);
+	
 
 	};
 

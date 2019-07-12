@@ -22,7 +22,7 @@ Hashira::VertexBuffer::VertexBuffer(VertexBuffer && value)
 
 Hashira::VertexBuffer & Hashira::VertexBuffer::operator=(const VertexBuffer & value)
 {
-	Resource::operator=(value);
+	Buffer::operator=(value);
 	this->_view = value._view;
 	this->_stride = value._stride;
 	this->_size = value._size;
@@ -31,7 +31,7 @@ Hashira::VertexBuffer & Hashira::VertexBuffer::operator=(const VertexBuffer & va
 
 Hashira::VertexBuffer & Hashira::VertexBuffer::operator=(VertexBuffer && value)
 {
-	Resource::operator=(std::move(value));
+	Buffer::operator=(std::move(value));
 	this->_view =	value._view;
 	this->_stride = value._stride;
 	this->_size =	value._size;

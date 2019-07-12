@@ -71,7 +71,6 @@ HRESULT Hashira::RootSignature::InitializeFromDesc(std::shared_ptr<D3D12Device>&
 
 	//レンジ取得ラムダ式作成
 	auto GetShaderVisibilityFunc = [&](Uint32 index) {
-		ShaderVisibility::Type v; ;
 		switch (desc.pParameters[index].shaderVisibility)
 		{
 		case Hashira::ShaderVisibility::Vertex: return D3D12_SHADER_VISIBILITY_VERTEX;
@@ -88,7 +87,7 @@ HRESULT Hashira::RootSignature::InitializeFromDesc(std::shared_ptr<D3D12Device>&
 	};
 
 	//セット処理
-	for (int i = 0; i < desc.numParameters;++i)
+	for (Uint32 i = 0; i < desc.numParameters;++i)
 	{
 		range[i].RangeType = GetRangeFunc(i);
 		range[i].NumDescriptors = 1;

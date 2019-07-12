@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ParticleHeaderBinary.h"
-#include "Engine/Source/Resource/L1Buffer.h"
+#include "Engine/Source/Buffer/L1Buffer.h"
 
 
 Hashira::ParticleHeaderBinary::ParticleHeaderBinary()

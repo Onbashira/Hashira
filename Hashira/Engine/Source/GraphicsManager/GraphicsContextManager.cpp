@@ -37,7 +37,8 @@ void Hashira::GraphicsContextManager::CloseCommandList(std::string commandListNa
 
 void Hashira::GraphicsContextManager::ResetCommandList(std::string commandListName,std::shared_ptr<RenderContext>& renderContext)
 {
-	_commandListLibrary.Get(commandListName)->ResetCommandList(renderContext->GetCurrentCmdAllocator().lock());
+	auto allocator = renderContext->GetCurrentCmdAllocator().lock();
+	_commandListLibrary.Get(commandListName)->ResetCommandList(allocator);
 
 }
 

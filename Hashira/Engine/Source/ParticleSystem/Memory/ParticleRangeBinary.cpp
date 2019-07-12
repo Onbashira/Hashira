@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ParticleRangeBinary.h"
-#include "Engine/Source/Resource/L1Buffer.h"
+#include "Engine/Source/Buffer/L1Buffer.h"
 
 
 Hashira::ParticleRangeBinary::ParticleRangeBinary()

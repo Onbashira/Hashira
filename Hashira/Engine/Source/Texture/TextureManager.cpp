@@ -1,6 +1,6 @@
 #include "TextureManager.h"
 #include "Engine/Source/DescriptorHeap/DescriptorHeap.h"
-#include "Engine/Source/Resource/ShaderResource.h"
+#include "Engine/Source/Buffer/ShaderResource.h"
 #include "Engine/Source/Texture/TextureObject.h"
 #include "Engine/Source/CommandQueue/CommandQueue.h"
 #include "Engine/Source/CommandList/CommandList.h"

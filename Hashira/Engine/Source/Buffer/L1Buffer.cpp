@@ -36,7 +36,7 @@ HRESULT Hashira::L1Buffer::Initialize(std::shared_ptr<D3D12Device>& device, size
 	desc.Layout = D3D12_TEXTURE_LAYOUT::D3D12_TEXTURE_LAYOUT_UNKNOWN;
 	desc.Flags = D3D12_RESOURCE_FLAGS::D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS;
 
-	auto hr = Resource::Initialize(prop, D3D12_HEAP_FLAGS::D3D12_HEAP_FLAG_NONE, desc, state, clearValue);
+	auto hr = Buffer::Initialize(prop, D3D12_HEAP_FLAGS::D3D12_HEAP_FLAG_NONE, desc, state, clearValue);
 
 #ifdef _DEBUG
 	SystemLogger::GetInstance().Log(LOG_LEVEL::Debug, hr);

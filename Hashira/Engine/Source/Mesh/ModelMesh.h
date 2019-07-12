@@ -5,7 +5,7 @@ namespace Hashira {
 	class MeshHeap;
 	class MeshBuffer;
 	class TextureObject;
-	struct Descriptor;
+	class Descriptor;
 	class IndexBuffer;
 
 	class ModelMesh
