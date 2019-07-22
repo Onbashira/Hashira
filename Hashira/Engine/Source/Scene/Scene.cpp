@@ -4,7 +4,7 @@
 #include "Engine/Source/Rendering/RenderContext/RenderContext.h"
 #include "Engine/Source/Device/D3D12Device.h"
 #include "Engine/Source/Camera/Camera.h"
-
+#include "Engine/Source/CoreSystem/Framework.h"
 
 Hashira::Scene::Scene(std::shared_ptr<RenderingDevice>& renderingDevice) :
 	_renderingDevice(renderingDevice),

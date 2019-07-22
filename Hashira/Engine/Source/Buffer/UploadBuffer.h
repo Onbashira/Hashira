@@ -1,6 +1,5 @@
 #pragma once
 #include "Engine/Source/Utility/D3D12Common.h"
-#include "Engine/Source/CoreSystem/Framework.h"
 #include "Buffer.h"
 #include "Engine/Source/Utility/Utility.h"
 
@@ -31,7 +30,7 @@ namespace Hashira {
 			Unmap(0, nullptr);
 		};
 
-		HRESULT Initialize(unsigned int elementCount = 1, bool isCB = false, D3D12_RESOURCE_FLAGS flags = D3D12_RESOURCE_FLAGS::D3D12_RESOURCE_FLAG_NONE)
+		HRESULT Initialize(std::shared_ptr<D3D12Device> & device,unsigned int elementCount = 1, bool isCB = false, D3D12_RESOURCE_FLAGS flags = D3D12_RESOURCE_FLAGS::D3D12_RESOURCE_FLAG_NONE)
 		{
 			isConstantBuffer = isCB;
 
@@ -61,7 +60,7 @@ namespace Hashira {
 			desc.Layout = D3D12_TEXTURE_LAYOUT::D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 			desc.Flags = flags;
 
-			auto hr = Buffer::Initialize(prop, D3D12_HEAP_FLAGS::D3D12_HEAP_FLAG_NONE, desc, D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_GENERIC_READ);
+			auto hr = Buffer::Initialize(device ,prop, D3D12_HEAP_FLAGS::D3D12_HEAP_FLAG_NONE, desc, D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_GENERIC_READ);
 			Map(0, nullptr);
 			return hr;
 		};
@@ -74,22 +73,6 @@ namespace Hashira {
 		void CopyArray(int arraySiz, const T* data)
 		{
 			Buffer::Update(&data, _elementByteSize*arraySiz, 0);
-		};
-
-		void CreateView(D3D12_CONSTANT_BUFFER_VIEW_DESC& cbvDesc, D3D12_CPU_DESCRIPTOR_HANDLE cpuDescriptorHandle)
-		{
-
-			Framework::GetInstance().GetDevice()->GetDevice()->CreateConstantBufferView(&cbvDesc, cpuDescriptorHandle);
-		};
-
-		void CreateView(D3D12_SHADER_RESOURCE_VIEW_DESC & srv, D3D12_CPU_DESCRIPTOR_HANDLE cpuDescriptorHandle)
-		{
-			Framework::GetInstance().GetDevice()->GetDevice()->CreateShaderResourceView(this->GetResource(), &srv, cpuDescriptorHandle);
-		};
-
-		void CreateView(D3D12_UNORDERED_ACCESS_VIEW_DESC & uav, D3D12_CPU_DESCRIPTOR_HANDLE cpuDescriptorHandle, ID3D12Resource* counterResource)
-		{
-			Framework::GetInstance().GetDevice()->GetDevice()->CreateUnorderedAccessView(this->GetResource(), counterResource, &uav, cpuDescriptorHandle);
 		};
 
 		unsigned int ElementByteSize()

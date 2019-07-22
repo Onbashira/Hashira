@@ -53,6 +53,7 @@
     <ClCompile Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexWIC.cpp" />
     <ClCompile Include="Engine\Source\Buffer\L0Buffer.cpp" />
     <ClCompile Include="Engine\Source\Buffer\L1Buffer.cpp" />
+    <ClCompile Include="ICamera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Source\Component\DefaultComponents\DefaultPhysicsComponent.cpp" />
     <ClCompile Include="Engine\Source\Component\DefaultComponents\DefaultInputComponent.cpp" />
@@ -293,6 +294,7 @@
     <ClInclude Include="Engine\Source\ParticleSystem\Item\CommonItem\SpawnItem.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Item\CommonItem\ParentOptionItem.h" />
     <ClInclude Include="Engine\Source\ShaderObject\Shader.h" />
+    <ClInclude Include="ICamera.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Item\CommonItem\TransformItem.h" />
     <ClInclude Include="Engine\Source\ParticleSystem\Item\Transform\UVSequenceItem.h" />

@@ -12,7 +12,7 @@ Hashira::ShaderResource::~ShaderResource()
 {
 }
 
-HRESULT Hashira::ShaderResource::Initialize(UINT texHeight, UINT texWidth, UINT texDepth, DXGI_FORMAT texFormat, D3D12_RESOURCE_FLAGS allowFlags, const Vector4& clearColor)
+HRESULT Hashira::ShaderResource::Initialize(std::shared_ptr<D3D12Device>& device,UINT texHeight, UINT texWidth, UINT texDepth, DXGI_FORMAT texFormat, D3D12_RESOURCE_FLAGS allowFlags, const Vector4& clearColor)
 {
 
 	D3D12_HEAP_PROPERTIES props = {};
@@ -46,25 +46,10 @@ HRESULT Hashira::ShaderResource::Initialize(UINT texHeight, UINT texWidth, UINT 
 	clearValue.Color[2] = clearColor.z;
 	clearValue.Color[3] = clearColor.w;
 
-	auto hr = Buffer::Initialize(props, D3D12_HEAP_FLAG_NONE, resDesc,
+	auto hr = Buffer::Initialize(device , props, D3D12_HEAP_FLAG_NONE, resDesc,
 		(D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE | D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE), &clearValue);
 
 	return hr;
-}
-
-void Hashira::ShaderResource::CreateView(D3D12_SHADER_RESOURCE_VIEW_DESC & srv, D3D12_CPU_DESCRIPTOR_HANDLE cpuDescriptorHandle)
-{
-	Framework::GetInstance().GetDevice()->GetDevice()->CreateShaderResourceView(this->GetResource().Get(), &srv, cpuDescriptorHandle);
-}
-
-void Hashira::ShaderResource::CreateView(D3D12_RENDER_TARGET_VIEW_DESC & rtv, D3D12_CPU_DESCRIPTOR_HANDLE cpuDescriptorHandle)
-{
-	Framework::GetInstance().GetDevice()->GetDevice()->CreateRenderTargetView(this->GetResource().Get(), &rtv, cpuDescriptorHandle);
-}
-
-void Hashira::ShaderResource::CreateView(D3D12_UNORDERED_ACCESS_VIEW_DESC & uav, D3D12_CPU_DESCRIPTOR_HANDLE cpuDescriptorHandle, ID3D12Resource* counterResource)
-{
-	Framework::GetInstance().GetDevice()->GetDevice()->CreateUnorderedAccessView(this->GetResource().Get(), counterResource, &uav, cpuDescriptorHandle);
 }
 
 UINT64 Hashira::ShaderResource::GetWidth()

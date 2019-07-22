@@ -3,6 +3,7 @@
 #include "Engine/Source/Component/GameObject/GameObject.h"
 #include "Engine/Source/Buffer/UploadBuffer.h"
 #include "Engine/Source/Buffer/DepthStencilBuffer.h"
+#include "Engine/Source/Input/InputManager.h"
 
 namespace Hashira {
 
@@ -251,7 +252,7 @@ namespace Hashira {
 		* @brief 各バッファの作成
 		* @return リザルト S_OKで成功
 		*/
-		HRESULT CreateBuffer();
+		HRESULT CreateBuffer(std::shared_ptr<D3D12Device>& device);
 
 		/**
 		* @fn

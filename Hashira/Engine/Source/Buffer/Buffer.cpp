@@ -11,12 +11,8 @@ Hashira::Buffer::Buffer() :
 	_pDst(nullptr),
 	_clearValue({}),
 	_currentResourceState(D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_COMMON),
-	_bufferUsage(),
-	_isUAV(),
+	_isAllowUAV(),
 	_isDynamic(),
-	_stride(),
-	_size(),
-	_heapDesc(),
 	_resDesc(),
 	_heapProp(),
 	_name("UnNamedResource ")
@@ -28,12 +24,8 @@ Hashira::Buffer::Buffer(const D3D12_HEAP_PROPERTIES& heapProps, const D3D12_HEAP
 	_pDst(nullptr),
 	_clearValue({}),
 	_currentResourceState(D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_COMMON),
-	_bufferUsage(),
-	_isUAV(),
+	_isAllowUAV(),
 	_isDynamic(),
-	_stride(),
-	_size(),
-	_heapDesc(),
 	_resDesc(),
 	_heapProp(),
 	_name("UnNamedResource ")
@@ -62,13 +54,9 @@ Hashira::Buffer& Hashira::Buffer::operator=(const Buffer& value)
 	this->_name = value._name;
 	this->_pDst = value._pDst;
 	this->_resource.Attach(value._resource.Get());
-	this->_bufferUsage = value._bufferUsage;
-	this->_size = value._size;
-	this->_stride = value._stride;
-	this->_heapDesc = value._heapDesc;
 	this->_heapProp = value._heapProp;
 	this->_isDynamic = value._isDynamic;
-	this->_isUAV = value._isUAV;
+	this->_isAllowUAV = value._isAllowUAV;
 
 	return *this;
 }
@@ -82,13 +70,9 @@ Hashira::Buffer& Hashira::Buffer::operator=(Buffer&& value)
 	value._name = "MOVED RESOURCE";
 	value._pDst = nullptr;
 	value._resource.Detach();
-	value._bufferUsage = BufferUsage::Max;
-	value._size = 0;
-	value._stride = 0;
-	value._heapDesc = D3D12_HEAP_DESC();
 	value._heapProp = D3D12_HEAP_PROPERTIES();
 	value._isDynamic = false;
-	value._isUAV = false;
+	value._isAllowUAV = false;
 	return *this;
 }
 
@@ -126,78 +110,19 @@ HRESULT Hashira::Buffer::Initialize(const D3D12_HEAP_PROPERTIES& heapProps, cons
 
 		return E_FAIL;
 	}
+	this->_resDesc = resourceDesc;
+	this->_heapProp = heapProps;
+	this->_clearValue = *clearValue;
+	this->_currentResourceState = state;
+	this->_isDynamic = (_heapProp.Type == D3D12_HEAP_TYPE::D3D12_HEAP_TYPE_UPLOAD) ? true :
+		(_heapProp.Type == D3D12_HEAP_TYPE::D3D12_HEAP_TYPE_CUSTOM
+			&& _heapProp.MemoryPoolPreference == D3D12_MEMORY_POOL::D3D12_MEMORY_POOL_L0) ? true : false;
+	this->_isAllowUAV = (resourceDesc.Flags == D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS) ? true : false;
 	return S_OK;
-}
-
-HRESULT Hashira::Buffer::Initialize(std::shared_ptr<D3D12Device>& device, size_t size, size_t stride, BufferUsage::Type usage, bool isDynamic, bool isUAV)
-{
-
-	D3D12_HEAP_TYPE heapType = D3D12_HEAP_TYPE::D3D12_HEAP_TYPE_UPLOAD;
-	if (!isDynamic && heapType == BufferUsage::Type::Constant) {
-		heapType = D3D12_HEAP_TYPE::D3D12_HEAP_TYPE_DEFAULT;
-	}
-	auto initialState = (heapType == D3D12_HEAP_TYPE_UPLOAD) ? D3D12_RESOURCE_STATE_GENERIC_READ : D3D12_RESOURCE_STATE_COPY_DEST;
-	auto ret = Initialize(device, size, stride, usage, initialState, isDynamic, isUAV);
-
-	return ret;
-}
-
-HRESULT Hashira::Buffer::Initialize(std::shared_ptr<D3D12Device>& device, size_t size, size_t stride, BufferUsage::Type usage, const D3D12_RESOURCE_STATES& state, bool isDynamic, bool isUAV)
-{
-	D3D12_HEAP_TYPE heapType = D3D12_HEAP_TYPE_UPLOAD;
-	if (!isDynamic && usage == BufferUsage::Type::Constant) {
-		heapType = D3D12_HEAP_TYPE::D3D12_HEAP_TYPE_DEFAULT;
-	}
-
-	size_t allocSize = size;
-	if (usage == BufferUsage::Constant)
-	{
-		allocSize = Util::ConstantBufferAlign(size);
-	}
-
-	// ByteAddressBuffer‚Ìê‡‚ÍR32_TYPELESS‚ÉÝ’è‚·‚é
-	DXGI_FORMAT format = DXGI_FORMAT_UNKNOWN;
-
-	D3D12_HEAP_PROPERTIES prop{};
-	prop.Type = heapType;
-	prop.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
-	prop.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
-	prop.CreationNodeMask = 1;
-	prop.VisibleNodeMask = 1;
-
-	D3D12_RESOURCE_DESC desc{};
-	desc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	desc.Alignment = 0;
-	desc.Width = allocSize;
-	desc.Height = 1;
-	desc.DepthOrArraySize = 1;
-	desc.MipLevels = 1;
-	desc.Format = format;
-	desc.SampleDesc.Count = 1;
-	desc.SampleDesc.Quality = 0;
-	desc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-	desc.Flags = isUAV ? D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS : D3D12_RESOURCE_FLAG_NONE;
-
-	_currentResourceState = state;
-
-	auto hr = device->GetDevice()->CreateCommittedResource(&prop, D3D12_HEAP_FLAG_NONE, &desc, _currentResourceState, nullptr, IID_PPV_ARGS(&_resource));
-	if (FAILED(hr))
-	{
-		return false;
-	}
-
-	_resDesc = desc;
-	_heapProp = prop;
-	_size = size;
-	_stride = stride;
-	_bufferUsage = usage;
-	isUAV = isUAV;
-	return true;
 }
 
 HRESULT Hashira::Buffer::Initialize(std::shared_ptr<D3D12Device>& device, const D3D12_HEAP_PROPERTIES& heapProps, const D3D12_HEAP_FLAGS& flags, const D3D12_RESOURCE_DESC& resourceDesc, const D3D12_RESOURCE_STATES& state, D3D12_CLEAR_VALUE* clearValue)
 {
-	_currentResourceState = state;
 	if (clearValue != nullptr) {
 		_clearValue = *clearValue;
 	}
@@ -213,6 +138,15 @@ HRESULT Hashira::Buffer::Initialize(std::shared_ptr<D3D12Device>& device, const 
 
 		return E_FAIL;
 	}
+
+	this->_resDesc = resourceDesc;
+	this->_heapProp = heapProps;
+	this->_clearValue = *clearValue;
+	this->_currentResourceState = state;
+	this->_isDynamic = (_heapProp.Type == D3D12_HEAP_TYPE::D3D12_HEAP_TYPE_UPLOAD)? true : 
+		(_heapProp.Type == D3D12_HEAP_TYPE::D3D12_HEAP_TYPE_CUSTOM
+			&&_heapProp.MemoryPoolPreference == D3D12_MEMORY_POOL::D3D12_MEMORY_POOL_L0) ? true:false;
+	this->_isAllowUAV = (resourceDesc.Flags == D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS) ? true : false;
 	return S_OK;
 }
 
@@ -304,11 +238,6 @@ const D3D12_RESOURCE_DESC Hashira::Buffer::GetResourceDesc()
 const D3D12_RESOURCE_STATES& Hashira::Buffer::GetResourceState()
 {
 	return   _currentResourceState;
-}
-
-const Hashira::BufferUsage::Type& Hashira::Buffer::GetBufferUsage()
-{
-	return _bufferUsage;
 }
 
 void Hashira::Buffer::SetResourceState(D3D12_RESOURCE_STATES state)

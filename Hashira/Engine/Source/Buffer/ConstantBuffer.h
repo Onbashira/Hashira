@@ -21,7 +21,7 @@ namespace Hashira {
 
 		~ConstantBuffer();
 
-		virtual HRESULT Initialize(ULONG64 size);
+		virtual HRESULT Initialize(std::shared_ptr<D3D12Device>& device,ULONG64 size);
 
 		HRESULT	CreateView(D3D12_CONSTANT_BUFFER_VIEW_DESC& cvDesc, D3D12_CPU_DESCRIPTOR_HANDLE cpuDescriptorHandle);
 

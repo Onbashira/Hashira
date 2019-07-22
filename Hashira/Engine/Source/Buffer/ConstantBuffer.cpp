@@ -13,8 +13,7 @@ Hashira::ConstantBuffer::~ConstantBuffer()
 	Buffer::Discard();
 }
 
-
-HRESULT Hashira::ConstantBuffer::Initialize( ULONG64 size)
+HRESULT Hashira::ConstantBuffer::Initialize(std::shared_ptr<D3D12Device>& device, ULONG64 size)
 {
 	_initializeSize = size;
 	size = Util::Alignment256Bytes(size);

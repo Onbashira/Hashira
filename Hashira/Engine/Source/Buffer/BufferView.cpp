@@ -14,9 +14,10 @@ Hashira::BufferView::~BufferView()
 
 HRESULT Hashira::BufferView::Initialize(RenderContext* context, Buffer* buffer, Uint64 stride, Uint64 firstElement)
 {
-	if (buffer) {
-
+	if (buffer == nullptr) {
+		return E_FAIL;
 	}
+
 	return E_NOTIMPL;
 }
 

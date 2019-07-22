@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include "Engine/Source/Component/Transform/Transform.h"
 #include "Engine/Source/Component/DefaultComponents.h"
+#include "Engine/Source/CommandList/CommandList.h"
 Hashira::Camera::Camera() : 
 	GameObject(new DefaultGraphicsComponent() , new DefaultInputComponent() , new DefaultPhysicsComponent()),
 	_mode(CAMERA_MODE::Perspective), _aspectRatio(0.0f)
@@ -86,9 +87,9 @@ void Hashira::Camera::Discard()
 
 }
 
-HRESULT Hashira::Camera::CreateBuffer()
+HRESULT Hashira::Camera::CreateBuffer(std::shared_ptr<D3D12Device>& device)
 {
-	auto hr = _cameraMatrixBuffer.Initialize(1, true);
+	auto hr = _cameraMatrixBuffer.Initialize(device ,1, true);
 	if (FAILED(hr)) {
 		return hr;
 	}
@@ -147,7 +148,7 @@ HRESULT Hashira::Camera::InitializeOrthogonal(const float width, const float hei
 	this->_info.windowHeight = this->_windowHeight;
 	this->_info.windowWidth = this->_windowWidth;
 
-	if (FAILED(CreateBuffer())) {
+	if (FAILED(CreateBuffer( device))) {
 		return E_FAIL;
 	}
 	Update();
@@ -190,7 +191,7 @@ HRESULT Hashira::Camera::initializePerspective(const float width, const float he
 	this->_info.windowHeight = this->_windowHeight;
 	this->_info.windowWidth = this->_windowWidth;
 
-	if (FAILED(CreateBuffer())) {
+	if (FAILED(CreateBuffer(device))) {
 		return E_FAIL;
 	}
 

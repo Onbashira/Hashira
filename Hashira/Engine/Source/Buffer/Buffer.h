@@ -20,6 +20,15 @@ namespace Hashira {
 		};
 	};
 
+	struct BufferMemoryPoolType
+	{
+		enum Type
+		{
+			L0,
+			L1,
+		};
+	};
+
 	class Buffer
 	{
 
@@ -30,8 +39,6 @@ namespace Hashira {
 		//!現在のリソースステート
 		D3D12_RESOURCE_STATES _currentResourceState;
 
-		BufferUsage::Type _bufferUsage;
-
 		//!マップされたポインタ
 		UCHAR* _pDst;
 
@@ -39,16 +46,10 @@ namespace Hashira {
 		D3D12_CLEAR_VALUE _clearValue;
 
 		//!UAV
-		bool _isUAV;
+		bool _isAllowUAV;
 
 		bool _isDynamic;
-
-		size_t _stride;
-
-		size_t _size;
 		
-		D3D12_HEAP_DESC _heapDesc;
-
 		D3D12_RESOURCE_DESC _resDesc;
 
 		D3D12_HEAP_PROPERTIES _heapProp;
@@ -102,34 +103,6 @@ namespace Hashira {
 		*/
 		virtual HRESULT Initialize(const D3D12_HEAP_PROPERTIES& heapProps, const D3D12_HEAP_FLAGS& flags, const D3D12_RESOURCE_DESC& resourceDesc, const D3D12_RESOURCE_STATES& state, D3D12_CLEAR_VALUE* clearValue = nullptr);
 
-
-		/**
-		* @fn
-		* @brief バッファの作成
-		* @param[in] device デバイス
-		* @param[in] size サイズ
-		* @param[in] stride ストライド
-		* @param[in] usage バッファの使われ方
-		* @param[in] isDynamic ヒープフラグ
-		* @param[in] isUAV バッファのデスクリプション
-		* @return リザルト
-		*/
-		virtual HRESULT Initialize(std::shared_ptr<D3D12Device>& device, size_t size, size_t stride, BufferUsage::Type usage, bool isDynamic, bool isUAV);
-		
-		/**
-		* @fn
-		* @brief バッファの作成
-		* @param[in] device デバイス
-		* @param[in] size サイズ
-		* @param[in] stride ストライド
-		* @param[in] usage バッファの使われ方
-		* @param[in] state 初期ステート
-		* @param[in] isDynamic ヒープフラグ
-		* @param[in] isUAV バッファのデスクリプション
-		* @return リザルト
-		*/
-		virtual HRESULT Initialize(std::shared_ptr<D3D12Device>& device,size_t size,size_t stride, BufferUsage::Type usage,const D3D12_RESOURCE_STATES& state, bool isDynamic, bool isUAV);
-		
 		/**
 		* @fn
 		* @brief バッファの作成
@@ -241,13 +214,6 @@ namespace Hashira {
 
 		/**
 		* @fn
-		* @brief バッファステートのフェッチ
-		* @return ステート
-		*/
-		const BufferUsage::Type& GetBufferUsage();
-
-		/**
-		* @fn
 		* @brief バッファステートのセット
 		* @param[in] state バッファステート
 		*/
@@ -290,7 +256,6 @@ namespace Hashira {
 		Buffer();
 
 	private:
-
 
 	};
 }
