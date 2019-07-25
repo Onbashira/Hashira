@@ -2693,6 +2693,11 @@ bool  Hashira::Matrix::IsIdentity(const Hashira::Matrix &value)
 	return false;
 }
 
+bool Hashira::Matrix::IsIdentity()
+{
+	return IsIdentity(*this);
+}
+
 Hashira::Matrix  Hashira::Matrix::Transpose(const Hashira::Matrix & value)
 {
 	return Hashira::Matrix(
@@ -2724,6 +2729,12 @@ void  Hashira::Matrix::Transpose(const Hashira::Matrix & value, Hashira::Matrix 
 	result._42 = value._24;
 	result._43 = value._34;
 	result._44 = value._44;
+}
+
+Hashira::Matrix& Hashira::Matrix::Transpose()
+{
+	Transpose(*this);
+	return *this;
 }
 
 Hashira::Matrix  Hashira::Matrix::Multiply(const Hashira::Matrix & a, const Hashira::Matrix & b)
@@ -2932,6 +2943,12 @@ void  Hashira::Matrix::Invert(const Hashira::Matrix & value, Hashira::Matrix & r
 	result._42 /= det;
 	result._43 /= det;
 	result._44 /= det;
+}
+
+Hashira::Matrix& Hashira::Matrix::Invert()
+{
+	Invert(*this);
+	return *this;
 }
 
 Hashira::Matrix  Hashira::Matrix::CreateScaleMatrix(const float scale)

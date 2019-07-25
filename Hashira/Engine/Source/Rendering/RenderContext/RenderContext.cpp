@@ -94,6 +94,48 @@ HRESULT Hashira::RenderContext::Initialize(std::shared_ptr<RenderingDevice>& dev
 
 }
 
+HRESULT Hashira::RenderContext::IntializeAllocators(std::shared_ptr<RenderingDevice>& device, Uint32 viewDescMaxNum, Uint32 dsvDescMaxNum, Uint32 rtvDescMaxNum, Uint32 samplerMaxNum)
+{
+
+	D3D12_DESCRIPTOR_HEAP_DESC desc{};
+	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAGS::D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	desc.NodeMask = 1;
+	desc.NumDescriptors = viewDescMaxNum;
+	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE::D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+	auto hr = this->_viewHeapAllocator->Initialize(device->GetD3D12Device(), desc);
+	if (FAILED(hr)) {
+		return hr;
+	}
+	this->_defaultViewDescriptorInfo = _viewHeapAllocator->Allocate();
+
+	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAGS::D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	desc.NodeMask = 1;
+	desc.NumDescriptors = samplerMaxNum;
+	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE::D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER;
+	hr = this->_samplerHeapAllocator->Initialize(device->GetD3D12Device(), desc);
+	if (FAILED(hr)) {
+		return hr;
+	}
+	this->_defaultSamplerDescriptorInfo = _samplerHeapAllocator->Allocate();
+
+	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAGS::D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	desc.NodeMask = 1;
+	desc.NumDescriptors = dsvDescMaxNum;
+	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE::D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+	hr = this->_dsvHeapAllocator->Initialize(device->GetD3D12Device(), desc);
+	if (FAILED(hr)) {
+		return hr;
+	}
+
+	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAGS::D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	desc.NodeMask = 1;
+	desc.NumDescriptors = rtvDescMaxNum;
+	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE::D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+	hr = this->_dsvHeapAllocator->Initialize(device->GetD3D12Device(), desc);
+
+	return hr;
+}
+
 HRESULT Hashira::RenderContext::CreateCommandList(std::shared_ptr<D3D12Device>& device, D3D12_COMMAND_LIST_TYPE type, std::shared_ptr<CommandList>& commandList)
 {
 

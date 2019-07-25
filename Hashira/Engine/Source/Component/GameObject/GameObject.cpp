@@ -1,5 +1,6 @@
 #include "GameObject.h"
 #include "Engine/Source/CommandList/CommandList.h"
+#include "Engine/Source/Device/RenderingDevice.h"
 #include "Engine/Source/Component/GraphicsComponent/GraphicsComponent.h"
 #include "Engine/Source/Component/InputComponent/InputComponent.h"
 #include "Engine/Source/Component/PhysicsComponent/PhysicsComponent.h"
@@ -71,7 +72,7 @@ void Hashira::GameObject::UpdateTransformBuffer()
 	_transformBuffer.Update(&mat, _transformBuffer.GetInitializeSize(), 0);
 }
 
-void Hashira::GameObject::InitalizeTransformBuffer(size_t size)
+void Hashira::GameObject::InitalizeTransformBuffer(std::shared_ptr<D3D12Device>& dev,size_t size)
 {
-	_transformBuffer.Initialize(size);
+	_transformBuffer.Initialize(dev,size);
 }

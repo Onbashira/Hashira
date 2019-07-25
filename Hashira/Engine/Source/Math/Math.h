@@ -821,10 +821,12 @@ namespace Hashira {
 
 		//s—ñ‚ª’PˆÊs—ñ‚©
 		static bool					IsIdentity(const Matrix &value);
+		bool						IsIdentity();
 
 		//“]’u‚·‚é
 		static Matrix				Transpose(const Matrix& value);
 		static void					Transpose(const Matrix& value, Matrix& result);
+		Matrix&						Transpose();
 
 		//s—ñ‚ğæZ‚·‚é
 		static Matrix				Multiply(const Matrix& a, const Matrix& b);
@@ -839,6 +841,7 @@ namespace Hashira {
 		//‹ts—ñ‚ğ‚à‚Æ‚ß‚é
 		static Matrix				Invert(const Matrix& value);
 		static void					Invert(const Matrix& value, Matrix& result);
+		Matrix&						Invert();
 
 		//Šgk—ps—ñ‚Ìì¬
 		static Matrix				CreateScaleMatrix(const float scale);

@@ -79,6 +79,8 @@ namespace Hashira {
 
 		HRESULT Initialize(std::shared_ptr<RenderingDevice>& device,int frameNum, int nodeMask,std::shared_ptr<CommandQueue>& queue,std::shared_ptr<SwapChain>& swapChain);
 
+		HRESULT IntializeAllocators(std::shared_ptr<RenderingDevice>& device, Uint32 viewDescMaxNum, Uint32 dsvDescMaxNum, Uint32 rtvDescMaxNum, Uint32 samplerMaxNum = 2048u);
+
 		HRESULT CreateCommandList(std::shared_ptr<D3D12Device>& device,D3D12_COMMAND_LIST_TYPE type, std::shared_ptr<CommandList>& commandList);
 		HRESULT CreateCommandList(D3D12_COMMAND_LIST_TYPE type, std::shared_ptr<CommandList>& commandList);
 

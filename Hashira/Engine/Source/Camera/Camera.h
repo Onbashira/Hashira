@@ -70,6 +70,7 @@ namespace Hashira {
 		//!ƒJƒƒ‰‚Ìî•ñ
 		CameraInfo _info;
 
+
 	public:
 
 		Camera();

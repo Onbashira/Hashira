@@ -79,6 +79,7 @@ namespace Hashira {
 			return allocator == nullptr;
 		}
 
+		//‰ð•ú
 		void Free();
 
 	};

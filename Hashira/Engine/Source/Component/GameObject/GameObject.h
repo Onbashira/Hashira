@@ -36,9 +36,9 @@ namespace Hashira {
 
 	public:
 
-		GameObject(GraphicsComponent* graphicsComponent,
-			InputComponent* inputComponent,
-			PhysicsComponent* physicsComponent
+		GameObject(GraphicsComponent* graphicsComponent = nullptr,
+			InputComponent* inputComponent = nullptr,
+			PhysicsComponent* physicsComponent = nullptr
 		);
 
 		virtual ~GameObject();
@@ -65,7 +65,7 @@ namespace Hashira {
 
 		virtual void UpdateTransformBuffer();
 		//バッファリソースにSize分の1次元バッファとして領域を確保する；
-		virtual void InitalizeTransformBuffer(size_t size);
+		virtual void InitalizeTransformBuffer(std::shared_ptr<D3D12Device>& dev,size_t size);
 
 	private:
 
