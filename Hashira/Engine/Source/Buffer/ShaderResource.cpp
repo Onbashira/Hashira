@@ -25,7 +25,7 @@ HRESULT Hashira::ShaderResource::Initialize(std::shared_ptr<D3D12Device>& device
 	D3D12_RESOURCE_DESC resDesc = {};
 	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 	resDesc.Width = texWidth;
-	resDesc.Height = texWidth;
+	resDesc.Height = texHeight;
 	resDesc.DepthOrArraySize = texDepth;
 	resDesc.MipLevels = 1;
 	resDesc.Format = texFormat;

@@ -1,7 +1,8 @@
 #include "D3D12Device.h"
 #include "Engine/Source/Utility/D3D12Common.h"
 #include "Engine/Source/Factory/Factory.h"
-
+#include "Engine/Source/DescriptorHeap/DescriptorHeap.h"
+#include "Engine/Source/Buffer/Buffer.h"
 #include <string>
 
 
@@ -89,6 +90,36 @@ Microsoft::WRL::ComPtr<ID3D12Device3>& Hashira::D3D12Device::GetDevice()
 {
 	return _device;
 }
+
+void Hashira::D3D12Device::CreateConstantBufferView(DescriptorInfo* allocatedDescriptor, D3D12_CONSTANT_BUFFER_VIEW_DESC* desc)
+{
+	this->_device->CreateConstantBufferView(desc, allocatedDescriptor->cpuHandle);
+}
+
+void Hashira::D3D12Device::CreateShaderResourceView(Buffer* srcBuffer, DescriptorInfo* allocatedDescriptor, D3D12_SHADER_RESOURCE_VIEW_DESC* desc)
+{
+	this->_device->CreateShaderResourceView(srcBuffer->GetResource().Get(),desc, allocatedDescriptor->cpuHandle);
+
+}
+
+void Hashira::D3D12Device::CreateUnorderedAccessView(Buffer* srcBuffer, DescriptorInfo* allocatedDescriptor, D3D12_UNORDERED_ACCESS_VIEW_DESC* desc,Buffer* counterBuffer)
+{
+	this->_device->CreateUnorderedAccessView(srcBuffer->GetResource().Get(), counterBuffer->GetResource().Get(),desc, allocatedDescriptor->cpuHandle);
+
+}
+
+void Hashira::D3D12Device::CreateDepthStencilView(Buffer* srcBuffer, DescriptorInfo* allocatedDescriptor, D3D12_DEPTH_STENCIL_VIEW_DESC* desc)
+{
+	this->_device->CreateDepthStencilView(srcBuffer->GetResource().Get(),  desc, allocatedDescriptor->cpuHandle);
+
+}
+
+void Hashira::D3D12Device::CreateRenderTargetView(Buffer* srcBuffer, DescriptorInfo* allocatedDescriptor, D3D12_RENDER_TARGET_VIEW_DESC* desc)
+{
+	this->_device->CreateRenderTargetView(srcBuffer->GetResource().Get(), desc, allocatedDescriptor->cpuHandle);
+
+}
+
 
 const D3D_FEATURE_LEVEL& Hashira::D3D12Device::GetFeatureLevel()
 {

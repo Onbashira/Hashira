@@ -6,6 +6,15 @@
 #include "Engine/Source/CommandList/CommandList.h"
 #include "Engine/Source/Rendering/SwapChain.h"
 
+
+
+constexpr unsigned int SamplerMaxCount = 2048;
+constexpr unsigned int CbvMaxCount = 16;
+constexpr unsigned int SrvMaxCount = 32;
+constexpr unsigned int UavMaxCount = 16;
+
+
+
 Hashira::DescriptorHeap::DescriptorHeap()
 {
 }

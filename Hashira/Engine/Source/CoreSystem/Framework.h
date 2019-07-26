@@ -21,6 +21,7 @@ namespace Hashira {
 	{
 
 	public:
+	private:
 
 		//！インスタンス
 		inline static Framework* _instance = nullptr;
@@ -246,13 +247,13 @@ namespace Hashira {
 
 		Framework();
 
-		Framework(const Framework&) {};
+		Framework(const Framework&)noexcept {};
 
-		Framework(Framework&&) {};
+		Framework(Framework&&)noexcept {};
 
-		Framework& operator =(const Framework&) { return *this; };
+		Framework& operator =(const Framework&)noexcept { return *this; };
 
-		Framework& operator =(Framework&&) { return *this; };
+		Framework& operator =(Framework&&)noexcept { return *this; };
 
 		/**
 		* @fn

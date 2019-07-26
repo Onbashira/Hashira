@@ -64,6 +64,7 @@ namespace Hashira {
 
 	public:
 
+		Buffer();
 
 		Buffer(const D3D12_HEAP_PROPERTIES& heapProps, const D3D12_HEAP_FLAGS& flags, const D3D12_RESOURCE_DESC& resourceDesc, const D3D12_RESOURCE_STATES& state, D3D12_CLEAR_VALUE* clearValue = nullptr);
 
@@ -253,7 +254,6 @@ namespace Hashira {
 
 	protected:
 
-		Buffer();
 
 	private:
 

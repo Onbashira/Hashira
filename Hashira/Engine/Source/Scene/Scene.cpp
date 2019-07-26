@@ -13,6 +13,26 @@ Hashira::Scene::Scene(std::shared_ptr<RenderingDevice>& renderingDevice) :
 
 {
 	//RenderingContextCreate
+	_renderContext->IntializeAllocators(renderingDevice->GetD3D12Device()->GetDevice());
+
+	_mainCamera = std::make_shared<Camera>();
+
+	CameraInitInfo cInfo{};
+	Uint32 x, y;
+	Framework::GetInstance().GetWindowSize(x,y);
+	cInfo.width = static_cast<float >(x);
+	cInfo.height = static_cast<float>(y);
+	cInfo.fov = DegToRad(90.0f);
+	_mainCamera->Initialize(_renderContext, cInfo);
+
+	_sceneConstant.Initialize(renderingDevice->GetD3D12Device(), 1, true);
+
+	_sceneConstantDescriptor = _renderContext->GetViewDescriptorHeap()->Allocate();
+
+	D3D12_CONSTANT_BUFFER_VIEW_DESC desc{};
+	desc.BufferLocation = _sceneConstant.GetResource()->GetGPUVirtualAddress();
+	desc.SizeInBytes = Util::Alignment256Bytes(sizeof(SceneConstant));
+	renderingDevice->GetD3D12Device()->CreateConstantBufferView(&_sceneConstantDescriptor,&desc);
 
 }
 
@@ -35,7 +55,7 @@ void Hashira::Scene::SceneBegin()
 
 	//メインカメラデプスのクリア
 	{
-		//_mainCamera->GetDepthStencil().ClearDepthStencil(list.lock());
+		_mainCamera->ClearCurrentDepthStencil(list.lock());
 	}
 
 	list.lock()->CloseCommandList();
@@ -64,7 +84,7 @@ void Hashira::Scene::SceneEnd()
 	
 	//レンダーターゲットフリッピング
 	_renderContext->Flip();
-
+	_mainCamera->FlipDepthStencilBuffer();
 	_renderContext->WaitForGPU(_renderContext->GetCommandQueue().lock(), true);
 
 	_renderContext->ClearCmdLists();
@@ -76,7 +96,7 @@ void Hashira::Scene::SceneEnd()
 void Hashira::Scene::Discard()
 {
 	//!デスクリプタヒープ
-	_renderContext->Discard();;
+	_renderContext->Discard();
 	_mainCamera->Discard();
 }
 

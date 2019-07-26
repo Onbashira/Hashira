@@ -8,8 +8,11 @@
 #include "Engine/Source/Signature/RootSignature.h"
 #include "Engine/Source/Signature/CommandSignature.h"
 #include "Engine/Source/Device/D3D12Device.h"
+#include "Engine/Source/Device/RenderingDevice.h"
 #include "Engine/Source/CommandAllocator/CommandAllocator.h"
 #include "Engine/Source/Buffer/Buffer.h"
+#include "Engine/Source/Rendering/RenderContext/RenderContext.h"
+#include "Engine/Source/CommandQueue/CommandQueue.h"
 
 Hashira::CommandList::CommandList() :
 	_commandList(),
@@ -42,6 +45,46 @@ HRESULT Hashira::CommandList::Initialize(std::weak_ptr<D3D12Device> device, unsi
 	if (result != S_OK) {
 		return result;
 	}
+	return result;
+}
+
+HRESULT Hashira::CommandList::Initialize(RenderContext* rc, unsigned int nodeMask, D3D12_COMMAND_LIST_TYPE listType, std::shared_ptr<CommandAllocator>& commandAllocator)
+{
+	HRESULT result;
+	if (commandAllocator->GetAllocator().Get() == nullptr) {
+		return E_ACCESSDENIED;
+	}
+	this->_parentAllocator = commandAllocator;
+	_listType = listType;
+	result = rc->GetRenderingDevice()->GetD3D12Device()->GetDevice()->CreateCommandList(nodeMask, _listType, commandAllocator->GetAllocator().Get(), nullptr, IID_PPV_ARGS(&_commandList));
+	if (result != S_OK) {
+		return result;
+	}
+	
+	auto type = rc->GetCommandQueue().lock()->GetDesc().Type;
+	if (type == D3D12_COMMAND_LIST_TYPE_DIRECT || type == D3D12_COMMAND_LIST_TYPE_COMPUTE)
+	{
+		this->_descriptorStackList = new DescriptorStackList();
+		if (!_descriptorStackList->Initialize(rc->GetGlobalDescriptorHeap().get()))
+		{
+			return false;
+		}
+
+		_samplerDescCache = new SamplerDescriptorCache();
+		if (!_samplerDescCache->Initialize(rc->GetRenderingDevice()->GetD3D12Device()));
+		{
+			return false;
+		}
+
+		this->_currSamplerHeap = _prevSamplerHeap = nullptr;
+	}
+	
+	this->_heapChanged = true;
+
+	_parentRC = rc;
+	_parentQueue = rc->GetCommandQueue().lock();
+
+
 	return result;
 }
 
@@ -110,6 +153,16 @@ void Hashira::CommandList::SetUavBarrier(Buffer * res)
 	
 	this->_commandList->ResourceBarrier(1, &barrier);
 
+}
+
+void Hashira::CommandList::SetGraphcisRootSignatureAndDescriptors(RootSignature* rs, DescriptorSet* descSet)
+{
+
+	auto& pList = GetCommandList();
+}
+
+void Hashira::CommandList::SetComputeRootSignatureAndDescriptors(RootSignature* rs, DescriptorSet* descSet)
+{
 }
 
 void Hashira::CommandList::Discard()

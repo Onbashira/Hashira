@@ -7,12 +7,6 @@ namespace Hashira {
 	class D3D12Device;
 	class CommandList;
 
-	constexpr Uint32 SamplerMaxCount = 2048u;
-	constexpr Uint32 CbvMaxCount = 16;
-	constexpr Uint32 SrvMaxCount = 32;
-	constexpr Uint32 UavMaxCount = 16;
-
-
 	class Descriptor;
 	//ÉqÅ[Év
 	class DescriptorHeap

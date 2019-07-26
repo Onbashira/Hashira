@@ -15,7 +15,7 @@ Hashira::MeshBuffer::~MeshBuffer()
 void Hashira::MeshBuffer::CreateIndexBuffer(size_t elementSize, size_t elementNum, void * pSrc)
 {
 	auto vRes = std::make_unique<VertexBuffer>();
-	std::make_unique<VertexBuffer>()->Initialize(elementSize * elementNum, elementSize, pSrc);
+	vRes->Initialize(elementSize * elementNum, elementSize, pSrc);
 	this->_vertexBuffers.push_back(std::move(vRes));
 	
 	D3D12_VERTEX_BUFFER_VIEW view{};

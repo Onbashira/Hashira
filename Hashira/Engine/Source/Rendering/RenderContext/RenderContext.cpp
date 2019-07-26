@@ -142,7 +142,7 @@ HRESULT Hashira::RenderContext::CreateCommandList(std::shared_ptr<D3D12Device>& 
 	if (commandList == nullptr) {
 		commandList = std::make_shared < CommandList>();
 	}
-	CHECK_RESULT(commandList->Initialize(device, device->GetDevice()->GetNodeCount(), type, _cmdAllocators[_currentIndex]));
+	CHECK_RESULT(commandList->Initialize(this, device->GetDevice()->GetNodeCount(), type, _cmdAllocators[_currentIndex]));
 	_listsVector[_currentIndex].push_back(commandList);
 	return S_OK;
 }
@@ -153,7 +153,7 @@ HRESULT Hashira::RenderContext::CreateCommandList(D3D12_COMMAND_LIST_TYPE type, 
 	if (commandList == nullptr) {
 		commandList = std::make_shared < CommandList>();
 	}
-	CHECK_RESULT(commandList->Initialize(_parentDevice->GetD3D12Device(), _parentDevice->GetD3D12Device()->GetDevice()->GetNodeCount(), type, _cmdAllocators[_currentIndex]));
+	CHECK_RESULT(commandList->Initialize(this, _parentDevice->GetD3D12Device()->GetDevice()->GetNodeCount(), type, _cmdAllocators[_currentIndex]));
 	_listsVector[_currentIndex].push_back(commandList);
 	return S_OK;
 }

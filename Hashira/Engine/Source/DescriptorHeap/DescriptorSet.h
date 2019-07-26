@@ -4,7 +4,6 @@
 
 namespace Hashira {
 
-	namespace DescriptorSystem {
 
 		constexpr Uint32 CbvMaxCount = 16;
 		constexpr Uint32 SrvMaxCount = 48;
@@ -114,5 +113,4 @@ namespace Hashira {
 		
 		};
 
-	}
 }

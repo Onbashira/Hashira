@@ -1,313 +1,315 @@
+#include "stdafx.h"
 #include "Camera.h"
-#include "Engine/Source/Component/Transform/Transform.h"
-#include "Engine/Source/Component/DefaultComponents.h"
+#include "Engine/Source/Rendering/RenderContext/RenderContext.h"
+#include "Engine/Source/Device/RenderingDevice.h"
+#include "Engine/Source/Device/D3D12Device.h"
+#include "Engine/Source/Buffer/DepthStencilBuffer.h"
+#include "Engine/Source/Buffer/ShaderResource.h"
+#include "DefaultComponent/CameraGraphicsComponent.h"
+#include "DefaultComponent/CameraInputComponent.h"
+#include "DefaultComponent/CameraPhysicsComponent.h"
 #include "Engine/Source/CommandList/CommandList.h"
-Hashira::Camera::Camera() : 
-	GameObject(new DefaultGraphicsComponent() , new DefaultInputComponent() , new DefaultPhysicsComponent()),
-	_mode(CAMERA_MODE::Perspective), _aspectRatio(0.0f)
+
+Hashira::Camera::Camera() :
+	GameObject(new CameraGraphicsComponent(), new CameraInputComponent(), new CameraPhysicsComponent()),
+	_cameraType(CAMERA_TYPE::Perspective)
 {
-
 }
-
 
 Hashira::Camera::~Camera()
 {
-
 }
 
-
-void Hashira::Camera::InitializeCamera(CAMERA_MODE type, const float width, const float height, const float nearClip, const float farClip, const Vector3 & position, const Vector3 & target, const Vector3 & upWard)
+HRESULT Hashira::Camera::Initialize(std::shared_ptr<RenderContext>& context, const CameraInitInfo& cameraInfo)
 {
-	switch (type)
+	auto& d3d12Dev = context->GetRenderingDevice()->GetD3D12Device();
+	auto hr = _transformBuffer.Initialize(context->GetRenderingDevice()->GetD3D12Device(), sizeof(CameraInfo));
+	if (FAILED(hr))
 	{
-	case CAMERA_MODE::Perspective:
-		initializePerspective(width, height, nearClip, farClip, position, target, upWard);
-		break;
-	case CAMERA_MODE::Orthogonal:
-		InitializeOrthogonal(width, height, nearClip, farClip, position, target, upWard);
-		break;
-	default:
-		break;
-	}
-}
-
-void Hashira::Camera::InitializeCameraFOV(const float fov, const float width, const float height, const float nearClip, const float farClip, const Vector3 & position, const Vector3 & target, const Vector3 & upWard)
-{
-
-	_mode = CAMERA_MODE::Perspective;
-
-	_fov = DegToRad(fov);
-	_near = nearClip;
-	_far = farClip;
-	_aspectRatio = width / height;
-	_windowHeight = height;
-	_windowWidth = width;
-
-	_viewport.Height = _windowHeight;
-	_viewport.Width = _windowWidth;
-	_viewport.MinDepth = 0.0f;
-	_viewport.MaxDepth = 1.0f;
-	_viewport.TopLeftX = 0.0f;
-	_viewport.TopLeftY = 0.0f;
-
-	_scissorRect.left = 0;
-	_scissorRect.right = static_cast<LONG>(_windowWidth);
-	_scissorRect.top = 0;
-	_scissorRect.bottom = static_cast<LONG>(_windowHeight);
-
-	auto mat = Matrix::ExtractRotationMatrix(Matrix::CreateLookAt(position, target, upWard));
-	this->_transform.SetRotation(Quaternion::CreateFromRotationMatrix(mat));
-	this->_projection = Matrix::CreatePerspectiveFOV(_fov, _aspectRatio, nearClip, farClip);
-
-	if (FAILED(CreateBuffer())) {
-		return;
-	}
-	Update();
-}
-
-HRESULT Hashira::Camera::InitializeCameraDepthStencill(std::shared_ptr<D3D12Device>& device,DXGI_FORMAT depthFormat, unsigned int windowWidth, unsigned int windowHeight)
-{
-	_depthStencillRersource.Discard();
-	auto hr = _depthStencillRersource.Initialize(device,windowWidth, windowHeight, depthFormat, depthFormat);
-	_depthStencillRersource.SetName("CameraDepthStencill");
-	return hr;
-
-}
-
-void Hashira::Camera::SetCameraParameter(std::weak_ptr<CommandList> list, unsigned int parameterIndex)
-{
-	list.lock()->GetCommandList()->SetGraphicsRootConstantBufferView(parameterIndex, _cameraMatrixBuffer.GetResource()->GetGPUVirtualAddress());
-}
-
-void Hashira::Camera::Discard()
-{
-
-	_depthStencillRersource.Discard();
-	_cameraMatrixBuffer.Discard();
-
-}
-
-HRESULT Hashira::Camera::CreateBuffer(std::shared_ptr<D3D12Device>& device)
-{
-	auto hr = _cameraMatrixBuffer.Initialize(device ,1, true);
-	if (FAILED(hr)) {
 		return hr;
 	}
-	_cameraMatrixBuffer.SetName("CameraMatrixBuffer");
+
+	hr = this->InitializeDepthStencil(d3d12Dev, DXGI_FORMAT::DXGI_FORMAT_D32_FLOAT, DXGI_FORMAT::DXGI_FORMAT_R32_TYPELESS);
+	if (FAILED(hr))
+	{
+		return hr;
+	}
+
+	{
+		_cameraCbvDescriptor = context->GetViewDescriptorHeap()->Allocate();
+		D3D12_CONSTANT_BUFFER_VIEW_DESC desc{};
+		desc.BufferLocation = this->_transformBuffer.GetResource()->GetGPUVirtualAddress();
+		desc.SizeInBytes = static_cast<Uint32>(this->_transformBuffer.GetResourceDesc().Width);
+		context->GetRenderingDevice()->GetD3D12Device()->CreateConstantBufferView(&_cameraCbvDescriptor, &desc);
+
+	}
+
+	{
+
+		D3D12_DEPTH_STENCIL_VIEW_DESC desc{};
+		desc.Flags = D3D12_DSV_FLAGS::D3D12_DSV_FLAG_NONE;
+		desc.Format = DXGI_FORMAT::DXGI_FORMAT_D32_FLOAT;
+		desc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
+		desc.Texture2D.MipSlice = 1;
+
+		for (int i = 0; i < CameraDepthStencilMax; ++i)
+		{
+			_cameraDsvDescriptors.Set(i, context->GetDsvDescriptorHeap()->Allocate());
+			context->GetRenderingDevice()->GetD3D12Device()->CreateDepthStencilView(this->_depthStencils.Get().get(), &_cameraDsvDescriptors.Get(), &desc);
+		}
+	}
+
+	D3D12_RECT scissor{};
+	scissor.bottom = LONG(_cameraInfo.windowHeight);
+	scissor.right = LONG(_cameraInfo.windowWidth);
+	SetScissorRect(scissor);
+
+	D3D12_VIEWPORT port{ };
+	port.Height = _cameraInfo.windowHeight;
+	port.Width = _cameraInfo.windowWidth;
+	port.TopLeftX = 0.0f;
+	port.TopLeftY = 0.0f;
+	port.MaxDepth = 1.0f;
+	port.MinDepth = 0.0f;
+	Update();
 	return hr;
 }
 
-void Hashira::Camera::ChangeCameraMode(CAMERA_MODE mode)
+const Hashira::CameraInfo& Hashira::Camera::GetCameraInfo() const
 {
+	return _cameraInfo;
+}
 
-	switch (mode)
+const D3D12_VIEWPORT* Hashira::Camera::GetViewport(Uint32 index)
+{
+	return _viewports.data();
+}
+
+const Hashira::Uint32 Hashira::Camera::GetViewportNum()
+{
+	return static_cast<Uint32>(_viewports.size());
+}
+
+std::vector<D3D12_VIEWPORT>& Hashira::Camera::GetViewportArray()
+{
+	return _viewports;
+
+}
+
+const D3D12_RECT* Hashira::Camera::GetScissor()
+{
+	return &_scissorRect;
+}
+
+void Hashira::Camera::ChangeFov(float fov)
+{
+	CameraInitInfo info{};
+	info = &this->_cameraInfo;
+	info.fov = fov;
+	ChangeParameter(info, false);
+
+}
+
+void Hashira::Camera::ChangeNearFarClip(const Vector2& clipRange)
+{
+	CameraInitInfo info{};
+	info = &this->_cameraInfo;
+
+	info.nearClip = clipRange.x;
+	info.farClip = clipRange.y;
+
+	ChangeParameter(info, false);
+}
+
+void Hashira::Camera::ChangeParameter(const CameraInitInfo& cameraInfo, bool changeTargetPos)
+{
+	//
+
+	this->_cameraInfo = cameraInfo;
+
+	_transform.SetPos(cameraInfo.position);
+	if (changeTargetPos)
 	{
-	case Hashira::CAMERA_MODE::Perspective:
-		InitializeOrthogonal(_windowWidth, _windowHeight, this->_near, _far, this->_transform.GetPos(), this->_transform.GetPos() + this->_transform.GetLocalAxis().w, this->_transform.GetLocalAxis().v);
-		break;
-	case Hashira::CAMERA_MODE::Orthogonal:
-		initializePerspective(_windowWidth, _windowHeight, this->_near, _far, this->_transform.GetPos(), this->_transform.GetPos() + this->_transform.GetLocalAxis().w, this->_transform.GetLocalAxis().v);
-		break;
-	default:
-		break;
+		_transform.LookAt(cameraInfo.target, cameraInfo.up);
 	}
 
-}
-
-HRESULT Hashira::Camera::InitializeOrthogonal(const float width, const float height, const float nearClip, const float farClip, const Vector3 & position, const Vector3 & target, const Vector3 & upWard)
-{
-	_mode = CAMERA_MODE::Orthogonal;
-
-	_fov = 0;
-	_near = nearClip;
-	_far = farClip;
-	_aspectRatio = width / height;
-	_info.windowHeight = height;
-	_info.windowWidth = width;
-
-	_viewport.Height = _windowHeight;
-	_viewport.Width = _windowWidth;
-	_viewport.MinDepth = 0.0f;
-	_viewport.MaxDepth = 1.0f;
-	_viewport.TopLeftX = 0.0f;
-	_viewport.TopLeftY = 0.0f;
-
-	_scissorRect.left = 0;
-	_scissorRect.right = static_cast<LONG>(_windowWidth);
-	_scissorRect.top = 0;
-	_scissorRect.bottom = static_cast<LONG>(_windowHeight);
-
-	this->_transform.SetScale(Vector3::one);
-	this->_transform.SetPos(position);
-
-	Matrix mat = Matrix::ExtractRotationMatrix(Matrix::CreateLookAt(position, target, upWard));
-	this->_transform.SetRotation(Quaternion::CreateFromRotationMatrix(mat));
-
-	this->_info.projection = this->_projection = Matrix::CreateOrthographic(width, height, nearClip, farClip);
-	this->_info.view = Matrix::Invert(mat);
-	this->_info.windowHeight = this->_windowHeight;
-	this->_info.windowWidth = this->_windowWidth;
-
-	if (FAILED(CreateBuffer( device))) {
-		return E_FAIL;
-	}
-	Update();
-	return S_OK;
-
-}
-
-HRESULT Hashira::Camera::initializePerspective(const float width, const float height, const float nearClip, const float farClip, const Vector3 & position, const Vector3 & target, const Vector3 & upWard)
-{
-
-	_mode = CAMERA_MODE::Perspective;
-
-	_fov = 0;
-	_near = nearClip;
-	_far = farClip;
-	_aspectRatio = width / height;
-	_windowHeight = height;
-	_windowWidth = width;
-
-	_viewport.Height = _windowHeight;
-	_viewport.Width = _windowWidth;
-	_viewport.MinDepth = 0.0f;
-	_viewport.MaxDepth = 1.0f;
-	_viewport.TopLeftX = 0.0f;
-	_viewport.TopLeftY = 0.0f;
-
-	_scissorRect.left = 0;
-	_scissorRect.right = static_cast<LONG>(_windowWidth);
-	_scissorRect.top = 0;
-	_scissorRect.bottom = static_cast<LONG>(_windowHeight);
-
-	this->_transform.SetScale(Vector3::one);
-	this->_transform.SetPos(position);
-
-	Matrix mat = std::move(Matrix::CreateLookAt(position, target, upWard));
-	this->_transform.SetRotation(Quaternion::CreateFromRotationMatrix(Matrix::ExtractRotationMatrix(mat)));
-
-	this->_info.projection = this->_projection = Matrix::CreatePerspectiveFOV(DegToRad(70.0f), _aspectRatio, nearClip, farClip);;
-	this->_info.view = Matrix::Invert(mat);
-	this->_info.windowHeight = this->_windowHeight;
-	this->_info.windowWidth = this->_windowWidth;
-
-	if (FAILED(CreateBuffer(device))) {
-		return E_FAIL;
-	}
+	this->_cameraInfo.view = this->_transform.GetView();
+	this->_cameraInfo.invView = Matrix::Invert(_cameraInfo.view);
 
 	Update();
-	return S_OK;
+
 }
 
-Hashira::CAMERA_MODE Hashira::Camera::GetMode()
+void Hashira::Camera::AddViewport(const D3D12_VIEWPORT& viewport)
 {
-	return _mode;
+	this->_viewports.push_back(viewport);
 }
 
-const Hashira::Matrix & Hashira::Camera::GetProjection()
+void Hashira::Camera::SetScissorRect(const D3D12_RECT& rect)
 {
-	return this->_projection;
+	this->_scissorRect = rect;
 }
 
-const Hashira::Matrix  Hashira::Camera::GetViewProjection()
+Hashira::DescriptorInfo& Hashira::Camera::GetCurrentDSVDescriptor()
 {
-	return Matrix::Multiply(this->_transform.GetView(), _projection);
+	return _cameraDsvDescriptors.Get();
 }
 
-Hashira::CameraInfo Hashira::Camera::GetCameraInfo()
+Hashira::DescriptorInfo& Hashira::Camera::GetCameraCBVDescriptor()
 {
-	return this->_info;
+	return _cameraCbvDescriptor;
 }
 
-Hashira::UploadBuffer<Hashira::CameraInfo> & Hashira::Camera::GetCameraBuffer()
+std::unique_ptr<Hashira::Buffer>& Hashira::Camera::GetCurrentDepthStencilBuffer()
 {
-	return this->_cameraMatrixBuffer;
+	return  _depthStencils.Get();
 }
 
-Hashira::DepthStencil & Hashira::Camera::GetDepthStencil()
+Hashira::MultipleUniquePtrBuffer<Hashira::Buffer, Hashira::CameraDepthStencilMax>& Hashira::Camera::GetDepthStencilBuffers()
 {
-	return _depthStencillRersource;
+	return _depthStencils;
 }
 
-float Hashira::Camera::GetFov()
+Hashira::MultipleBuffer<Hashira::DescriptorInfo, Hashira::CameraDepthStencilMax>& Hashira::Camera::GetDsvDescriptors()
 {
-	return _fov;
+	return _cameraDsvDescriptors;
 }
 
-float Hashira::Camera::GetNearClip()
+void Hashira::Camera::ClearCurrentDepthStencil(std::shared_ptr<CommandList>& list)
 {
-	return -(_projection._43 / _projection._33);
-}
 
-float Hashira::Camera::GetFarClip()
-{
-	return -(_projection._43 / (_projection._33 - 1.0f));
-}
+	list->ClearDepthStencilView(this->_cameraDsvDescriptors.Get().cpuHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0u, 0, nullptr);
 
-const D3D12_VIEWPORT & Hashira::Camera::GetViewport() const
-{
-	return _viewport;
-}
-
-const D3D12_RECT & Hashira::Camera::GetScissorRect() const
-{
-	return _scissorRect;
 }
 
 void Hashira::Camera::Update()
 {
-	CameraInfo cameraMat{};
-
-	this->_info.projection = this->_projection;
-	this->_info.view = this->_transform.GetView();
-	this->_info.invView = Matrix::Invert(this->_info.view);
-	this->_info.invViewProj = Matrix::Invert(this->_info.view * this->_projection);
-	this->_info.windowHeight = this->_windowHeight;
-	this->_info.windowWidth = this->_windowWidth;
-
-	_cameraMatrixBuffer.CopyData(0, _info);
+	this->_transformBuffer.Alignment256ByteUpdate(&this->_cameraInfo, sizeof(CameraInfo));
 }
 
-void Hashira::Camera::DebugMove(Hashira::InputManager & input)
+void Hashira::Camera::FlipDepthStencilBuffer()
 {
-	if (input.IsDown(VIRTUAL_KEY_STATE::VKS_UP)) {
-		this->_transform.Move(Vector3::forward);
-	}
-	if (input.IsDown(VIRTUAL_KEY_STATE::VKS_DOWN)) {
-		this->_transform.Move(Vector3::back);
-	}
-	if (input.IsDown(VIRTUAL_KEY_STATE::VKS_RIGHT)) {
-		this->_transform.Move(Vector3::right);
-	}
-	if (input.IsDown(VIRTUAL_KEY_STATE::VKS_LEFT)) {
-		this->_transform.Move(Vector3::left);
-	}
-	if (input.IsDown(VIRTUAL_KEY_STATE::VKS_SPACE)) {
-		this->_transform.Move(Vector3::up);
-	}
-	if (input.IsDown(VIRTUAL_KEY_STATE::VKS_SHIFT)) {
-		this->_transform.Move(Vector3::down);
-	}
+
+	this->_cameraDsvDescriptors.FlipBuffer();
+	this->_depthStencils.FlipBuffer();
 }
 
-void Hashira::Camera::DebugRotate(InputManager & input)
+void Hashira::Camera::Discard()
 {
-	if (input.IsDown(VIRTUAL_KEY_STATE::VKS_W)) {
-		this->_transform.RotationAxisAngles(this->_transform.GetLocalAxis().u, DegToRad(1.0f));
+	this->_depthStencils.DiscardBuffers();
+	for (int i = 0; i < CameraDepthStencilMax; ++i)
+	{
+
+		auto& desc = this->_cameraDsvDescriptors.Get();
+		desc.Free();
+		_cameraDsvDescriptors.FlipBuffer();
 	}
-	if (input.IsDown(VIRTUAL_KEY_STATE::VKS_S)) {
-		this->_transform.RotationAxisAngles(this->_transform.GetLocalAxis().u, DegToRad(-1.0f));
+
+	_cameraCbvDescriptor.Free();
+}
+
+HRESULT Hashira::Camera::InitializeDepthStencil(std::shared_ptr<D3D12Device>& dev, DXGI_FORMAT depthFormat, DXGI_FORMAT clearFormat)
+{
+
+
+	DepthStencil* stencil = nullptr;
+	for (Uint32 i = 0u; i < CameraDepthStencilMax; ++i)
+	{
+		stencil = new DepthStencil();
+		auto hr = stencil->Initialize(dev, static_cast<Uint32>(_cameraInfo.windowWidth), static_cast<Uint32>(_cameraInfo.windowHeight),
+			depthFormat, clearFormat);
+		std::unique_ptr<Buffer> src;
+		src.reset(stencil);
+		if (FAILED(hr))
+		{
+			return hr;
+		}
+
+		this->_depthStencils.SetAddressOf(i, std::move(src));
+
 	}
-	if (input.IsDown(VIRTUAL_KEY_STATE::VKS_D)) {
-		this->_transform.RotationAxisAngles(this->_transform.GetLocalAxis().v, DegToRad(1.0f));
-	}
-	if (input.IsDown(VIRTUAL_KEY_STATE::VKS_A)) {
-		this->_transform.RotationAxisAngles(this->_transform.GetLocalAxis().v, DegToRad(-1.0f));
-	}
-	if (input.IsDown(VIRTUAL_KEY_STATE::VKS_Q)) {
-		this->_transform.RotationAxisAngles(this->_transform.GetLocalAxis().w, DegToRad(1.0f));
-	}
-	if (input.IsDown(VIRTUAL_KEY_STATE::VKS_E)) {
-		this->_transform.RotationAxisAngles(this->_transform.GetLocalAxis().w, DegToRad(-1.0f));
-	}
+	return S_OK;
+}
+
+//HRESULT Hashira::Camera::InitializeRenderTarget(std::shared_ptr<D3D12Device>& dev, DXGI_FORMAT rtFormat, Vector4& clearColor)
+//{
+//
+//	D3D12_HEAP_PROPERTIES props = {};
+//
+//	props.Type = D3D12_HEAP_TYPE::D3D12_HEAP_TYPE_DEFAULT;
+//	props.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY::D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
+//	props.MemoryPoolPreference = D3D12_MEMORY_POOL::D3D12_MEMORY_POOL_UNKNOWN;
+//	props.CreationNodeMask = 0;
+//	props.VisibleNodeMask = 0;
+//
+//	D3D12_RESOURCE_DESC resDesc = {};
+//	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+//	resDesc.Width = _cameraInfo.windowWidth;
+//	resDesc.Height = _cameraInfo.windowHeight;
+//	resDesc.DepthOrArraySize = 1;
+//	resDesc.MipLevels = 1;
+//	resDesc.Format = rtFormat;
+//	resDesc.Layout = D3D12_TEXTURE_LAYOUT::D3D12_TEXTURE_LAYOUT_UNKNOWN;
+//	resDesc.SampleDesc.Count = 1;
+//	resDesc.SampleDesc.Quality = 0;
+//	resDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET |
+//		D3D12_RESOURCE_FLAGS::D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS;
+//	D3D12_CLEAR_VALUE clearValue;
+//	clearValue.Format = rtFormat;
+//	clearValue.DepthStencil.Depth = 0.0f;
+//	clearValue.DepthStencil.Stencil = 0;
+//	clearValue.Color[0] = clearColor.x;
+//	clearValue.Color[1] = clearColor.y;
+//	clearValue.Color[2] = clearColor.z;
+//	clearValue.Color[3] = clearColor.w;
+//
+//	Buffer* rt = new Buffer();
+//
+//	auto hr = rt->Initialize(dev, props, D3D12_HEAP_FLAG_NONE, resDesc,
+//		D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_RENDER_TARGET,
+//		&clearValue);
+//
+//	if (FAILED(hr))
+//	{
+//		return hr;
+//	}
+//	this->_renderTarget.reset(rt);
+//	return hr;
+//}
+
+Hashira::CameraInfo& Hashira::CameraInfo::operator=(const CameraInitInfo& val)
+{
+	nearClip = val.nearClip;
+	farClip = val.farClip;
+	fov = val.fov;
+	windowWidth = val.width;
+	windowHeight = val.height;
+	view = (Matrix::CreateLookAt(val.position, val.target, val.up));
+	view.Invert();
+	projection = Matrix::CreatePerspectiveFOV(
+		val.fov, (val.height / val.width), val.nearClip, val.farClip);
+	invProj = Matrix::Invert(projection);
+	invView = Matrix::Invert(view);
+
+	return *this;
+}
+
+Hashira::CameraInitInfo& Hashira::CameraInitInfo::operator=(CameraInfo* cInfo)
+{
+
+
+	CameraInitInfo info{};
+	info.nearClip = cInfo->nearClip;
+	info.farClip = cInfo->farClip;
+	info.fov = cInfo->fov;
+	info.width = cInfo->windowWidth;
+	info.height = cInfo->windowHeight;
+
+	Matrix v = cInfo->view;
+	info.position = v.axisW;
+	info.up = Vector3(v.axisX.y, v.axisY.y, v.axisZ.y);
+	info.target = (info.position + Vector3(v.axisX.z, v.axisY.z, v.axisZ.z));
+	return *this;
+
+
 }

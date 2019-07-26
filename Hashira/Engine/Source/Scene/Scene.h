@@ -1,11 +1,20 @@
 #pragma once
+#include "Engine/Source/Buffer/UploadBuffer.h"
+#include "Engine/Source/DescriptorHeap/DescriptorHeap.h"
+
 namespace Hashira {
 
 	class RenderContext;
 	class RenderingDevice;
 	class RenderingPassHolder;
-	class GlobalDescriptorHeap;
 	class Camera;
+	class ConstantBuffer;
+
+	struct SceneConstant
+	{
+		Vector2 resolution;
+		float time;
+	};
 
 	//シーンを構成する基底クラス
 	class Scene
@@ -22,6 +31,11 @@ namespace Hashira {
 		std::shared_ptr<RenderContext> _renderContext;
 
 		std::shared_ptr<Camera> _mainCamera;
+
+		UploadBuffer<SceneConstant> _sceneConstant;
+
+		DescriptorInfo _sceneConstantDescriptor;
+
 	private:
 	public:
 		

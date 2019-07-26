@@ -25,7 +25,7 @@ namespace Hashira {
 	class SamplerDescriptorCache;
 	class DescriptorStackList;
 	class RaytracingDescriptorManager;
-
+	class RenderContext;
 
 	class CommandList
 	{
@@ -53,12 +53,16 @@ namespace Hashira {
 		//現在のサンプラーヒープ
 		DescriptorHeap* _currSamplerHeap;
 
+		DescriptorHeap* _prevSamplerHeap;
+
 		//現在のビューヒープ
 		DescriptorHeap* _currViewHeap;
 
 		SamplerDescriptorCache* _samplerDescCache;
 
 		std::shared_ptr<Hashira::CommandAllocator> _parentAllocator;
+
+		RenderContext* _parentRC;
 
 		bool _heapChanged;
 
@@ -78,6 +82,17 @@ namespace Hashira {
 		* @return リザルト　S_OKで成功
 		*/
 		HRESULT Initialize(std::weak_ptr<D3D12Device> device, unsigned int nodeMask, D3D12_COMMAND_LIST_TYPE listType, std::shared_ptr<CommandAllocator>& commandAllocator);
+
+		/**
+		* @fn
+		* @brief コマンドリストの作成
+		* @param[in] rc 作成に使うシーンコンテキスト
+		* @param[in] nodeMask ノードマスク
+		* @param[in] listType リストのタイプ
+		* @param[in] commandAllocator アロケータの参照
+		* @return リザルト　S_OKで成功
+		*/
+		HRESULT Initialize(RenderContext* rc, unsigned int nodeMask, D3D12_COMMAND_LIST_TYPE listType, std::shared_ptr<CommandAllocator>& commandAllocator);
 
 		/**
 		* @fn
