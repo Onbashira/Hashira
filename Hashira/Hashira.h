@@ -48,7 +48,7 @@
 //Shaders
 #include "./Engine/Source/ShaderObject/HLSLIncluder.h"
 #include "./Engine/Source/ShaderObject/ShaderHelper.h"
-#include "./Engine/Source/ShaderObject/ShaderObjectManager.h"
+#include "./Engine/Source/ShaderObject/Shader.h"
 
 //Signature
 #include "./Engine/Source/Signature/RootSignature.h"
@@ -60,8 +60,8 @@
 #include "./Engine/Source/DescriptorHeap/DescriptorSet.h"
 
 //PSO
-#include "./Engine/Source/PIpelineState/PipelineStateObject.h"
 #include "./Engine/Source/PIpelineState/GraphicsPipelineState.h"
+#include "./Engine/Source/PIpelineState/DefaultPipelineStates.h"
 
 //Window
 #include "./Engine/Source/Window/Window.h"
@@ -69,7 +69,6 @@
 //States
 #include "./Engine/Source/Command/State/GeometryState.h"
 #include "./Engine/Source/Command/State/PipelineResourceTable.h"
-#include "./Engine/Source/Command/State/PipelineState.h"
 #include "./Engine/Source/Command/State/TargetState.h"
 
 //Framework
@@ -90,7 +89,6 @@
 #include "./Engine/Source/Math/Math.h"
 
 //Graphics
-#include "./Engine/Source/GraphicsManager/GraphicsContextManager.h"
 #include "./Engine/Source/Rendering/SwapChain.h"
 
 

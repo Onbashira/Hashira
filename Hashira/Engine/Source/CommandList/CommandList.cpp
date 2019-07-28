@@ -1,9 +1,7 @@
 #include "CommandList.h"
 #include "Engine/Source/Debug/Logger.h"
-#include "Engine/Source/CommandList/CommandListManager.h"
 #include "Engine/Source/Utility/Utility.h"
 #include "Engine/Source/CoreSystem/Framework.h"
-#include "Engine/Source/PipelineState/PipelineStateObject.h"
 #include "Engine/Source/Signature/RootSignature.h"
 #include "Engine/Source/Signature/CommandSignature.h"
 #include "Engine/Source/Device/D3D12Device.h"
@@ -335,11 +333,6 @@ void Hashira::CommandList::ClearRenderTargetView(D3D12_CPU_DESCRIPTOR_HANDLE Ren
 	this->_commandList->ClearRenderTargetView(RenderTargetView, ColorRGBA, NumRects, pRects);
 }
 
-void Hashira::CommandList::ClearState(std::shared_ptr<PipelineStateObject> pPipelineState)
-{
-	this->_commandList->ClearState(pPipelineState->GetPSO().Get());
-}
-
 void Hashira::CommandList::ClearUnorderedAccessViewFloat(D3D12_GPU_DESCRIPTOR_HANDLE ViewGPUHandleInCurrentHeap, D3D12_CPU_DESCRIPTOR_HANDLE ViewCPUHandle, Buffer* pResource, const float Values[4], unsigned int NumRects, const D3D12_RECT* pRects)
 {
 	this->_commandList->ClearUnorderedAccessViewFloat(ViewGPUHandleInCurrentHeap, ViewCPUHandle, pResource->GetResource().Get(), Values, NumRects, pRects);
@@ -588,11 +581,6 @@ void Hashira::CommandList::SetMarker(unsigned int Metadata, const void* pData, u
 	this->_commandList->SetMarker(Metadata, pData, Size);
 }
 
-void Hashira::CommandList::SetPipelineState(std::shared_ptr<PipelineStateObject> pPso)
-{
-	this->_commandList->SetPipelineState(pPso->GetPSO().Get());
-
-}
 
 void Hashira::CommandList::SetPredication(Buffer* pBuffer, UINT64 AlignedBufferOffset, D3D12_PREDICATION_OP Operation)
 {

@@ -186,7 +186,7 @@ namespace Hashira {
 		void ClearRenderTargetView(D3D12_CPU_DESCRIPTOR_HANDLE RenderTargetView, const float ColorRGBA[4],
 			unsigned int NumRects, const D3D12_RECT *pRects);
 
-		void ClearState(std::shared_ptr<PipelineStateObject> pPipelineState);
+		//void ClearState(std::shared_ptr<PipelineStateObject> pPipelineState);
 
 		void ClearUnorderedAccessViewFloat(D3D12_GPU_DESCRIPTOR_HANDLE ViewGPUHandleInCurrentHeap, D3D12_CPU_DESCRIPTOR_HANDLE ViewCPUHandle,
 			Buffer *pResource, const float Values[4], unsigned int NumRects, const D3D12_RECT *pRects);
@@ -284,7 +284,7 @@ namespace Hashira {
 
 		void SetMarker(unsigned int Metadata, const void *pData, unsigned int Size);
 
-		void SetPipelineState(std::shared_ptr<PipelineStateObject> pRootSignature);
+		//void SetPipelineState(std::shared_ptr<PipelineStateObject> pRootSignature);
 
 		void SetPredication(Buffer *pBuffer, UINT64 AlignedBufferOffset, D3D12_PREDICATION_OP Operation);
 

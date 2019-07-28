@@ -1,6 +1,6 @@
 #pragma once
 #include "Hashira.h"
-
+#include "Engine/Source/ShaderObject/Shader.h"
 class DemoScene : public Hashira::Scene
 {
 
@@ -11,8 +11,11 @@ private:
 	Hashira::VertexBuffer _planeVert;
 	Hashira::IndexBuffer _indexBuffer;
 	Hashira::DescriptorSet _descriptorSets;
-	std::shared_ptr<Hashira::RootSignature> _renderSignature;
-	std::shared_ptr<Hashira::PipelineStateObject> _pso;
+	std::unique_ptr<Hashira::RootSignature> _rootSignature;
+	std::unique_ptr<Hashira::GraphicsPipelineState> _pso;
+	Hashira::Shader _vs;
+	Hashira::Shader _ps;
+
 public:
 
 	DemoScene();

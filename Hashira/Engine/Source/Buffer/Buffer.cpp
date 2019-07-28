@@ -112,7 +112,6 @@ HRESULT Hashira::Buffer::Initialize(const D3D12_HEAP_PROPERTIES& heapProps, cons
 	}
 	this->_resDesc = resourceDesc;
 	this->_heapProp = heapProps;
-	this->_clearValue = *clearValue;
 	this->_currentResourceState = state;
 	this->_isDynamic = (_heapProp.Type == D3D12_HEAP_TYPE::D3D12_HEAP_TYPE_UPLOAD) ? true :
 		(_heapProp.Type == D3D12_HEAP_TYPE::D3D12_HEAP_TYPE_CUSTOM
@@ -141,7 +140,6 @@ HRESULT Hashira::Buffer::Initialize(std::shared_ptr<D3D12Device>& device, const 
 
 	this->_resDesc = resourceDesc;
 	this->_heapProp = heapProps;
-	this->_clearValue = *clearValue;
 	this->_currentResourceState = state;
 	this->_isDynamic = (_heapProp.Type == D3D12_HEAP_TYPE::D3D12_HEAP_TYPE_UPLOAD)? true : 
 		(_heapProp.Type == D3D12_HEAP_TYPE::D3D12_HEAP_TYPE_CUSTOM

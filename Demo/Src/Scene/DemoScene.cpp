@@ -1,5 +1,5 @@
 #include "DemoScene.h"
-
+#include "Engine/Source/ShaderObject/Shader.h"
 using namespace Hashira;
 
 DemoScene::DemoScene() : Hashira::Scene(10000,256,256,16)
@@ -45,136 +45,73 @@ void DemoScene::Update()
 
 void DemoScene::Rendering()
 {
+	//SceneRendering
+
+	std::shared_ptr<Hashira::CommandList> _cmdList;
+	this->_renderContext->CreateCommandList(D3D12_COMMAND_LIST_TYPE::D3D12_COMMAND_LIST_TYPE_DIRECT, _cmdList);
+	_renderContext->ResetCommandList(_cmdList);
+
+	_cmdList->RSSetViewports(this->_mainCamera->GetViewportNum(), _mainCamera->GetViewportArray().data());
+	_cmdList->GetCommandList()->SetPipelineState(_pso->GetPSO().Get());	
+	_renderContext->GetSwapChain()->SetRenderTarget(_cmdList);
+	_cmdList->IASetPrimitiveTopology(D3D12_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	_cmdList->SetGraphcisRootSignatureAndDescriptors(_rootSignature.get() , &_descriptorSets);
+	_cmdList->IASetVertexBuffers(0,1,&_planeVert.GetView());
+	_cmdList->DrawInstanced(4, 1, 0, 0);
+	_cmdList->CloseCommandList();
+	_renderContext->PushBackCmdList(_cmdList);
+
 }
 
 void DemoScene::Discard()
 {
+
 }
 
 HRESULT DemoScene::PSOInitialize()
 {
+	HRESULT hr{};
 
-	Microsoft::WRL::ComPtr<ID3DBlob> vs;
-	Microsoft::WRL::ComPtr<ID3DBlob> gs;
-	Microsoft::WRL::ComPtr<ID3DBlob> ds;
-	Microsoft::WRL::ComPtr<ID3DBlob> hs;
-	Microsoft::WRL::ComPtr<ID3DBlob> ps;
-	Microsoft::WRL::ComPtr<ID3DBlob> error;
 
-#if defined(_DEBUG)
-	//グラフィックデバッグツールによるシェーダーのデバッグの有効化処理
-	UINT compileFlag = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
 
-#else
-	UINT compileFlag = 0;
-#endif
+	//CreatePso
 
-	HLSLIncluder includes("./Engine/Shader/");
-
-	if (FAILED(D3DCompileFromFile(L"./Demo/Src/Shader/RaymarchingShader.hlsl", nullptr, &includes, "VS_Main", "vs_5_0", compileFlag, 0, &vs, &error))) {
-		OutputDebugStringA((char*)error->GetBufferPointer());
-		return E_FAIL;
-	}
-	if (error != nullptr) {
-		OutputDebugStringA((char*)error->GetBufferPointer());
-	}
-
-	if (FAILED(D3DCompileFromFile(L"./Demo/Src/Shader/RaymarchingShader.hlsl", nullptr, &includes, "PS_Main", "ps_5_0", compileFlag, 0, &ps, &error))) {
-		OutputDebugStringA((char*)error->GetBufferPointer());
-		return E_FAIL;
-	}
-	if (error != nullptr) {
-		OutputDebugStringA((char*)error->GetBufferPointer());
-	}
-
-	//頂点入力レイアウトの定義
-	D3D12_INPUT_ELEMENT_DESC inputElementDesc[] = {
-		{ "INDEX",  0, DXGI_FORMAT::DXGI_FORMAT_R32_UINT,    0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-
+	D3D12_INPUT_ELEMENT_DESC elementDescs[] = {
+	{ "INDEX", 0, DXGI_FORMAT_R32_UINT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 	};
 
-	//ラスタライザステートの設定
-	D3D12_RASTERIZER_DESC rasterizerDesc = {};
-	rasterizerDesc.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_SOLID;
-	rasterizerDesc.CullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_BACK;
-	rasterizerDesc.FrontCounterClockwise = FALSE;
-	rasterizerDesc.DepthBias = D3D12_DEFAULT_DEPTH_BIAS;
-	rasterizerDesc.DepthBiasClamp = D3D12_DEFAULT_DEPTH_BIAS_CLAMP;
-	rasterizerDesc.SlopeScaledDepthBias = D3D12_DEFAULT_SLOPE_SCALED_DEPTH_BIAS;
-	rasterizerDesc.DepthClipEnable = TRUE;
-	rasterizerDesc.MultisampleEnable = FALSE;
-	rasterizerDesc.AntialiasedLineEnable = FALSE;
-	rasterizerDesc.ForcedSampleCount = 0;
-	rasterizerDesc.ConservativeRaster = D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF;
+	//Shader Comppile
+	Hashira::GraphicsPipelineStateDesc desc{};
+	desc.inputLayout.numElements = _countof(elementDescs);
+	desc.inputLayout.pElements = elementDescs;
 
-	//レンダーターゲットのブレンド設定
-	D3D12_RENDER_TARGET_BLEND_DESC descRTBS = {};
+	desc.rootSignature = _rootSignature.get();
 
-	descRTBS.BlendEnable = FALSE;
-	descRTBS.LogicOpEnable = FALSE;
-	descRTBS.SrcBlend = D3D12_BLEND::D3D12_BLEND_SRC_ALPHA;
-	descRTBS.DestBlend = D3D12_BLEND::D3D12_BLEND_INV_SRC_ALPHA;
-	descRTBS.BlendOp = D3D12_BLEND_OP_ADD;
-	descRTBS.SrcBlendAlpha = D3D12_BLEND::D3D12_BLEND_ONE;
-	descRTBS.DestBlendAlpha = D3D12_BLEND::D3D12_BLEND_ZERO;
-	descRTBS.BlendOpAlpha = D3D12_BLEND_OP::D3D12_BLEND_OP_ADD;
-	descRTBS.LogicOp = D3D12_LOGIC_OP_CLEAR;
-	descRTBS.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	//ブレンドステートの設定
-	D3D12_BLEND_DESC descBS;
-	descBS.AlphaToCoverageEnable = FALSE;
-	descBS.IndependentBlendEnable = FALSE;
-	for (UINT i = 0; i < D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT; i++) {
-		descBS.RenderTarget[i] = descRTBS;
-	}
-	//パイプラインステートオブジェクト
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
-	psoDesc.InputLayout.pInputElementDescs = inputElementDesc;
-	psoDesc.InputLayout.NumElements = _countof(inputElementDesc);
-	{
-		D3D12_SHADER_BYTECODE shaderBytecode;
-		shaderBytecode.pShaderBytecode = vs->GetBufferPointer();
-		shaderBytecode.BytecodeLength = vs->GetBufferSize();
-		psoDesc.VS = shaderBytecode;
-	}
-	{
-		D3D12_SHADER_BYTECODE shaderBytecode;
-		shaderBytecode.pShaderBytecode = ps->GetBufferPointer();
-		shaderBytecode.BytecodeLength = ps->GetBufferSize();
-		psoDesc.PS = shaderBytecode;
+	desc.vs = &_vs;
+	desc.ps = &_ps;
+
+	desc.blendDesc.isAlphaToCoverageEnable = false;
+	desc.blendDesc.isIndependentBlend = false;
+	desc.blendDesc.sampleMask = UINT_MAX;
+	desc.blendDesc.rtDesc[0] = Hashira::DefaultRenderTargetBlendNone();
+
+	desc.depthStencilDesc = DefaultDepthStateDisableDisable();
+
+	desc.rasterizerDesc = DefaultRasterizerStateStandard();
+	desc.rasterizerDesc.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_FRONT;
+
+	desc.primitiveTopology = D3D12_PRIMITIVE_TOPOLOGY::D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
+	desc.numRTVs = 1;
+	desc.rtvFormats[0] = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
+	desc.dsvFormat = DXGI_FORMAT::DXGI_FORMAT_D32_FLOAT;
+	desc.multiSamplerCount = 1;
+	
+	hr = this->_pso->Initialize(_renderContext->GetRenderingDevice()->GetD3D12Device(), desc);
+	if (FAILED(hr)) {
+		return hr;
 	}
 
-	psoDesc.RasterizerState = rasterizerDesc;
-	psoDesc.BlendState = descBS;
-	psoDesc.SampleMask = UINT_MAX;											//mask
-	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-	psoDesc.NumRenderTargets = 1;
-	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
 
-	psoDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
-	psoDesc.SampleDesc.Count = 1;
-	psoDesc.SampleDesc.Quality = 0;
-	//デプスステンシルステートの設定
-	psoDesc.DepthStencilState.DepthEnable = FALSE;								//深度テストあり
-	psoDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
-	psoDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-	psoDesc.DepthStencilState.StencilEnable = FALSE;							//ステンシルテストなし
-	psoDesc.DepthStencilState.StencilReadMask = D3D12_DEFAULT_STENCIL_READ_MASK;
-	psoDesc.DepthStencilState.StencilWriteMask = D3D12_DEFAULT_STENCIL_WRITE_MASK;
-
-	psoDesc.DepthStencilState.FrontFace.StencilFailOp = D3D12_STENCIL_OP_KEEP;
-	psoDesc.DepthStencilState.FrontFace.StencilDepthFailOp = D3D12_STENCIL_OP_KEEP;
-	psoDesc.DepthStencilState.FrontFace.StencilPassOp = D3D12_STENCIL_OP_KEEP;
-	psoDesc.DepthStencilState.FrontFace.StencilFunc = D3D12_COMPARISON_FUNC_ALWAYS;
-
-	psoDesc.DepthStencilState.BackFace.StencilFailOp = D3D12_STENCIL_OP_KEEP;
-	psoDesc.DepthStencilState.BackFace.StencilDepthFailOp = D3D12_STENCIL_OP_KEEP;
-	psoDesc.DepthStencilState.BackFace.StencilPassOp = D3D12_STENCIL_OP_KEEP;
-	psoDesc.DepthStencilState.BackFace.StencilFunc = D3D12_COMPARISON_FUNC_ALWAYS;
-	//パイプラインステートオブジェクトの生成
-	_pso = std::make_shared<PipelineStateObject>();
-
-	auto hr = _pso->Initialize("Raymarch", psoDesc, _renderSignature);
 	CHECK_RESULT(hr);
 	return hr;
 }
@@ -195,6 +132,20 @@ HRESULT DemoScene::PlaneInitialize()
 HRESULT DemoScene::RootSignatureInitialize()
 {
 
+	//Compile Shader
+
+
+	auto hr = _vs.CompileShader(Hashira::Shader::Type::SHADER_TYPE_VERTEX,
+		"./Hashira/Demo/Src/Shader/RayMarchingShader.hlsl", "VS_Main", "");
+	if (FAILED(hr)) {
+		return hr;
+	}
+	hr = _ps.CompileShader(Hashira::Shader::Type::SHADER_TYPE_VERTEX,
+		"./Hashira/Demo/Src/Shader/RayMarchingShader.hlsl", "PS_Main", "");
+	if (FAILED(hr)) {
+		return hr;
+	}
+
 	Hashira::RootSignatureDesc sigDesc;
 	Hashira::RootParameter param;
 
@@ -205,8 +156,8 @@ HRESULT DemoScene::RootSignatureInitialize()
 	sigDesc.flags = D3D12_ROOT_SIGNATURE_FLAGS::D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 	sigDesc.numParameters = 1;
 	sigDesc.pParameters = &param;
-	_renderSignature = std::make_shared<RootSignature>();
-	auto hr = this->_renderSignature->InitializeFromDesc(this->_renderingDevice->GetD3D12Device(), sigDesc);
+	_rootSignature = std::make_unique<RootSignature>();
+	 hr = this->_rootSignature->InitializeFromDesc(this->_renderingDevice->GetD3D12Device(), sigDesc);
 
 	return hr;
 }

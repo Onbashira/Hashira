@@ -23,7 +23,7 @@ Hashira::Camera::~Camera()
 
 HRESULT Hashira::Camera::Initialize(std::shared_ptr<RenderContext>& context, const CameraInitInfo& cameraInfo)
 {
-
+	_cameraInfo  =  cameraInfo;
 	auto& d3d12Dev = context->GetRenderingDevice()->GetD3D12Device();
 	auto hr = _transformBuffer.Initialize(context->GetRenderingDevice()->GetD3D12Device(), sizeof(CameraInfo));
 	if (FAILED(hr))
@@ -31,7 +31,7 @@ HRESULT Hashira::Camera::Initialize(std::shared_ptr<RenderContext>& context, con
 		return hr;
 	}
 
-	hr = this->InitializeDepthStencil(d3d12Dev, DXGI_FORMAT::DXGI_FORMAT_D32_FLOAT, DXGI_FORMAT::DXGI_FORMAT_R32_TYPELESS);
+	hr = this->InitializeDepthStencil(d3d12Dev, DXGI_FORMAT::DXGI_FORMAT_R32_TYPELESS, DXGI_FORMAT::DXGI_FORMAT_D32_FLOAT);
 	if (FAILED(hr))
 	{
 		return hr;
@@ -52,12 +52,12 @@ HRESULT Hashira::Camera::Initialize(std::shared_ptr<RenderContext>& context, con
 		desc.Flags = D3D12_DSV_FLAGS::D3D12_DSV_FLAG_NONE;
 		desc.Format = DXGI_FORMAT::DXGI_FORMAT_D32_FLOAT;
 		desc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
-		desc.Texture2D.MipSlice = 1;
-
+		desc.Texture2D.MipSlice = 0;
 		for (int i = 0; i < CameraDepthStencilMax; ++i)
 		{
-			_cameraDsvDescriptors.Set(i, context->GetDsvDescriptorHeap()->Allocate());
-			context->GetRenderingDevice()->GetD3D12Device()->CreateDepthStencilView(this->_depthStencils.Get().get(), &_cameraDsvDescriptors.Get(), &desc);
+			auto& temp = context->GetDsvDescriptorHeap()->Allocate();
+			_cameraDsvDescriptors.Set(i, temp);
+			context->GetRenderingDevice()->GetD3D12Device()->CreateDepthStencilView(this->_depthStencils.Get(i).get(), &_cameraDsvDescriptors.Get(i), &desc);
 		}
 	}
 

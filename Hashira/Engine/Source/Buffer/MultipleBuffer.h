@@ -107,9 +107,9 @@ namespace Hashira {
 			return this->_buffer[index];
 		};
 
-		void Set(unsigned int index, T&& buffer)
+		void Set(unsigned int index, T& buffer)
 		{
-			_buffer[index] = std::move(buffer);
+			_buffer[index] = buffer;
 		};
 
 		void DiscardBuffers()

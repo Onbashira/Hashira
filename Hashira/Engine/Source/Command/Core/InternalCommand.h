@@ -3,7 +3,6 @@
 #include "Engine/Source/Command/State/TargetState.h"
 #include "Engine/Source/DescriptorHeap/DescriptorHeap.h"
 #include "Engine/Source/Command/State/PipelineResourceTable.h"
-#include "Engine/Source/Command/State/PipelineState.h"
 #include "Engine/Source/Signature/RootSignature.h"
 
 namespace Hashira {
@@ -57,7 +56,6 @@ namespace Hashira {
 		std::shared_ptr< GeometryState> geometry;
 		std::shared_ptr< TargetState> target;
 		std::shared_ptr< PipelineResourceTable> pipelineResource;
-		std::shared_ptr< PipelineState> piepline;
 	};
 
 	struct InternalCommand {

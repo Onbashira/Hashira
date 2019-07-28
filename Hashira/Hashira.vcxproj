@@ -90,7 +90,6 @@
     <ClCompile Include="Engine\Source\Input\InputManager.cpp" />
     <ClCompile Include="Engine\Source\Math\Math.cpp" />
     <ClCompile Include="Engine\Source\Mesh\MeshHeap.cpp" />
-    <ClCompile Include="Engine\Source\PIpelineState\PipelineStateObject.cpp" />
     <ClCompile Include="Engine\Source\Rendering\RenderingManager.cpp" />
     <ClCompile Include="Engine\Source\Rendering\SwapChain.cpp" />
     <ClCompile Include="Engine\Source\Buffer\ConstantBuffer.cpp" />
@@ -101,7 +100,6 @@
     <ClCompile Include="Engine\Source\Buffer\VertexBuffer.cpp" />
     <ClCompile Include="Engine\Source\ShaderObject\HLSLIncluder.cpp" />
     <ClCompile Include="Engine\Source\ShaderObject\ShaderHelper.cpp" />
-    <ClCompile Include="Engine\Source\ShaderObject\ShaderObjectManager.cpp" />
     <ClCompile Include="Engine\Source\Signature\CommandSignature.cpp" />
     <ClCompile Include="Engine\Source\Signature\RootSignature.cpp" />
     <ClCompile Include="Engine\Source\Texture\TextureLoader.cpp" />
@@ -122,7 +120,6 @@
     <ClCompile Include="Engine\Source\ThirdParty\imgui\imgui_impl_dx12.cpp" />
     <ClCompile Include="Engine\Source\ThirdParty\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Engine\Source\Buffer\Sampler.cpp" />
-    <ClCompile Include="Engine\Source\Command\State\PipelineState.cpp" />
     <ClCompile Include="Engine\Source\Command\State\PipelineResourceTable.cpp" />
     <ClCompile Include="Engine\Source\Device\RenderingDevice.cpp" />
     <ClCompile Include="Engine\Source\MaterialSystem\Material.cpp" />
@@ -224,7 +221,6 @@
     <ClInclude Include="Engine\Source\Input\InputManager.h" />
     <ClInclude Include="Engine\Source\Math\Math.h" />
     <ClInclude Include="Engine\Source\Mesh\MeshHeap.h" />
-    <ClInclude Include="Engine\Source\PIpelineState\PipelineStateObject.h" />
     <ClInclude Include="Engine\Source\Rendering\RenderingManager.h" />
     <ClInclude Include="Engine\Source\Rendering\SwapChain.h" />
     <ClInclude Include="Engine\Source\Buffer\ConstantBuffer.h" />
@@ -236,7 +232,6 @@
     <ClInclude Include="Engine\Source\Buffer\VertexBuffer.h" />
     <ClInclude Include="Engine\Source\ShaderObject\HLSLIncluder.h" />
     <ClInclude Include="Engine\Source\ShaderObject\ShaderHelper.h" />
-    <ClInclude Include="Engine\Source\ShaderObject\ShaderObjectManager.h" />
     <ClInclude Include="Engine\Source\Signature\CommandSignature.h" />
     <ClInclude Include="Engine\Source\Signature\RootSignature.h" />
     <ClInclude Include="Engine\Source\Texture\TextureManager.h" />
@@ -262,7 +257,6 @@
     <ClInclude Include="Engine\Source\ThirdParty\imgui\imstb_textedit.h" />
     <ClInclude Include="Engine\Source\ThirdParty\imgui\imstb_truetype.h" />
     <ClInclude Include="Engine\Source\Buffer\Sampler.h" />
-    <ClInclude Include="Engine\Source\Command\State\PipelineState.h" />
     <ClInclude Include="Engine\Source\Command\State\PipelineResourceTable.h" />
     <ClInclude Include="Engine\Source\Device\RenderingDevice.h" />
     <ClInclude Include="Engine\Source\MaterialSystem\Material.h" />
