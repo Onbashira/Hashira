@@ -16,7 +16,7 @@ namespace Hashira {
 	private:
 
 		//ヒープ本体
-		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> _heap;
+		ID3D12DescriptorHeap* _heap;
 
 		//デスクリプタリスト
 		Descriptor* _descriptors;
@@ -49,7 +49,7 @@ namespace Hashira {
 		void ReleaseDescriptor(Descriptor* p);
 
 		//Getter
-		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& GetHeap();
+		ID3D12DescriptorHeap* GetHeap();
 
 		//全データ破棄
 		void Discard();
@@ -87,7 +87,7 @@ namespace Hashira {
 		//排他的制御用のMutex
 		std::mutex _mutex;
 		//ヒープ本体
-		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> _heap;
+		ID3D12DescriptorHeap* _heap;
 		//ヒープデスク
 		D3D12_DESCRIPTOR_HEAP_DESC _heapDesc;
 		//初期位置
@@ -201,7 +201,7 @@ namespace Hashira {
 		//排他制御用Mutex
 		std::mutex _mutex;
 		//ヒープ
-		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> _heap;
+		ID3D12DescriptorHeap* _heap;
 		//作成時に使用したデスクリプション
 		D3D12_DESCRIPTOR_HEAP_DESC _heapDesc;
 		D3D12_CPU_DESCRIPTOR_HANDLE _cpuHandleStartPos;
@@ -218,7 +218,7 @@ namespace Hashira {
 		//スタックにCount*DescSizeのメモリを割り当てる
 		bool AllocateStack(DescriptorStack& stack, Uint32 count);
 		//ヒープ取得
-		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& GetHeap()
+		ID3D12DescriptorHeap* GetHeap()
 		{
 			return _heap;
 		};
@@ -236,7 +236,7 @@ namespace Hashira {
 
 	private:
 		//ヒープ
-		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> _heap;
+		ID3D12DescriptorHeap* _heap;
 		D3D12_CPU_DESCRIPTOR_HANDLE _cpuHandleStartPos;
 		D3D12_GPU_DESCRIPTOR_HANDLE _gpuHandleStartPos;
 		//デスクサイズ
@@ -252,7 +252,7 @@ namespace Hashira {
 		//カウント数アロケート
 		bool Allocate(Uint32 count, D3D12_CPU_DESCRIPTOR_HANDLE& cpuHandle, D3D12_GPU_DESCRIPTOR_HANDLE& gpuHandle);
 
-		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& GetHeap()
+		ID3D12DescriptorHeap* GetHeap()
 		{
 			return _heap;
 		}
@@ -294,7 +294,7 @@ namespace Hashira {
 
 		bool AllocateAndCopy(Uint32 count, D3D12_CPU_DESCRIPTOR_HANDLE* cpuHandle, D3D12_GPU_DESCRIPTOR_HANDLE& gpuHandle);
 
-		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& GetHeap()
+		ID3D12DescriptorHeap* GetHeap()
 		{
 			assert( _last != nullptr);
 			return _last->GetHeap();
@@ -326,8 +326,8 @@ namespace Hashira {
 	public:
 
 	private:
-		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> _viewHeap;
-		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> _samplerHeap;
+		ID3D12DescriptorHeap* _viewHeap;
+		ID3D12DescriptorHeap* _samplerHeap;
 
 		D3D12_CPU_DESCRIPTOR_HANDLE _viewCpuHandleStart;
 		D3D12_GPU_DESCRIPTOR_HANDLE _viewGpuHandleStart;
@@ -362,11 +362,11 @@ namespace Hashira {
 
 		bool CanResizeMaterialCount(Uint32 materialCount);
 
-		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& GetViewHeap()
+		ID3D12DescriptorHeap* GetViewHeap()
 		{
 			return _viewHeap;
 		};
-		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& GetSamplerHeap()
+		ID3D12DescriptorHeap* GetSamplerHeap()
 		{
 			return _samplerHeap;
 		};

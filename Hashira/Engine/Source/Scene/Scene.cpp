@@ -6,34 +6,49 @@
 #include "Engine/Source/Camera/Camera.h"
 #include "Engine/Source/CoreSystem/Framework.h"
 
-Hashira::Scene::Scene(std::shared_ptr<RenderingDevice>& renderingDevice) :
-	_renderingDevice(renderingDevice),
-	_renderContext(Framework::GetInstance().GetRenderingManagre().CreateRenderContext()),
-	_mainCamera()
 
+Hashira::CameraInitInfo GetDefaultCameraInfo()
 {
+	Hashira::CameraInitInfo ret{};
+	Hashira::Uint32 x, y;
+	Hashira::Framework::GetInstance().GetWindowSize(x, y);
+	ret.width = static_cast<float>(x);
+	ret.height = static_cast<float>(y);
+	ret.fov = Hashira::DegToRad(90.0f);
+	ret.nearClip = 0.01f;
+	ret.farClip = 1000.0f;
+	ret.position = Hashira::Vector3(0.0f, 0.0f, -10.0f);
+	ret.target = Hashira::Vector3();
+	ret.up = Hashira::Vector3::up;
+
+	return ret;
+}
+
+
+Hashira::Scene::Scene(Uint32 viewDescMaxNum, Uint32 rtvDescriptorNum, Uint32 dsvDescriptorNum, Uint32 samplerDescriptorNum):
+_renderingDevice(Framework::GetInstance().GetRenderingManagre().GetRenderingDevice()),
+_renderContext(Framework::GetInstance().GetRenderingManagre().CreateRenderContext()),
+_mainCamera()
+{
+
 	//RenderingContextCreate
-	_renderContext->IntializeAllocators(renderingDevice->GetD3D12Device()->GetDevice());
+	_renderContext->Initialize(viewDescMaxNum, rtvDescriptorNum, dsvDescriptorNum, samplerDescriptorNum);
 
 	_mainCamera = std::make_shared<Camera>();
 
-	CameraInitInfo cInfo{};
-	Uint32 x, y;
-	Framework::GetInstance().GetWindowSize(x,y);
-	cInfo.width = static_cast<float >(x);
-	cInfo.height = static_cast<float>(y);
-	cInfo.fov = DegToRad(90.0f);
+	//Initialize main camera with default settings;
+	CameraInitInfo cInfo = GetDefaultCameraInfo();
 	_mainCamera->Initialize(_renderContext, cInfo);
 
-	_sceneConstant.Initialize(renderingDevice->GetD3D12Device(), 1, true);
+	//Initialize SceneConstant
+	_sceneConstant.Initialize(_renderingDevice->GetD3D12Device(), 1, true);
 
 	_sceneConstantDescriptor = _renderContext->GetViewDescriptorHeap()->Allocate();
 
 	D3D12_CONSTANT_BUFFER_VIEW_DESC desc{};
 	desc.BufferLocation = _sceneConstant.GetResource()->GetGPUVirtualAddress();
 	desc.SizeInBytes = Util::Alignment256Bytes(sizeof(SceneConstant));
-	renderingDevice->GetD3D12Device()->CreateConstantBufferView(&_sceneConstantDescriptor,&desc);
-
+	_renderingDevice->GetD3D12Device()->CreateConstantBufferView(&_sceneConstantDescriptor, &desc);
 }
 
 Hashira::Scene::~Scene()
@@ -74,6 +89,7 @@ void Hashira::Scene::SceneEnd()
 	auto& list = _renderContext->GetResourceUpdateCmdList(RenderContext::RC_COMMAND_LIST_TYPE::END);
 	//コマンドリストを現在のアロケータでリセット
 	_renderContext->ResetCommandList(list.lock());
+
 	_renderContext->GetSwapChain()->SetStatePresent(list.lock());
 	list.lock()->CloseCommandList();
 	_renderContext->PushBackCmdList(list.lock());

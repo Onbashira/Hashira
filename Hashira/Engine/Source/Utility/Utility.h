@@ -7,6 +7,8 @@
 #include <d3d12.h>
 
 
+
+
 namespace Hashira {
 
 	template <typename T>

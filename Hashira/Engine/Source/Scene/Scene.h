@@ -36,10 +36,11 @@ namespace Hashira {
 
 		DescriptorInfo _sceneConstantDescriptor;
 
+
 	private:
 	public:
 		
-		Scene(std::shared_ptr<RenderingDevice>& renderingDevice);
+		Scene(Uint32 viewDescMaxNum, Uint32 dsvDescMaxNum, Uint32 rtvDescMaxNum, Uint32 samplerMaxNum);
 		
 		~Scene();
 

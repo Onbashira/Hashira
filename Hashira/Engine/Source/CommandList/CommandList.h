@@ -48,15 +48,18 @@ namespace Hashira {
 		std::shared_ptr<CommandQueue> _parentQueue;
 
 		//スタックリスト
-		DescriptorStackList* _descriptorStackList;
+		std::unique_ptr<DescriptorStackList> _descriptorStackList;
 
 		//現在のサンプラーヒープ
-		DescriptorHeap* _currSamplerHeap;
+		ID3D12DescriptorHeap* _currSamplerHeap;
 
-		DescriptorHeap* _prevSamplerHeap;
+		ID3D12DescriptorHeap* _prevSamplerHeap;
 
 		//現在のビューヒープ
-		DescriptorHeap* _currViewHeap;
+		ID3D12DescriptorHeap* _currViewHeap;
+
+		ID3D12DescriptorHeap* _prevViewHeap;
+
 
 		SamplerDescriptorCache* _samplerDescCache;
 
@@ -81,7 +84,7 @@ namespace Hashira {
 		* @param[in] commandAllocator アロケータの参照
 		* @return リザルト　S_OKで成功
 		*/
-		HRESULT Initialize(std::weak_ptr<D3D12Device> device, unsigned int nodeMask, D3D12_COMMAND_LIST_TYPE listType, std::shared_ptr<CommandAllocator>& commandAllocator);
+		//HRESULT Initialize(std::weak_ptr<D3D12Device> device, unsigned int nodeMask, D3D12_COMMAND_LIST_TYPE listType, std::shared_ptr<CommandAllocator>& commandAllocator);
 
 		/**
 		* @fn

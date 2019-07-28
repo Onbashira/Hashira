@@ -169,9 +169,6 @@ void Hashira::SwapChain::ClearScreen(std::shared_ptr<CommandList> list)
 {
 	//リソースステートをRTにバリアを張る
 	SetStateRenderTarget(list);
-
-	static float time = 0.0f;
-	time += 0.001f;
 	//testCode CleacolorChange
 	float tempColor[4] = { 0.5f,0.0f,0.5f,1.0f };
 

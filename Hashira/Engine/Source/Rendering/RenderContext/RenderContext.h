@@ -77,7 +77,7 @@ namespace Hashira {
 
 		virtual ~RenderContext();
 
-		HRESULT Initialize(std::shared_ptr<RenderingDevice>& device,int frameNum, int nodeMask,std::shared_ptr<CommandQueue>& queue,std::shared_ptr<SwapChain>& swapChain);
+		HRESULT Initialize(Uint32 viewDescMaxNum, Uint32 dsvDescMaxNum, Uint32 rtvDescMaxNum, Uint32 samplerMaxNum);
 
 		HRESULT IntializeAllocators(std::shared_ptr<RenderingDevice>& device, Uint32 viewDescMaxNum = 65535u, Uint32 dsvDescMaxNum =  128u, Uint32 rtvDescMaxNum = 256u, Uint32 samplerMaxNum = 2048u);
 
@@ -132,6 +132,8 @@ namespace Hashira {
 	private:
 
 		RenderContext()noexcept;
+
+		void PreInitialize(std::shared_ptr<RenderingDevice>& device, int frameNum, int nodeMask, std::shared_ptr<CommandQueue>& queue, std::shared_ptr<SwapChain>& swapChain);
 
 	};
 

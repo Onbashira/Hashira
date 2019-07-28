@@ -49,7 +49,7 @@ HRESULT Hashira::DescriptorHeap::Initialize(std::shared_ptr<D3D12Device>& device
 	D3D12_CPU_DESCRIPTOR_HANDLE hCpu = _heap->GetCPUDescriptorHandleForHeapStart();
 	D3D12_GPU_DESCRIPTOR_HANDLE hGpu = _heap->GetGPUDescriptorHandleForHeapStart();
 
-	for (int i = 0; i < desc.NumDescriptors; i++, p++, hCpu.ptr += _descriptorSize, hGpu.ptr += _descriptorSize) {
+	for (unsigned int i = 0; i < desc.NumDescriptors; i++, p++, hCpu.ptr += _descriptorSize, hGpu.ptr += _descriptorSize) {
 
 		//親ヒープ及びハンドル、インデックスを設定
 		p->_parentHeap = this;
@@ -105,7 +105,7 @@ void Hashira::DescriptorHeap::ReleaseDescriptor(Descriptor * p)
 
 }
 
-Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& Hashira::DescriptorHeap::GetHeap()
+ID3D12DescriptorHeap* Hashira::DescriptorHeap::GetHeap()
 {
 	return  _heap;
 }
@@ -674,8 +674,8 @@ void Hashira::RaytracingDescriptorManager::SetHeapToCommandList(std::shared_ptr<
 
 	ID3D12DescriptorHeap* heaps[] =
 	{
-		_currentHeap->GetViewHeap().Get(),
-		_currentHeap->GetSamplerHeap().Get(),
+		_currentHeap->GetViewHeap(),
+		_currentHeap->GetSamplerHeap(),
 	};
 
 	list->GetCommandList()->SetDescriptorHeaps(ARRAYSIZE(heaps), heaps);

@@ -12,7 +12,6 @@ private:
 	Hashira::IndexBuffer _indexBuffer;
 	Hashira::DescriptorSet _descriptorSets;
 	std::shared_ptr<Hashira::RootSignature> _renderSignature;
-
 	std::shared_ptr<Hashira::PipelineStateObject> _pso;
 public:
 

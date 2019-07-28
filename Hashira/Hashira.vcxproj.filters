@@ -66,9 +66,6 @@
     <ClCompile Include="Engine\Source\CommandList\CommandList.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\CommandList\CommandListManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Source\CommandQueue\CommandQueue.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -91,9 +88,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Source\Factory\Factory.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\GraphicsManager\GraphicsContextManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Source\Input\GamePad.cpp">
@@ -432,6 +426,12 @@
     <ClCompile Include="Engine\Source\Camera\DefaultComponent\CameraPhysicsComponent.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Source\PIpelineState\GraphicsPipelineState.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\PIpelineState\DefaultPipelineStates.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Source\DynamicHeap\DefaultRawMemoryAllocator.h">
@@ -494,9 +494,6 @@
     <ClInclude Include="Engine\Source\CommandList\CommandList.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Source\CommandList\CommandListManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Source\CommandQueue\CommandQueue.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -519,9 +516,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\Factory\Factory.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\GraphicsManager\GraphicsContextManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\Input\GamePad.h">
@@ -852,6 +846,12 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\Camera\DefaultComponent\CameraPhysicsComponent.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\PIpelineState\GraphicsPipelineState.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\PIpelineState\DefaultPipelineStates.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

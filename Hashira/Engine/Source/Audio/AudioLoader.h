@@ -74,13 +74,13 @@ namespace Hashira {
 
 	private:
 
-		AudioLoader() : _loadThreadPool(THREAD_NUM) {};
+		AudioLoader()noexcept : _loadThreadPool(THREAD_NUM) {};
 
-		AudioLoader(const AudioLoader&value) : _loadThreadPool(THREAD_NUM) {};
+		AudioLoader(const AudioLoader&value)noexcept : _loadThreadPool(THREAD_NUM) {};
 
-		AudioLoader(AudioLoader&&value) : _loadThreadPool(THREAD_NUM) {};
+		AudioLoader(AudioLoader&&value)noexcept : _loadThreadPool(THREAD_NUM) {};
 
-		void operator = (const AudioLoader& value) {};
+		void operator = (const AudioLoader& value) noexcept {};
 
 		void operator = (AudioLoader&&value)noexcept {};
 	};

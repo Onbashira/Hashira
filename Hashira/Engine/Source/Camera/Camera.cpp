@@ -13,6 +13,7 @@
 Hashira::Camera::Camera() :
 	GameObject(new CameraGraphicsComponent(), new CameraInputComponent(), new CameraPhysicsComponent()),
 	_cameraType(CAMERA_TYPE::Perspective)
+
 {
 }
 
@@ -22,6 +23,7 @@ Hashira::Camera::~Camera()
 
 HRESULT Hashira::Camera::Initialize(std::shared_ptr<RenderContext>& context, const CameraInitInfo& cameraInfo)
 {
+
 	auto& d3d12Dev = context->GetRenderingDevice()->GetD3D12Device();
 	auto hr = _transformBuffer.Initialize(context->GetRenderingDevice()->GetD3D12Device(), sizeof(CameraInfo));
 	if (FAILED(hr))
@@ -139,6 +141,7 @@ void Hashira::Camera::ChangeParameter(const CameraInitInfo& cameraInfo, bool cha
 	Update();
 
 }
+
 
 void Hashira::Camera::AddViewport(const D3D12_VIEWPORT& viewport)
 {

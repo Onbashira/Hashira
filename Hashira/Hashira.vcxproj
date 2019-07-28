@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Source\PIpelineState\DefaultPipelineStates.cpp" />
     <ClCompile Include="Engine\Source\Camera\DefaultComponent\CameraInputComponent.cpp" />
     <ClCompile Include="Engine\Source\Camera\DefaultComponent\CameraGraphicsComponent.cpp" />
     <ClCompile Include="Engine\Source\Buffer\BufferView.cpp" />
@@ -57,6 +58,7 @@
     <ClCompile Include="Engine\Source\Buffer\L0Buffer.cpp" />
     <ClCompile Include="Engine\Source\Buffer\L1Buffer.cpp" />
     <ClCompile Include="Engine\Source\Camera\Camera.cpp" />
+    <ClCompile Include="Engine\Source\PIpelineState\GraphicsPipelineState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Source\Component\DefaultComponents\DefaultPhysicsComponent.cpp" />
     <ClCompile Include="Engine\Source\Component\DefaultComponents\DefaultInputComponent.cpp" />
@@ -77,8 +79,6 @@
     <ClCompile Include="Engine\Source\Audio\SubMixVoice.cpp" />
     <ClCompile Include="Engine\Source\Audio\SubMixVoiceManager.cpp" />
     <ClCompile Include="Engine\Source\CommandList\CommandList.cpp" />
-    <ClCompile Include="Engine\Source\CommandList\CommandListManager.cpp" />
-    <ClCompile Include="Engine\Source\GraphicsManager\GraphicsContextManager.cpp" />
     <ClCompile Include="Engine\Source\CommandQueue\CommandQueue.cpp" />
     <ClCompile Include="Engine\Source\CoreSystem\Framework.cpp" />
     <ClCompile Include="Engine\Source\Device\D3D12Device.cpp" />
@@ -163,6 +163,7 @@
     <ClCompile Include="Engine\Source\ParticleSystem\Item\Transform\Velocity3DItem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Source\PIpelineState\DefaultPipelineStates.h" />
     <ClInclude Include="Engine\Source\Camera\DefaultComponent\CameraInputComponent.h" />
     <ClInclude Include="Engine\Source\Camera\DefaultComponent\CameraGraphicsComponent.h" />
     <ClInclude Include="Engine\Source\Buffer\BufferView.h" />
@@ -198,6 +199,7 @@
     <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\DirectXTexP.h" />
     <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\Filters.h" />
     <ClInclude Include="Engine\Source\ThirdParty\DirectXTex\include\scoped.h" />
+    <ClInclude Include="Engine\Source\PIpelineState\GraphicsPipelineState.h" />
     <ClInclude Include="Hashira.h" />
     <ClInclude Include="Engine\Source\Command\Core\CommandManager.h" />
     <ClInclude Include="Engine\Source\Async\Fence.h" />
@@ -211,8 +213,6 @@
     <ClInclude Include="Engine\Source\Audio\SubMixVoice.h" />
     <ClInclude Include="Engine\Source\Audio\SubMixVoiceManager.h" />
     <ClInclude Include="Engine\Source\CommandList\CommandList.h" />
-    <ClInclude Include="Engine\Source\CommandList\CommandListManager.h" />
-    <ClInclude Include="Engine\Source\GraphicsManager\GraphicsContextManager.h" />
     <ClInclude Include="Engine\Source\CommandQueue\CommandQueue.h" />
     <ClInclude Include="Engine\Source\CoreSystem\Framework.h" />
     <ClInclude Include="Engine\Source\Device\D3D12Device.h" />

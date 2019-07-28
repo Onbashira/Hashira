@@ -86,7 +86,7 @@ std::shared_ptr<Hashira::RenderingDevice>& Hashira::RenderingManager::GetRenderi
 std::shared_ptr<Hashira::RenderContext>  Hashira::RenderingManager::CreateRenderContext()
 {
 	std::shared_ptr<RenderContext> ret(new RenderContext());
-	ret->Initialize(_renderingDevice, _swapChain->_bufferNum, 0, _masterQueue,_swapChain);
+	ret->PreInitialize(_renderingDevice, _swapChain->_bufferNum, 0, _masterQueue,_swapChain);
 	return std::move(ret);
 }
 

@@ -2,7 +2,7 @@
 
 using namespace Hashira;
 
-DemoScene::DemoScene() : Hashira::Scene(Hashira::Framework::GetInstance().GetRenderingManagre().GetRenderingDevice())
+DemoScene::DemoScene() : Hashira::Scene(10000,256,256,16)
 {
 
 }
@@ -197,7 +197,6 @@ HRESULT DemoScene::RootSignatureInitialize()
 
 	Hashira::RootSignatureDesc sigDesc;
 	Hashira::RootParameter param;
-	ShaderVisibility visib;
 
 	param.registerIndex = 0;
 	param.shaderVisibility = ShaderVisibility::All;

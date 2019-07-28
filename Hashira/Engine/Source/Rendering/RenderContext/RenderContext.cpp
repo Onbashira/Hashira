@@ -20,13 +20,7 @@ Hashira::RenderContext::RenderContext()noexcept :
 
 }
 
-
-Hashira::RenderContext::~RenderContext()
-{
-	Discard();
-}
-
-HRESULT Hashira::RenderContext::Initialize(std::shared_ptr<RenderingDevice>& device, int frameNum, int nodeMask, std::shared_ptr<CommandQueue>& queue, std::shared_ptr<SwapChain>& swapChain)
+void Hashira::RenderContext::PreInitialize(std::shared_ptr<RenderingDevice>& device, int frameNum, int nodeMask, std::shared_ptr<CommandQueue>& queue, std::shared_ptr<SwapChain>& swapChain)
 {
 	_parentDevice = device;
 	this->_currentIndex = 0;
@@ -35,10 +29,9 @@ HRESULT Hashira::RenderContext::Initialize(std::shared_ptr<RenderingDevice>& dev
 	this->_frameNum = frameNum;
 	_queueRef = queue;
 	_swapChain = swapChain;
-	HRESULT hret = {};
 
 	if (_frameNum > 2) {
-		_flushFunc = [&](INT64 displayFence , INT64 completeValue , bool waitNow)->bool {
+		_flushFunc = [&](INT64 displayFence, INT64 completeValue, bool waitNow)->bool {
 			if ((completeValue < displayFence && _currentFence >= _frameNum)
 				|| waitNow && (completeValue < static_cast<INT64>(_currentFence)))
 			{
@@ -49,18 +42,35 @@ HRESULT Hashira::RenderContext::Initialize(std::shared_ptr<RenderingDevice>& dev
 	}
 	else {
 		_flushFunc = [&](INT64 displayFence, INT64 completeValue, bool waitNow)-> bool {
-			return (completeValue < displayFence && _currentFence >= _frameNum); 
+			return (completeValue < displayFence && _currentFence >= _frameNum);
 		};
 	}
+}
 
+Hashira::RenderContext::~RenderContext()
+{
+	Discard();
+}
+
+HRESULT Hashira::RenderContext::Initialize(Uint32 viewDescMaxNum, Uint32 dsvDescMaxNum, Uint32 rtvDescMaxNum, Uint32 samplerMaxNum)
+{
+
+	HRESULT hret{ };
+
+	hret = IntializeAllocators(_parentDevice, viewDescMaxNum, dsvDescMaxNum, rtvDescMaxNum, samplerMaxNum);
+	if (FAILED(hret)) {
+		return hret;
+	}
+	
 	this->_cmdAllocators.resize(_frameNum);
 	this->_cmdLists.resize(_frameNum);
 	this->_fences.resize(_frameNum);
 	this->_listsVector.resize(_frameNum);
-	for (unsigned int i = 0; i < frameNum; ++i) {
+
+	for (unsigned int i = 0; i < _frameNum; ++i) {
 		_cmdAllocators[i] = std::make_shared<CommandAllocator>();
 
-		hret = _cmdAllocators[i]->Initialize(device->GetD3D12Device(), D3D12_COMMAND_LIST_TYPE::D3D12_COMMAND_LIST_TYPE_DIRECT);
+		hret = _cmdAllocators[i]->Initialize(_parentDevice->GetD3D12Device(), D3D12_COMMAND_LIST_TYPE::D3D12_COMMAND_LIST_TYPE_DIRECT);
 		if (FAILED(hret))
 			return hret;
 		std::stringstream ss;
@@ -69,14 +79,14 @@ HRESULT Hashira::RenderContext::Initialize(std::shared_ptr<RenderingDevice>& dev
 		_cmdLists[i][0u] = std::make_shared<CommandList>();
 		_cmdLists[i][1u] = std::make_shared<CommandList>();
 
-		_cmdLists[i][0u]->Initialize(device->GetD3D12Device(), nodeMask,
+		_cmdLists[i][0u]->Initialize(this, _node,
 			D3D12_COMMAND_LIST_TYPE::D3D12_COMMAND_LIST_TYPE_DIRECT, _cmdAllocators[i]);
 		if (FAILED(hret))
 			return hret;
 		//多重レコードの回避のためのClose
 		_cmdLists[i][0u]->CloseCommandList();
 
-		_cmdLists[i][1u]->Initialize(device->GetD3D12Device(), nodeMask,
+		_cmdLists[i][1u]->Initialize(this, _node,
 			D3D12_COMMAND_LIST_TYPE::D3D12_COMMAND_LIST_TYPE_DIRECT, _cmdAllocators[i]);
 		if (FAILED(hret))
 			return hret;
@@ -330,7 +340,7 @@ void Hashira::RenderContext::Discard()
 		return;
 	}
 	this->ResetAllocators();
-	for (int i = 0; i < _frameNum; ++i) {
+	for (Uint32 i = 0; i < _frameNum; ++i) {
 		this->_cmdAllocators[i]->Discard();
 		this->_cmdAllocators[i].reset();
 		this->_fences[i].Discard();

@@ -49,6 +49,7 @@
 #include "./Engine/Source/ShaderObject/HLSLIncluder.h"
 #include "./Engine/Source/ShaderObject/ShaderHelper.h"
 #include "./Engine/Source/ShaderObject/ShaderObjectManager.h"
+
 //Signature
 #include "./Engine/Source/Signature/RootSignature.h"
 #include "./Engine/Source/Signature/CommandSignature.h"
@@ -60,6 +61,7 @@
 
 //PSO
 #include "./Engine/Source/PIpelineState/PipelineStateObject.h"
+#include "./Engine/Source/PIpelineState/GraphicsPipelineState.h"
 
 //Window
 #include "./Engine/Source/Window/Window.h"
