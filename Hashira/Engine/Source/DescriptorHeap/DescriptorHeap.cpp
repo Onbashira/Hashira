@@ -148,8 +148,8 @@ HRESULT Hashira::DescriptorAllocator::Initialize(std::shared_ptr<D3D12Device>& d
 	}
 
 	//デスクリプタ分の仕様フラグ配列を確保
-	_usedFlags = new Uint8[desc.NumDescriptors];
-	memset(_usedFlags, 0, sizeof(Uint8) * desc.NumDescriptors);
+	_usedFlags.resize(desc.NumDescriptors);
+	memset(_usedFlags.data(), 0, sizeof(Uint8) * desc.NumDescriptors);
 
 	this->_cpuHandleStart = _heap->GetCPUDescriptorHandleForHeapStart();
 	this->_gpuHandleStart = _heap->GetGPUDescriptorHandleForHeapStart();
@@ -165,10 +165,15 @@ HRESULT Hashira::DescriptorAllocator::Initialize(std::shared_ptr<D3D12Device>& d
 
 void Hashira::DescriptorAllocator::Discard()
 {
+
 	assert(_allocateCount == 0);
 
-	SafeRelease(_heap);
-	SafeDeleteArray(_usedFlags);
+
+	_heap.Reset();
+	_usedFlags.clear();
+	_usedFlags.shrink_to_fit();
+	//SafeRelease(_heap);
+	//SafeDeleteArray(_usedFlags);
 
 }
 
@@ -257,6 +262,7 @@ Hashira::DescriptorStackList::DescriptorStackList()
 
 Hashira::DescriptorStackList::~DescriptorStackList()
 {
+	Reset();
 }
 
 bool Hashira::DescriptorStackList::Initialize(GlobalDescriptorHeap * parentHeap)
@@ -296,6 +302,8 @@ bool Hashira::DescriptorStackList::AddStack()
 	DescriptorStack stack;
 	_stacks.push_back(stack);
 	auto&& s = _stacks.back();
+
+	//親グローバルヒープにスタックｓにStackNum分のデスクリプタ領域を割り当てるように要求
 	return _parentHeap->AllocateStack(s, StackNum);
 }
 
@@ -369,7 +377,7 @@ bool Hashira::SamplerDescriptorHeap::Initialize(std::shared_ptr<D3D12Device>& de
 	_descSize = device->GetDevice()->GetDescriptorHandleIncrementSize(desc.Type);
 	_allocateCount = 0;
 
-	return false;
+	return true;
 }
 
 bool Hashira::SamplerDescriptorHeap::Allocate(Uint32 count, D3D12_CPU_DESCRIPTOR_HANDLE & cpuHandle, D3D12_GPU_DESCRIPTOR_HANDLE & gpuHandle)
@@ -395,6 +403,19 @@ void Hashira::SamplerDescriptorHeap::Discard()
 	SafeRelease(_heap);
 }
 
+Hashira::SamplerDescriptorCache::SamplerDescriptorCache() :
+_device(),
+_heapList(),
+_last(nullptr),
+_current(nullptr),
+_descCache()
+{
+}
+
+Hashira::SamplerDescriptorCache::~SamplerDescriptorCache()
+{
+}
+
 bool Hashira::SamplerDescriptorCache::Initialize(std::shared_ptr<D3D12Device>& device)
 {
 	this->_device = device;
@@ -406,7 +427,8 @@ bool Hashira::SamplerDescriptorCache::AllocateAndCopy(Uint32 count, D3D12_CPU_DE
 {
 
 	//キャッシュの存在を確認
-	auto hash = CalcFnv1a32(cpuHandle, sizeof(D3D12_CPU_DESCRIPTOR_HANDLE) * count);
+	size_t numBytes = sizeof(D3D12_CPU_DESCRIPTOR_HANDLE) * count;
+	auto hash = CalcFnv1a32(cpuHandle, numBytes);
 	auto findItr = _descCache.find(hash);
 	if (findItr != _descCache.end())
 	{

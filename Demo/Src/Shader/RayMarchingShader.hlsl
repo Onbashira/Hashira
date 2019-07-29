@@ -1,4 +1,9 @@
 
+struct VSInput
+{
+    float3 position : POSITION;
+    float2 texcoord : TEX_COORD;
+};
 
 struct VSOut
 {
@@ -11,32 +16,26 @@ struct PSOut
     float4 color : SV_Target0;
 };
 
-//struct SceneConstant 
-//{
-
-//    float2 Resolution;
-//    float Time;
-//};
-
 cbuffer SceneConstant : register(b0)
 {
     float2 Resolution;
     float Time;
 }
 
-VSOut VS_Main(int index : INDEX)
+VSOut VS_Main(VSInput input)
 {
 
     VSOut output;
 
-    output.position = float4((index % 2) * 2 - 1, ((index / 2) * 2 - 1) * -1, 0, 0);
-    output.texcoord = float2(index % 2, index / 2);
+    output.position = float4(input.position, 0.0f);
+    output.texcoord = input.texcoord;
+
     return output;
 }
 
 PSOut PS_Main(VSOut input)
 {
     PSOut output;
-    output.color = float4(input.texcoord.x, input.texcoord.y, 0.0, 0.0);
+    output.color = float4(input.texcoord.x + Time, input.texcoord.y + Time, 0.0f, 0.0f);
     return output;
 }

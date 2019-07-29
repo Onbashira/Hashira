@@ -20,7 +20,8 @@ Hashira::CommandList::CommandList() :
 	_currSamplerHeap(nullptr),
 	_currViewHeap(nullptr),
 	_samplerDescCache(nullptr),
-	_heapChanged(true)
+	_heapChanged(true),
+	_parentRC(nullptr)
 {
 
 }
@@ -60,14 +61,18 @@ HRESULT Hashira::CommandList::Initialize(RenderContext* rc, unsigned int nodeMas
 		return result;
 	}
 
+	_parentRC = rc;
+	_parentQueue = rc->GetCommandQueue().lock();
+
 	auto type = rc->GetCommandQueue().lock()->GetDesc().Type;
 	if (type == D3D12_COMMAND_LIST_TYPE_DIRECT || type == D3D12_COMMAND_LIST_TYPE_COMPUTE)
 	{
-		this->_descriptorStackList = std::make_unique<DescriptorStackList>();
-		if (!_descriptorStackList->Initialize(rc->GetGlobalDescriptorHeap().get()))
-		{
-			return false;
-		}
+		//this->_descriptorStackList = std::make_unique<DescriptorStackList>();
+		/*auto rr = */_descriptorStackList = _parentRC->GetDescriptorStackList();
+		//if (!rr)
+		//{
+		//	return false;
+		//}
 
 		_samplerDescCache = new SamplerDescriptorCache();
 		if (!_samplerDescCache->Initialize(rc->GetRenderingDevice()->GetD3D12Device()))
@@ -80,8 +85,6 @@ HRESULT Hashira::CommandList::Initialize(RenderContext* rc, unsigned int nodeMas
 
 	this->_heapChanged = true;
 
-	_parentRC = rc;
-	_parentQueue = rc->GetCommandQueue().lock();
 
 
 	return result;
@@ -169,7 +172,7 @@ void Hashira::CommandList::SetGraphcisRootSignatureAndDescriptors(RootSignature*
 	//Allocate Sampler Handles
 	D3D12_GPU_DESCRIPTOR_HANDLE samplerGPUHandles{};
 	D3D12_CPU_DESCRIPTOR_HANDLE samplerCPUHandles[16 * 5];
-	Uint32 samplerCount;
+	Uint32 samplerCount = 0;
 
 	auto SetSamplerHandles = [&](const D3D12_CPU_DESCRIPTOR_HANDLE handle)
 	{
@@ -198,7 +201,7 @@ void Hashira::CommandList::SetGraphcisRootSignatureAndDescriptors(RootSignature*
 		SetSamplerHandles(descSet->GetHsSampler().cpuHandles[i]);
 	}
 
-	if (samplerCount > 0) 
+	if (samplerCount > 0)
 	{
 		bool isSuccess = _samplerDescCache->AllocateAndCopy(samplerCount, samplerCPUHandles, samplerGPUHandles);
 
@@ -206,7 +209,7 @@ void Hashira::CommandList::SetGraphcisRootSignatureAndDescriptors(RootSignature*
 
 		_currSamplerHeap = _samplerDescCache->GetHeap();
 
-		if (_currSamplerHeap != _prevSamplerHeap) 
+		if (_currSamplerHeap != _prevSamplerHeap)
 		{
 			_prevSamplerHeap = _currSamplerHeap;
 			_heapChanged = true;
@@ -218,21 +221,21 @@ void Hashira::CommandList::SetGraphcisRootSignatureAndDescriptors(RootSignature*
 	{
 		ID3D12DescriptorHeap* descriptorHeraps[2];
 		int heapCount = 0;
-		if (_parentRC->GetGlobalDescriptorHeap()->GetHeap()) 
+		if (_parentRC->GetGlobalDescriptorHeap()->GetHeap())
 		{
-			descriptorHeraps[heapCount++] = _parentRC->GetGlobalDescriptorHeap()->GetHeap();
+			descriptorHeraps[heapCount++] = _parentRC->GetGlobalDescriptorHeap()->GetHeap().Get();
 
 		}
-		if (_currSamplerHeap) 
+		if (_currSamplerHeap)
 		{
-			descriptorHeraps[heapCount++] = _currSamplerHeap;
+			descriptorHeraps[heapCount++] = _currSamplerHeap.Get();
 
 		}
 		pList->SetDescriptorHeaps(heapCount, descriptorHeraps);
 		_heapChanged = false;
 	}
 
-	if (samplerCount > 0) 
+	if (samplerCount > 0)
 	{
 		// サンプラーステートのハンドルを登録する
 		auto sampler_desc_size = _parentRC->GetRenderingDevice()->GetD3D12Device()
@@ -262,16 +265,20 @@ void Hashira::CommandList::SetGraphcisRootSignatureAndDescriptors(RootSignature*
 			for (int i = 0; i < count; ++i) {
 				handleTemp[i] = (handle[i].ptr > 0) ? handle[i] : defaultViewDescriptor;
 			}
+
+			D3D12_CPU_DESCRIPTOR_HANDLE dstCpuHandle = {};
+			D3D12_GPU_DESCRIPTOR_HANDLE dstGpuHandle = {};
+			this->_descriptorStackList->Allocate(count, dstCpuHandle, dstGpuHandle);
+
+			//Copy to Stack heap
+			auto& dev = this->_parentRC->GetRenderingDevice()->GetD3D12Device()->GetDevice();
+			dev->CopyDescriptors(
+				1, &dstCpuHandle, &count,
+				count, handleTemp, nullptr,
+				D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
+			pList->SetGraphicsRootDescriptorTable(index, dstGpuHandle);
 		}
-		D3D12_CPU_DESCRIPTOR_HANDLE dstCpuHandle;
-		D3D12_GPU_DESCRIPTOR_HANDLE dstGpuHandle;
-		this->_descriptorStackList->Allocate(count, dstCpuHandle, dstGpuHandle);
-
-		//Copy to Stack heap
-		this->_parentRC->GetRenderingDevice()->GetD3D12Device()->GetDevice()->CopyDescriptors(
-			1, &dstCpuHandle, &count, count, handleTemp, nullptr, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-
-		pList->SetGraphicsRootDescriptorTable(index, dstGpuHandle);
 	};
 
 	SetViewDesc(descSet->GetVsCbv().maxCount, descSet->GetVsCbv().cpuHandles, inputIndex.vs.CbvIndex);
@@ -296,7 +303,8 @@ void Hashira::CommandList::SetComputeRootSignatureAndDescriptors(RootSignature* 
 
 void Hashira::CommandList::Discard()
 {
-
+	_samplerDescCache->Discard();
+	SafeDelete(_samplerDescCache);
 	if (_commandList.Get() != nullptr) {
 
 		this->_commandList.Reset();
@@ -526,7 +534,7 @@ void Hashira::CommandList::SetDescriptorHeaps(unsigned int NumDescriptorHeaps, D
 	std::vector<ID3D12DescriptorHeap*> vec(NumDescriptorHeaps);
 
 	pDescriptorHeaps->GetHeap();
-	for (int i = 0;  i < NumDescriptorHeaps; ++i) {
+	for (int i = 0; i < NumDescriptorHeaps; ++i) {
 		vec[i] = pDescriptorHeaps[i].GetHeap();
 	}
 

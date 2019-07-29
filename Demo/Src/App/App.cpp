@@ -19,7 +19,7 @@ void App::Run()
 	ref.TimerStart();
 	this->_scene = std::make_unique<DemoScene>();
 	_scene->Initialize();
-	while (ref.LoopMessage() != 0)
+	while (ref.LoopMessage() == 0)
 	{
 		ref.Input().InputUpdate();
 		this->_scene->SceneBegin();

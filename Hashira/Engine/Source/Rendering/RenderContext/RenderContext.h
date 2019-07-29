@@ -69,6 +69,7 @@ namespace Hashira {
 		std::unique_ptr<DescriptorAllocator> _samplerHeapAllocator;
 		std::unique_ptr<DescriptorAllocator> _rtvHeapAllocator;
 		std::unique_ptr<DescriptorAllocator> _dsvHeapAllocator;
+		std::shared_ptr<DescriptorStackList> _renderDescStackList;
 		DescriptorInfo _defaultViewDescriptorInfo;
 		DescriptorInfo _defaultSamplerDescriptorInfo;
 
@@ -104,6 +105,8 @@ namespace Hashira {
 		std::unique_ptr<DescriptorAllocator>& GetSamplerDescriptorHeap();
 		std::unique_ptr<DescriptorAllocator>& GetRtvDescriptorHeap();
 		std::unique_ptr<DescriptorAllocator>& GetDsvDescriptorHeap();
+		std::shared_ptr<Hashira::DescriptorStackList> GetDescriptorStackList();
+
 		DescriptorInfo& GetViewDescriptorHeapInfo();
 		DescriptorInfo& GetSamplerDescriptorHeapInfo();
 

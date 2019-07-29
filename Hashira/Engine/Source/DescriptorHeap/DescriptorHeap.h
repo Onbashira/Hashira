@@ -65,8 +65,8 @@ namespace Hashira {
 	{
 
 		DescriptorAllocator* allocator = nullptr;
-		D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle;
-		D3D12_GPU_DESCRIPTOR_HANDLE gpuHandle;
+		D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle{};
+		D3D12_GPU_DESCRIPTOR_HANDLE gpuHandle{};
 		Uint32 index = Uint32(-1);
 
 		bool IsValid() {
@@ -87,14 +87,14 @@ namespace Hashira {
 		//排他的制御用のMutex
 		std::mutex _mutex;
 		//ヒープ本体
-		ID3D12DescriptorHeap* _heap;
+		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>_heap;
 		//ヒープデスク
 		D3D12_DESCRIPTOR_HEAP_DESC _heapDesc;
 		//初期位置
 		D3D12_CPU_DESCRIPTOR_HANDLE _cpuHandleStart;
 		D3D12_GPU_DESCRIPTOR_HANDLE _gpuHandleStart;
 		//使用フラグ
-		Uint8* _usedFlags;
+		std::vector<Uint8> _usedFlags;
 		//デスクリプタインクリメントサイズ
 		Uint32 _descSize;
 		//アロケートしたサイズ
@@ -201,7 +201,7 @@ namespace Hashira {
 		//排他制御用Mutex
 		std::mutex _mutex;
 		//ヒープ
-		ID3D12DescriptorHeap* _heap;
+		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> _heap;
 		//作成時に使用したデスクリプション
 		D3D12_DESCRIPTOR_HEAP_DESC _heapDesc;
 		D3D12_CPU_DESCRIPTOR_HANDLE _cpuHandleStartPos;
@@ -218,7 +218,7 @@ namespace Hashira {
 		//スタックにCount*DescSizeのメモリを割り当てる
 		bool AllocateStack(DescriptorStack& stack, Uint32 count);
 		//ヒープ取得
-		ID3D12DescriptorHeap* GetHeap()
+		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& GetHeap()
 		{
 			return _heap;
 		};
@@ -236,7 +236,7 @@ namespace Hashira {
 
 	private:
 		//ヒープ
-		ID3D12DescriptorHeap* _heap;
+		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> _heap;
 		D3D12_CPU_DESCRIPTOR_HANDLE _cpuHandleStartPos;
 		D3D12_GPU_DESCRIPTOR_HANDLE _gpuHandleStartPos;
 		//デスクサイズ
@@ -252,7 +252,7 @@ namespace Hashira {
 		//カウント数アロケート
 		bool Allocate(Uint32 count, D3D12_CPU_DESCRIPTOR_HANDLE& cpuHandle, D3D12_GPU_DESCRIPTOR_HANDLE& gpuHandle);
 
-		ID3D12DescriptorHeap* GetHeap()
+		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& GetHeap()
 		{
 			return _heap;
 		}
@@ -290,11 +290,14 @@ namespace Hashira {
 
 	public:
 
+		SamplerDescriptorCache();
+		~SamplerDescriptorCache();
+
 		bool Initialize(std::shared_ptr<D3D12Device>& dev);
 
 		bool AllocateAndCopy(Uint32 count, D3D12_CPU_DESCRIPTOR_HANDLE* cpuHandle, D3D12_GPU_DESCRIPTOR_HANDLE& gpuHandle);
 
-		ID3D12DescriptorHeap* GetHeap()
+		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& GetHeap()
 		{
 			assert( _last != nullptr);
 			return _last->GetHeap();

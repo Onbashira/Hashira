@@ -2,7 +2,7 @@
 #include "Engine/Source/ShaderObject/Shader.h"
 using namespace Hashira;
 
-DemoScene::DemoScene() : Hashira::Scene(10000,256,256,16)
+DemoScene::DemoScene() : Hashira::Scene(10000, 256, 256, 16)
 {
 
 }
@@ -11,11 +11,11 @@ DemoScene::~DemoScene()
 {
 }
 
-HRESULT DemoScene::Initialize() 
+HRESULT DemoScene::Initialize()
 {
 
 
-	
+
 	if (FAILED(PlaneInitialize()))
 	{
 		return E_FAIL;
@@ -24,7 +24,7 @@ HRESULT DemoScene::Initialize()
 	{
 		return E_FAIL;
 	}
-	if(FAILED(PSOInitialize()))
+	if (FAILED(PSOInitialize()))
 	{
 		return E_FAIL;
 	}
@@ -39,7 +39,7 @@ void DemoScene::Update()
 	Hashira::SceneConstant sc;
 	sc.resolution = Hashira::Vector2(1280.0f, 720.0f);
 	sc.time = Hashira::Framework::GetInstance().Time().TotalTime();
-	_sceneConstant.Update(&sc,sizeof(Hashira::SceneConstant) , 0);
+	_sceneConstant.Update(&sc, sizeof(Hashira::SceneConstant), 0);
 
 }
 
@@ -49,18 +49,18 @@ void DemoScene::Rendering()
 
 	std::shared_ptr<Hashira::CommandList> _cmdList;
 	this->_renderContext->CreateCommandList(D3D12_COMMAND_LIST_TYPE::D3D12_COMMAND_LIST_TYPE_DIRECT, _cmdList);
-	_renderContext->ResetCommandList(_cmdList);
+	//_renderContext->ResetCommandList(_cmdList);
 
 	_cmdList->RSSetViewports(this->_mainCamera->GetViewportNum(), _mainCamera->GetViewportArray().data());
-	_cmdList->GetCommandList()->SetPipelineState(_pso->GetPSO().Get());	
+	_cmdList->GetCommandList()->SetPipelineState(_pso->GetPSO().Get());
 	_renderContext->GetSwapChain()->SetRenderTarget(_cmdList);
 	_cmdList->IASetPrimitiveTopology(D3D12_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-	_cmdList->SetGraphcisRootSignatureAndDescriptors(_rootSignature.get() , &_descriptorSets);
-	_cmdList->IASetVertexBuffers(0,1,&_planeVert.GetView());
+
+	_cmdList->SetGraphcisRootSignatureAndDescriptors(_rootSignature.get(), &_descriptorSets);
+
+	_cmdList->IASetVertexBuffers(0, 1, &_planeVert.GetView());
 	_cmdList->DrawInstanced(4, 1, 0, 0);
 	_cmdList->CloseCommandList();
-	_renderContext->PushBackCmdList(_cmdList);
-
 }
 
 void DemoScene::Discard()
@@ -77,7 +77,9 @@ HRESULT DemoScene::PSOInitialize()
 	//CreatePso
 
 	D3D12_INPUT_ELEMENT_DESC elementDescs[] = {
-	{ "INDEX", 0, DXGI_FORMAT_R32_UINT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+	{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+	{ "TEX_COORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+
 	};
 
 	//Shader Comppile
@@ -99,13 +101,13 @@ HRESULT DemoScene::PSOInitialize()
 
 	desc.rasterizerDesc = DefaultRasterizerStateStandard();
 	desc.rasterizerDesc.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_FRONT;
-
+	
 	desc.primitiveTopology = D3D12_PRIMITIVE_TOPOLOGY::D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
 	desc.numRTVs = 1;
 	desc.rtvFormats[0] = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
 	desc.dsvFormat = DXGI_FORMAT::DXGI_FORMAT_D32_FLOAT;
 	desc.multiSamplerCount = 1;
-	
+
 
 	this->_pso = std::make_unique<Hashira::GraphicsPipelineState>();
 	hr = this->_pso->Initialize(_renderContext->GetRenderingDevice()->GetD3D12Device(), desc);
@@ -121,14 +123,19 @@ HRESULT DemoScene::PSOInitialize()
 HRESULT DemoScene::PlaneInitialize()
 {
 
-	std::vector<int> vertIndex(4);
+	struct Vert {
+		Vector3 pos;
+		Vector2 texcoord;
+	};
+	std::vector<Vert> vert(4);
 	for (int i = 0; i < 4; ++i)
 	{
-		vertIndex[i] = i;
+		vert[i].pos = Vector3(static_cast<float>(i % 2) * 2.0f - 1.0,1.0f - static_cast<float>(i / 2) * 2.0f , 0.0f);
+		vert[i].texcoord = Vector2(static_cast<float>(i % 2), static_cast<float>(i / 2));
 	}
 
-	return this->_planeVert.Initialize(sizeof(int) * 4, sizeof(int), vertIndex.data());
-	
+	return this->_planeVert.Initialize(sizeof(Vert) * 4, sizeof(Vert), vert.data());
+
 }
 
 HRESULT DemoScene::RootSignatureInitialize()
@@ -159,11 +166,12 @@ HRESULT DemoScene::RootSignatureInitialize()
 	sigDesc.numParameters = 1;
 	sigDesc.pParameters = &param;
 	_rootSignature = std::make_unique<RootSignature>();
-	 hr = this->_rootSignature->InitializeFromDesc(this->_renderingDevice->GetD3D12Device(), sigDesc);
+	hr = this->_rootSignature->InitializeFromDesc(this->_renderingDevice->GetD3D12Device(), sigDesc);
 
 	return hr;
 }
 
 void DemoScene::DescriptorSetInitialize()
 {
+	_descriptorSets.SetVsCbv(0, _sceneConstantDescriptor.cpuHandle);
 }

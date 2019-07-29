@@ -79,11 +79,10 @@ HRESULT Hashira::SwapChain::CreateRenderTargets(std::shared_ptr<D3D12Device>& de
 				return E_FAIL;
 			}
 			//レンダーターゲットビューの作成
-			_allocatedDesc.push_back(_localRtHeap->Allocate());
-			auto&& descInfo = _allocatedDesc.back();
-			device->GetDevice()->CreateRenderTargetView(_rtResource[i]->GetResource().Get(), nullptr, descInfo.cpuHandle);
+			_allocatedDesc[i] = (_localRtHeap->Allocate());
+			device->GetDevice()->CreateRenderTargetView(_rtResource[i]->GetResource().Get(), nullptr, _allocatedDesc[i].cpuHandle);
 			
-			if (descInfo.IsValid()) {
+			if (_allocatedDesc[i].IsValid()) {
 				return E_FAIL;
 			}
 			
@@ -170,7 +169,7 @@ void Hashira::SwapChain::ClearScreen(std::shared_ptr<CommandList> list)
 	//リソースステートをRTにバリアを張る
 	SetStateRenderTarget(list);
 	//testCode CleacolorChange
-	float tempColor[4] = { 0.5f,0.0f,0.5f,1.0f };
+	float tempColor[4] = { 0.5f,0.5f,0.5f,1.0f };
 
 	list->GetCommandList()->ClearRenderTargetView(_allocatedDesc[_currentIndex].cpuHandle, tempColor, 0, nullptr);
 
@@ -237,7 +236,7 @@ void Hashira::SwapChain::ReSizeRenderTarget(std::shared_ptr<D3D12Device>& device
 
 void Hashira::SwapChain::FlipScreen()
 {
-	_currentIndex = _swapChain->GetCurrentBackBufferIndex();
+	_currentIndex = _swapChain->GetCurrentBackBufferIndex();;
 }
 
 HRESULT Hashira::SwapChain::Present(unsigned int sysncInterval, unsigned int flags)
@@ -254,5 +253,6 @@ void Hashira::SwapChain::Discard()
 	for (auto& res : _rtResource) {
 		res->Discard();
 	}
+
 	_localRtHeap->Discard();
 }

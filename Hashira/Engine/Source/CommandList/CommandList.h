@@ -48,17 +48,17 @@ namespace Hashira {
 		std::shared_ptr<CommandQueue> _parentQueue;
 
 		//スタックリスト
-		std::unique_ptr<DescriptorStackList> _descriptorStackList;
+		std::shared_ptr<DescriptorStackList> _descriptorStackList;
 
 		//現在のサンプラーヒープ
-		ID3D12DescriptorHeap* _currSamplerHeap;
+		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> _currSamplerHeap;
 
-		ID3D12DescriptorHeap* _prevSamplerHeap;
+		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> _prevSamplerHeap;
 
 		//現在のビューヒープ
-		ID3D12DescriptorHeap* _currViewHeap;
+		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> _currViewHeap;
 
-		ID3D12DescriptorHeap* _prevViewHeap;
+		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> _prevViewHeap;
 
 
 		SamplerDescriptorCache* _samplerDescCache;

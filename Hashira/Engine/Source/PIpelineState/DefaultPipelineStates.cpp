@@ -106,7 +106,7 @@ Hashira::RasterizerDesc Hashira::DefaultRasterizerStateStandard(int depth_bias, 
 	ret.depthBias = depth_bias;
 	ret.depthBiasClamp = depth_clamp;
 	ret.slopeScaledDepthBias = slope_bias;
-	ret.isDepthClipEnable = true;
+	ret.isDepthClipEnable = false;
 	ret.isMultisampleEnable = false;
 	ret.isAntialiasedLineEnable = false;
 	ret.isConservativeRasterEnable = false;

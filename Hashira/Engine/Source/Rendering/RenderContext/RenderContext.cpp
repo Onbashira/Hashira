@@ -15,7 +15,8 @@ Hashira::RenderContext::RenderContext()noexcept :
 	_currentFence(0),
 	_isDiscarded(false),
 	_defaultViewDescriptorInfo(),
-	_defaultSamplerDescriptorInfo()
+	_defaultSamplerDescriptorInfo(),
+	_renderDescStackList(std::make_shared<DescriptorStackList>())
 {
 
 }
@@ -61,7 +62,7 @@ HRESULT Hashira::RenderContext::Initialize(Uint32 viewDescMaxNum, Uint32 dsvDesc
 	if (FAILED(hret)) {
 		return hret;
 	}
-	
+
 	this->_cmdAllocators.resize(_frameNum);
 	this->_cmdLists.resize(_frameNum);
 	this->_fences.resize(_frameNum);
@@ -116,11 +117,16 @@ HRESULT Hashira::RenderContext::IntializeAllocators(std::shared_ptr<RenderingDev
 
 	_globalDescriptorHeap = std::make_unique<GlobalDescriptorHeap>();
 	auto success = this->_globalDescriptorHeap->Initialize(device->GetD3D12Device(), desc);
-	if (FAILED(success)) {
-		return success;
+	if (!success) {
+		return E_FAIL;
 	}
 
-	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAGS::D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	success = _renderDescStackList->Initialize(this->_globalDescriptorHeap.get());
+	if (!success) {
+		return E_FAIL;
+	}
+
+	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAGS::D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 	desc.NodeMask = 1;
 	desc.NumDescriptors = viewDescMaxNum;
 	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE::D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
@@ -132,7 +138,7 @@ HRESULT Hashira::RenderContext::IntializeAllocators(std::shared_ptr<RenderingDev
 	}
 	this->_defaultViewDescriptorInfo = _viewHeapAllocator->Allocate();
 
-	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAGS::D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAGS::D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 	desc.NodeMask = 1;
 	desc.NumDescriptors = samplerMaxNum;
 	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE::D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER;
@@ -213,7 +219,7 @@ std::weak_ptr<Hashira::CommandAllocator> Hashira::RenderContext::GetCurrentCmdAl
 	return _cmdAllocators[_currentIndex];
 }
 
-Hashira::Fence & Hashira::RenderContext::GetCurrentFence()
+Hashira::Fence& Hashira::RenderContext::GetCurrentFence()
 {
 	return _fences[_currentIndex];
 }
@@ -233,7 +239,7 @@ std::shared_ptr<Hashira::RenderingDevice>& Hashira::RenderContext::GetRenderingD
 	return _parentDevice;
 }
 
-std::unique_ptr < Hashira::GlobalDescriptorHeap > & Hashira::RenderContext::GetGlobalDescriptorHeap()
+std::unique_ptr < Hashira::GlobalDescriptorHeap >& Hashira::RenderContext::GetGlobalDescriptorHeap()
 {
 	return this->_globalDescriptorHeap;
 }
@@ -258,19 +264,24 @@ std::unique_ptr<Hashira::DescriptorAllocator>& Hashira::RenderContext::GetDsvDes
 	return _dsvHeapAllocator;
 }
 
-Hashira::DescriptorInfo & Hashira::RenderContext::GetViewDescriptorHeapInfo()
+std::shared_ptr<Hashira::DescriptorStackList> Hashira::RenderContext::GetDescriptorStackList()
+{
+	return this->_renderDescStackList;
+}
+
+Hashira::DescriptorInfo& Hashira::RenderContext::GetViewDescriptorHeapInfo()
 {
 	return this->_defaultViewDescriptorInfo;
 }
 
-Hashira::DescriptorInfo & Hashira::RenderContext::GetSamplerDescriptorHeapInfo()
+Hashira::DescriptorInfo& Hashira::RenderContext::GetSamplerDescriptorHeapInfo()
 {
 	return this->_defaultSamplerDescriptorInfo;
 }
 
 void Hashira::RenderContext::PushFrontCmdList(std::shared_ptr<CommandList> list)
 {
-	this->_listsVector[_currentIndex].insert(_listsVector[_currentIndex].begin(),list);
+	this->_listsVector[_currentIndex].insert(_listsVector[_currentIndex].begin(), list);
 }
 
 void Hashira::RenderContext::PushBackCmdList(std::shared_ptr<CommandList> list)
@@ -295,14 +306,14 @@ void Hashira::RenderContext::ExecuteCmdListComputeQueue()
 }
 
 void Hashira::RenderContext::WaitForGPU(std::shared_ptr<CommandQueue>& commandQueue, bool waitNow)
-{	
-	
+{
+
 	_currentFence++;
 
 	//Signal”­s
 	commandQueue->GetQueue()->Signal(_fences[_currentIndex].GetFence().Get(), _currentFence);
 
-	INT64 displayFence = _currentFence - static_cast<INT64>(_frameNum )+ 1;
+	INT64 displayFence = _currentFence - static_cast<INT64>(_frameNum) + 1;
 
 	if (waitNow)
 	{
@@ -310,9 +321,9 @@ void Hashira::RenderContext::WaitForGPU(std::shared_ptr<CommandQueue>& commandQu
 	}
 
 	INT64 completeValue = static_cast<INT64>(_fences[_currentIndex].GetFence()->GetCompletedValue());
-	if (_flushFunc(displayFence,completeValue,waitNow))
-	{		
-		
+	if (_flushFunc(displayFence, completeValue, waitNow))
+	{
+
 		SystemLogger::GetInstance().Log(Hashira::LOG_LEVEL::Details, std::string("Wait for GPU...\n"));
 
 		HANDLE eventHandle = CreateEventEx(nullptr, false, false, EVENT_ALL_ACCESS);
@@ -353,9 +364,15 @@ void Hashira::RenderContext::Present(unsigned int syncValue, unsigned int flags)
 
 void Hashira::RenderContext::Discard()
 {
+
+
+
+
 	if (_isDiscarded) {
 		return;
 	}
+	_defaultSamplerDescriptorInfo.Free();
+	_defaultViewDescriptorInfo.Free();
 	this->ResetAllocators();
 	for (Uint32 i = 0; i < _frameNum; ++i) {
 		this->_cmdAllocators[i]->Discard();
@@ -368,6 +385,5 @@ void Hashira::RenderContext::Discard()
 		_listsVector[i].clear();
 
 	}
-
 	_isDiscarded = true;
 }

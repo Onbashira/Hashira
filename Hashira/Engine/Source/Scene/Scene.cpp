@@ -79,6 +79,7 @@ void Hashira::Scene::SceneBegin()
 
 void Hashira::Scene::ExecutePath()
 {
+
 }
 
 void Hashira::Scene::SceneEnd()
@@ -93,10 +94,10 @@ void Hashira::Scene::SceneEnd()
 	_renderContext->GetSwapChain()->SetStatePresent(list.lock());
 	list.lock()->CloseCommandList();
 	_renderContext->PushBackCmdList(list.lock());
-
+	
 	_renderContext->ExecuteCmdList3DQueue();
 
-	_renderContext->Present(1, 0);
+	_renderContext->Present(1,1);
 	
 	//レンダーターゲットフリッピング
 	_renderContext->Flip();
@@ -114,5 +115,7 @@ void Hashira::Scene::Discard()
 	//!デスクリプタヒープ
 	_renderContext->Discard();
 	_mainCamera->Discard();
+	_sceneConstant.Discard();
+	_sceneConstantDescriptor.Free();
 }
 
