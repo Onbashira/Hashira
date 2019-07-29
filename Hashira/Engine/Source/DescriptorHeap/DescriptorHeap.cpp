@@ -166,7 +166,7 @@ HRESULT Hashira::DescriptorAllocator::Initialize(std::shared_ptr<D3D12Device>& d
 void Hashira::DescriptorAllocator::Discard()
 {
 
-	assert(_allocateCount == 0);
+	//assert(_allocateCount == 0);
 
 
 	_heap.Reset();

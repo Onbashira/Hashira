@@ -73,6 +73,8 @@ HRESULT Hashira::Camera::Initialize(std::shared_ptr<RenderContext>& context, con
 	port.TopLeftY = 0.0f;
 	port.MaxDepth = 1.0f;
 	port.MinDepth = 0.0f;
+
+	AddViewport(port);
 	Update();
 	return hr;
 }

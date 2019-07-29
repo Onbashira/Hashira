@@ -160,7 +160,7 @@ HRESULT Hashira::SwapChain::CopyToRenderTarget(std::shared_ptr<CommandList> list
 
 void Hashira::SwapChain::SetRenderTarget(std::shared_ptr<CommandList> list, D3D12_CPU_DESCRIPTOR_HANDLE* depthHandle)
 {
-	list->GetCommandList()->OMSetRenderTargets(1, &_allocatedDesc[_currentIndex].cpuHandle, true, depthHandle);
+	list->GetCommandList()->OMSetRenderTargets(1, &_allocatedDesc[_currentIndex].cpuHandle, false, depthHandle);
 
 }
 

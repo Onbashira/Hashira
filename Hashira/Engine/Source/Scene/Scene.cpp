@@ -97,7 +97,7 @@ void Hashira::Scene::SceneEnd()
 	
 	_renderContext->ExecuteCmdList3DQueue();
 
-	_renderContext->Present(1,1);
+	_renderContext->Present(1,0);
 	
 	//レンダーターゲットフリッピング
 	_renderContext->Flip();

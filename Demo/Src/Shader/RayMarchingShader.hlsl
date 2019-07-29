@@ -36,6 +36,6 @@ VSOut VS_Main(VSInput input)
 PSOut PS_Main(VSOut input)
 {
     PSOut output;
-    output.color = float4(input.texcoord.x + Time, input.texcoord.y + Time, 0.0f, 0.0f);
+    output.color = float4(0.0,0.0 , 0.0f, 0.0f);
     return output;
 }

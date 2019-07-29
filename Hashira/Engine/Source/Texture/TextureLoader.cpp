@@ -13,7 +13,7 @@ Hashira::TextureLoader::TextureLoader()
 {
 	auto ret = CoInitializeEx(NULL, COINIT_MULTITHREADED);
 	if (FAILED(ret)) {
-		assert(0 ," I TextureLoader Initialize " );
+		assert(!" I TextureLoader Initialize " );
 	}
 }
 

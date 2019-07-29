@@ -209,7 +209,7 @@ void Hashira::Framework::TermWindow()
 	_inputManager.Discard();
 	_audioManager.StopSoundEngine();
 	_audioManager.Discard();
-	TextureManager::GetInstance().Discard();
+	//TextureManager::GetInstance().Discard();
 	_window.Discard();
 }
 

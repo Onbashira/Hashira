@@ -74,7 +74,7 @@ HRESULT Hashira::CommandList::Initialize(RenderContext* rc, unsigned int nodeMas
 		//	return false;
 		//}
 
-		_samplerDescCache = new SamplerDescriptorCache();
+		_samplerDescCache = std::make_shared<SamplerDescriptorCache>();
 		if (!_samplerDescCache->Initialize(rc->GetRenderingDevice()->GetD3D12Device()))
 		{
 			return false;
@@ -303,8 +303,11 @@ void Hashira::CommandList::SetComputeRootSignatureAndDescriptors(RootSignature* 
 
 void Hashira::CommandList::Discard()
 {
-	_samplerDescCache->Discard();
-	SafeDelete(_samplerDescCache);
+	//if (_samplerDescCache) {
+	//	_samplerDescCache->Discard();
+
+	//}
+	//SafeDelete(_samplerDescCache);
 	if (_commandList.Get() != nullptr) {
 
 		this->_commandList.Reset();

@@ -61,7 +61,7 @@ namespace Hashira {
 		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> _prevViewHeap;
 
 
-		SamplerDescriptorCache* _samplerDescCache;
+		std::shared_ptr<SamplerDescriptorCache> _samplerDescCache;
 
 		std::shared_ptr<Hashira::CommandAllocator> _parentAllocator;
 
