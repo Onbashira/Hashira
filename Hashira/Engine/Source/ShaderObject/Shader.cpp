@@ -76,13 +76,12 @@ HRESULT Hashira::Shader::CompileShader(Type type, std::string shaderPath, std::s
 
 	if (FAILED(hret)) {
 		OutputDebugStringA((char*)error->GetBufferPointer());
-		return E_FAIL;
+		error->Release();
+		return hret;
 	}
 	if (error != nullptr) {
 		OutputDebugStringA((char*)error->GetBufferPointer());
 		error->Release();
-		return E_FAIL;
-
 	}
 
 	this->_shaderMap[type] = shader;

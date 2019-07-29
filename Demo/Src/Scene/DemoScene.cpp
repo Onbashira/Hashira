@@ -106,6 +106,8 @@ HRESULT DemoScene::PSOInitialize()
 	desc.dsvFormat = DXGI_FORMAT::DXGI_FORMAT_D32_FLOAT;
 	desc.multiSamplerCount = 1;
 	
+
+	this->_pso = std::make_unique<Hashira::GraphicsPipelineState>();
 	hr = this->_pso->Initialize(_renderContext->GetRenderingDevice()->GetD3D12Device(), desc);
 	if (FAILED(hr)) {
 		return hr;
@@ -136,12 +138,12 @@ HRESULT DemoScene::RootSignatureInitialize()
 
 
 	auto hr = _vs.CompileShader(Hashira::Shader::Type::SHADER_TYPE_VERTEX,
-		"./Hashira/Demo/Src/Shader/RayMarchingShader.hlsl", "VS_Main", "");
+		"./Src/Shader/RayMarchingShader.hlsl", "VS_Main", "vs_5_0");
 	if (FAILED(hr)) {
 		return hr;
 	}
 	hr = _ps.CompileShader(Hashira::Shader::Type::SHADER_TYPE_VERTEX,
-		"./Hashira/Demo/Src/Shader/RayMarchingShader.hlsl", "PS_Main", "");
+		"./Src/Shader/RayMarchingShader.hlsl", "PS_Main", "ps_5_0");
 	if (FAILED(hr)) {
 		return hr;
 	}
