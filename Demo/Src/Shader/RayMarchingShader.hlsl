@@ -22,20 +22,10 @@ cbuffer SceneConstant : register(b0)
     float Time;
 }
 
-// - glslfan.com --------------------------------------------------------------
-// Ctrl + s or Command + s: compile shader
-// Ctrl + m or Command + m: toggle visibility for codepane
-// ----------------------------------------------------------------------------
-//precision mediumpfloat;
-//uniform vec2 resolution; // resolution (width, height)
-//uniform vec2 mouse; // mouse      (0.0 ~ 1.0)
-//uniform float time; // time       (1second == 1.0)
-//uniform sampler2D backbuffer; // previous scene
-
-const float PI = 3.14159265;
-const int StepCount = 64;
-const float EPS = 0.001;
-const float NORMAL_EPS = 0.0001;
+static const float PI = 3.14159265;
+static const int StepCount = 64;
+static const float EPS = 0.001;
+static const float NORMAL_EPS = 0.0001;
 
 
 
@@ -43,7 +33,7 @@ float3 hsv(float h, float s, float v)
 {
     float4 t = float4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
     float3 p = abs(frac(float3(h,h,h) + t.xyz) * float3(6.0, 6.0, 6.0) - float3(t.w, t.w, t.w));
-    return v * lerp(float3(t.x, t.x, t.x), saturate(p - float3(t.x, t.x, t.x)), s);
+    return v * lerp(float3(t.x, t.x, t.x), clamp(p - float3(t.x, t.x, t.x) , 0.0,1.0), s);
 
 }
 
@@ -71,14 +61,6 @@ float sdBox(float3 p, float boxSize)
     float3 q = abs(pp);
     return length(max(q - float3(boxSize, boxSize, boxSize), 0.0)) - 0.1;
 }
-
-float sdTorus(float3 p)
-{
-    float2 t = float2(0.75, 0.25);
-    float2 r = float2(length(p.xy) - t.x, p.z);
-    return length(r) - t.y;
-}
-
 
 float3 getSphereNormal(float3 p, float sphereSize)
 {
@@ -114,8 +96,7 @@ VSOut VS_Main(VSInput input)
 {
 
     VSOut output;
-
-    output.position = float4(input.position, 0.0f);
+    output.position = float4(input.position,1.0f);
     output.texcoord = input.texcoord;
 
     return output;
@@ -126,8 +107,9 @@ PSOut PS_Main(VSOut input)
     PSOut output;
 
     //Screen pos
-    float2 p = (input.texcoord.xy * 2.0 - Resolution) / min(Resolution.x, Resolution.y);
-    p = input.texcoord;
+    //float2 p = (input.position.xy * 2.0 - Resolution) / min(Resolution.x, Resolution.y);
+    float2 p = input.texcoord;
+
 	//Camera
     float3 cameraPos = float3(0, cos(Time), -Time);
     float3 cameraDir = float3(0.0, 0.0, -1.0);
@@ -146,11 +128,11 @@ PSOut PS_Main(VSOut input)
     float3 rayPos = cameraPos;
     float3 color = float3(0.0,0.0,0.0);
     const float3 SunLight = normalize(float3(-1.0, 1.0, 1.0));
-    const float sphereSize = 0.4;
+    const float boxSize = 0.4;
     float ac = 0.0;
     for (int i = 0; i < StepCount; i++)
     {
-        dist = sdBox(rayPos, sphereSize);
+        dist = sdBox(rayPos, boxSize);
         dist = max(abs(dist), 0.02);
         ac += exp(-dist * 10.0);
 		
@@ -158,8 +140,8 @@ PSOut PS_Main(VSOut input)
         rayPos = cameraPos + ray * rLen;
     }
 	
-    color = float3(ac * 0.01, ac * 0.02, ac * 0.03 + ray.x);
+    color = float3(ac * 0.01, ac * 0.02, ac * 0.03 );
 
-    output.color = float4(color, 1.0);
+    output.color = float4(color, 1.0f);
     return output;
 }

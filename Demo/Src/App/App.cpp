@@ -15,6 +15,7 @@ void App::Run()
 	ref.SetWindowSize(1280, 720);
 	ref.SetWindowName(L"DEMO");
 	ref.Initialize();
+	ref.Time().Reset();
 
 	ref.TimerStart();
 	this->_scene = std::make_unique<DemoScene>();

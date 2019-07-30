@@ -37,9 +37,11 @@ HRESULT DemoScene::Initialize()
 
 void DemoScene::Update()
 {
+	static float totaldelta = 0.0f;
 	Hashira::SceneConstant sc;
 	sc.resolution = Hashira::Vector2(1280.0f, 720.0f);
-	sc.time = Hashira::Framework::GetInstance().Time().TotalTime();
+	totaldelta += Hashira::Framework::GetInstance().Time().DeltaTime();
+	sc.time = totaldelta;
 	_sceneConstant.Update(&sc, sizeof(Hashira::SceneConstant), 0);
 
 }
@@ -132,8 +134,9 @@ HRESULT DemoScene::PlaneInitialize()
 	std::vector<Vert> vert(4);
 	for (int i = 0; i < 4; ++i)
 	{
-		vert[i].pos = Vector3(static_cast<float>(i % 2) * 2.0f - 1.0,1.0f - static_cast<float>(i / 2) * 2.0f , 0.0f);
-		vert[i].texcoord = Vector2(static_cast<float>(i % 2), static_cast<float>(i / 2));
+		vert[i].pos = Vector3((static_cast<float>(i % 2) * 2.0f - 1.0) ,(1.0f - static_cast<float>(i / 2) * 2.0f) , 0.0f);
+
+		vert[i].texcoord = Vector2(static_cast<float>(i % 2 * 2 - 1), static_cast<float>((1 - i/2) * 2)-1.0f );
 	}
 
 	return this->_planeVert.Initialize(sizeof(Vert) * 4, sizeof(Vert), vert.data());
