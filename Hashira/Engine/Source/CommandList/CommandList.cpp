@@ -170,55 +170,53 @@ void Hashira::CommandList::SetGraphcisRootSignatureAndDescriptors(RootSignature*
 	pList->SetGraphicsRootSignature(rs->GetSignature().Get());
 
 	//Allocate Sampler Handles
-	D3D12_GPU_DESCRIPTOR_HANDLE samplerGPUHandles{};
-	D3D12_CPU_DESCRIPTOR_HANDLE samplerCPUHandles[16 * 5];
-	Uint32 samplerCount = 0;
-
-	auto SetSamplerHandles = [&](const D3D12_CPU_DESCRIPTOR_HANDLE handle)
 	{
-		//呼ばれるたびにインクリメントして引数のハンドルが0じゃないならハンドルのセット
-		//そうでないならデフォルトのデスクリプタをセットする
-		samplerCPUHandles[samplerCount++] = (handle.ptr > 0) ? handle : defaultSamplerDescriptor;
-	};
-	//VSSamplerSet
-	for (Uint32 i = 0; descSet->GetVsSampler().maxCount; i++) {
-		SetSamplerHandles(descSet->GetVsSampler().cpuHandles[i]);
-	}
-	//PSSamplerSet
-	for (Uint32 i = 0; descSet->GetPsSampler().maxCount; i++) {
-		SetSamplerHandles(descSet->GetPsSampler().cpuHandles[i]);
-	}
-	//GSSamplerSet
-	for (Uint32 i = 0; descSet->GetGsSampler().maxCount; i++) {
-		SetSamplerHandles(descSet->GetGsSampler().cpuHandles[i]);
-	}
-	//DSSamplerSet
-	for (Uint32 i = 0; descSet->GetDsSampler().maxCount; i++) {
-		SetSamplerHandles(descSet->GetDsSampler().cpuHandles[i]);
-	}
-	//HSSamplerSet
-	for (Uint32 i = 0; descSet->GetHsSampler().maxCount; i++) {
-		SetSamplerHandles(descSet->GetHsSampler().cpuHandles[i]);
-	}
+		D3D12_GPU_DESCRIPTOR_HANDLE samplerGPUHandles{};
+		D3D12_CPU_DESCRIPTOR_HANDLE samplerCPUHandles[16 * 5];
+		Uint32 samplerCount = 0;
 
-	if (samplerCount > 0)
-	{
-		bool isSuccess = _samplerDescCache->AllocateAndCopy(samplerCount, samplerCPUHandles, samplerGPUHandles);
-
-		assert(isSuccess);
-
-		_currSamplerHeap = _samplerDescCache->GetHeap();
-
-		if (_currSamplerHeap != _prevSamplerHeap)
+		auto SetSamplerHandles = [&](const D3D12_CPU_DESCRIPTOR_HANDLE handle)
 		{
-			_prevSamplerHeap = _currSamplerHeap;
-			_heapChanged = true;
+			//呼ばれるたびにインクリメントして引数のハンドルが0じゃないならハンドルのセット
+			//そうでないならデフォルトのデスクリプタをセットする
+			samplerCPUHandles[samplerCount++] = (handle.ptr > 0) ? handle : defaultSamplerDescriptor;
+		};
+		//VSSamplerSet
+		for (Uint32 i = 0; descSet->GetVsSampler().maxCount; i++) {
+			SetSamplerHandles(descSet->GetVsSampler().cpuHandles[i]);
 		}
-	}
+		//PSSamplerSet
+		for (Uint32 i = 0; descSet->GetPsSampler().maxCount; i++) {
+			SetSamplerHandles(descSet->GetPsSampler().cpuHandles[i]);
+		}
+		//GSSamplerSet
+		for (Uint32 i = 0; descSet->GetGsSampler().maxCount; i++) {
+			SetSamplerHandles(descSet->GetGsSampler().cpuHandles[i]);
+		}
+		//DSSamplerSet
+		for (Uint32 i = 0; descSet->GetDsSampler().maxCount; i++) {
+			SetSamplerHandles(descSet->GetDsSampler().cpuHandles[i]);
+		}
+		//HSSamplerSet
+		for (Uint32 i = 0; descSet->GetHsSampler().maxCount; i++) {
+			SetSamplerHandles(descSet->GetHsSampler().cpuHandles[i]);
+		}
 
-	//変更があった場合、再設定をおこなう
-	if (_heapChanged)
-	{
+		if (samplerCount > 0)
+		{
+			bool isSuccess = _samplerDescCache->AllocateAndCopy(samplerCount, samplerCPUHandles, samplerGPUHandles);
+
+			assert(isSuccess);
+
+			_currSamplerHeap = _samplerDescCache->GetHeap();
+
+			if (_currSamplerHeap != _prevSamplerHeap)
+			{
+				_prevSamplerHeap = _currSamplerHeap;
+				_heapChanged = true;
+			}
+		}
+
 		ID3D12DescriptorHeap* descriptorHeraps[2];
 		int heapCount = 0;
 		if (_parentRC->GetGlobalDescriptorHeap()->GetHeap())
@@ -226,35 +224,41 @@ void Hashira::CommandList::SetGraphcisRootSignatureAndDescriptors(RootSignature*
 			descriptorHeraps[heapCount++] = _parentRC->GetGlobalDescriptorHeap()->GetHeap().Get();
 
 		}
-		if (_currSamplerHeap)
+
+		//変更があった場合、再設定をおこなう
+		if (_heapChanged)
 		{
-			descriptorHeraps[heapCount++] = _currSamplerHeap.Get();
+
+			if (_currSamplerHeap)
+			{
+				descriptorHeraps[heapCount++] = _currSamplerHeap.Get();
+
+			}
+			pList->SetDescriptorHeaps(heapCount, descriptorHeraps);
+			_heapChanged = false;
+		}
+
+		if (samplerCount > 0)
+		{
+			// サンプラーステートのハンドルを登録する
+			auto sampler_desc_size = _parentRC->GetRenderingDevice()->GetD3D12Device()
+				->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER);
+
+			auto SetSamplerDesc = [&](Uint32 count, Uint8 index)
+			{
+				if (count > 0)
+				{
+					pList->SetGraphicsRootDescriptorTable(index, samplerGPUHandles);
+					samplerGPUHandles.ptr += sampler_desc_size * count;
+				}
+			};
+			SetSamplerDesc(descSet->GetVsSampler().maxCount, inputIndex.vs.SamplerIndex);
+			SetSamplerDesc(descSet->GetPsSampler().maxCount, inputIndex.ps.SamplerIndex);
+			SetSamplerDesc(descSet->GetGsSampler().maxCount, inputIndex.gs.SamplerIndex);
+			SetSamplerDesc(descSet->GetHsSampler().maxCount, inputIndex.hs.SamplerIndex);
+			SetSamplerDesc(descSet->GetDsSampler().maxCount, inputIndex.ds.SamplerIndex);
 
 		}
-		pList->SetDescriptorHeaps(heapCount, descriptorHeraps);
-		_heapChanged = false;
-	}
-
-	if (samplerCount > 0)
-	{
-		// サンプラーステートのハンドルを登録する
-		auto sampler_desc_size = _parentRC->GetRenderingDevice()->GetD3D12Device()
-			->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER);
-
-		auto SetSamplerDesc = [&](Uint32 count, Uint8 index)
-		{
-			if (count > 0)
-			{
-				pList->SetGraphicsRootDescriptorTable(index, samplerGPUHandles);
-				samplerGPUHandles.ptr += sampler_desc_size * count;
-			}
-		};
-		SetSamplerDesc(descSet->GetVsSampler().maxCount, inputIndex.vs.SamplerIndex);
-		SetSamplerDesc(descSet->GetPsSampler().maxCount, inputIndex.ps.SamplerIndex);
-		SetSamplerDesc(descSet->GetGsSampler().maxCount, inputIndex.gs.SamplerIndex);
-		SetSamplerDesc(descSet->GetHsSampler().maxCount, inputIndex.hs.SamplerIndex);
-		SetSamplerDesc(descSet->GetDsSampler().maxCount, inputIndex.ds.SamplerIndex);
-
 	}
 
 	//CBV,SRV,UAVのセット
@@ -268,8 +272,10 @@ void Hashira::CommandList::SetGraphcisRootSignatureAndDescriptors(RootSignature*
 
 			D3D12_CPU_DESCRIPTOR_HANDLE dstCpuHandle = {};
 			D3D12_GPU_DESCRIPTOR_HANDLE dstGpuHandle = {};
-			this->_descriptorStackList->Allocate(count, dstCpuHandle, dstGpuHandle);
 
+			//もしも参照しているスタックリストが同じならば新たにハンドルをアロケートしない
+
+			this->_descriptorStackList->Allocate(count, dstCpuHandle, dstGpuHandle);
 			//Copy to Stack heap
 			auto& dev = this->_parentRC->GetRenderingDevice()->GetD3D12Device()->GetDevice();
 			dev->CopyDescriptors(

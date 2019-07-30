@@ -277,6 +277,7 @@ void Hashira::DescriptorStackList::Allocate(Uint32 count, D3D12_CPU_DESCRIPTOR_H
 {
 	if (_stacks[_stackIndex].Allocate(count, cpuHandle, gpuHandle))
 		return;
+	//今のコマンドリストシステムだとフレーム毎生成なので無限に増え続ける　抑制機構を作るか一新する必要がある
 	if (!AddStack())
 		assert(!"[ERROR] Stack Empty");
 
@@ -298,10 +299,11 @@ void Hashira::DescriptorStackList::Reset()
 
 bool Hashira::DescriptorStackList::AddStack()
 {
+	//デスクリプタ容量2000のスタックを追加する
 	constexpr int StackNum = 2000;
 	DescriptorStack stack;
 	_stacks.push_back(stack);
-	auto&& s = _stacks.back();
+	DescriptorStack& s = _stacks.back();
 
 	//親グローバルヒープにスタックｓにStackNum分のデスクリプタ領域を割り当てるように要求
 	return _parentHeap->AllocateStack(s, StackNum);
@@ -331,7 +333,7 @@ bool Hashira::GlobalDescriptorHeap::AllocateStack(DescriptorStack & stack, Uint3
 
 	std::lock_guard<std::mutex> lock(_mutex);
 
-	if (_allocateCount + count > _heapDesc.NumDescriptors)
+	if ((_allocateCount + count) > _heapDesc.NumDescriptors)
 	{
 		return false;
 	}
@@ -344,7 +346,7 @@ bool Hashira::GlobalDescriptorHeap::AllocateStack(DescriptorStack & stack, Uint3
 	stack._gpuHandleStartPos.ptr += _descSize * _allocateCount;
 	stack._descSize = _descSize;
 	stack._stackMax = count;
-	stack._stackPosition = 0;
+	stack._stackPosition = _allocateCount;
 
 	_allocateCount += count;
 

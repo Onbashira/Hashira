@@ -33,7 +33,6 @@ namespace Hashira {
 		std::shared_ptr<Camera> _mainCamera;
 
 		UploadBuffer<SceneConstant> _sceneConstant;
-
 		DescriptorInfo _sceneConstantDescriptor;
 
 

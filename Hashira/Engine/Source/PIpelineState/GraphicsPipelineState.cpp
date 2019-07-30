@@ -219,15 +219,15 @@ HRESULT Hashira::GraphicsPipelineState::Initialize(std::shared_ptr<D3D12Device>&
 	psoDesc.pRootSignature = desc.rootSignature->GetSignature().Get();
 	if (desc.vs)
 	{
-		psoDesc.VS = { reinterpret_cast<const UINT8*>(
-			desc.vs->GetShader(Shader::Type::SHADER_TYPE_VERTEX)->GetBufferPointer()),
-			desc.vs->GetShader(Shader::Type::SHADER_TYPE_VERTEX)->GetBufferSize() };
+		psoDesc.VS.pShaderBytecode = desc.vs->GetShader(Shader::Type::SHADER_TYPE_VERTEX)->GetBufferPointer();
+		psoDesc.VS.BytecodeLength = desc.vs->GetShader(Shader::Type::SHADER_TYPE_VERTEX)->GetBufferSize();
+
 	}
 	if (desc.ps)
 	{
-		psoDesc.PS = { reinterpret_cast<const UINT8*>(
-		desc.ps->GetShader(Shader::Type::SHADER_TYPE_PIXEL)->GetBufferPointer()),
-		desc.ps->GetShader(Shader::Type::SHADER_TYPE_PIXEL)->GetBufferSize() };
+		psoDesc.PS.pShaderBytecode = desc.ps->GetShader(Shader::Type::SHADER_TYPE_PIXEL)->GetBufferPointer();
+		psoDesc.PS.BytecodeLength = desc.ps->GetShader(Shader::Type::SHADER_TYPE_PIXEL)->GetBufferSize();
+
 	}
 	if (desc.gs)
 	{

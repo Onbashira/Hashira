@@ -52,7 +52,7 @@ HRESULT Hashira::SwapChain::CreateSwapChain(CommandQueue & commandQueue, std::sh
 
 HRESULT Hashira::SwapChain::CreateRenderTargets(std::shared_ptr<D3D12Device>& device, unsigned int bufferNum)
 {
-	this->_bufferNum = Min(SwapChain::FrameBufferMax, Max(SwapChain::FrameBufferMax, bufferNum));;
+	this->_bufferNum = Min(bufferNum, Max(SwapChain::FrameBufferMax, bufferNum));;
 	D3D12_DESCRIPTOR_HEAP_DESC desc{};
 	desc.NumDescriptors = _bufferNum;
 	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAGS::D3D12_DESCRIPTOR_HEAP_FLAG_NONE;

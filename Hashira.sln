@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Hashira", "Hashira\Hashira.vcxproj", "{11157C5A-E0AB-4D5D-BE59-199EF72C8766}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Demo", "Demo\Demo.vcxproj", "{419F6FDC-7916-4CBE-9E67-E8DABAC65F91}"
+	ProjectSection(ProjectDependencies) = postProject
+		{11157C5A-E0AB-4D5D-BE59-199EF72C8766} = {11157C5A-E0AB-4D5D-BE59-199EF72C8766}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

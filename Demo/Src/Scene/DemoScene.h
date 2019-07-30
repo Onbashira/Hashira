@@ -24,6 +24,7 @@ public:
 
 	HRESULT Initialize();
 
+
 	virtual void Update();
 
 	virtual void Rendering();

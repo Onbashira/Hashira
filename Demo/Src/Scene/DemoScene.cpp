@@ -1,5 +1,6 @@
 #include "DemoScene.h"
 #include "Engine/Source/ShaderObject/Shader.h"
+
 using namespace Hashira;
 
 DemoScene::DemoScene() : Hashira::Scene(10000, 256, 256, 16)
@@ -46,15 +47,17 @@ void DemoScene::Update()
 void DemoScene::Rendering()
 {
 	//SceneRendering
-
+	_renderContext->GetDescriptorStackList()->Reset();
 	std::shared_ptr<Hashira::CommandList> _cmdList;
 	this->_renderContext->CreateCommandList(D3D12_COMMAND_LIST_TYPE::D3D12_COMMAND_LIST_TYPE_DIRECT, _cmdList);
 	//_renderContext->ResetCommandList(_cmdList);
 
 	_cmdList->RSSetViewports(this->_mainCamera->GetViewportNum(), _mainCamera->GetViewportArray().data());
-	_cmdList->GetCommandList()->SetPipelineState(_pso->GetPSO().Get());
+	_cmdList->RSSetScissorRects(1,this->_mainCamera->GetScissor());
 	_renderContext->GetSwapChain()->SetRenderTarget(_cmdList);
-	_cmdList->IASetPrimitiveTopology(D3D12_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+
+	_cmdList->GetCommandList()->SetPipelineState(_pso->GetPSO().Get());
+	_cmdList->IASetPrimitiveTopology(D3D12_PRIMITIVE_TOPOLOGY::D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	_cmdList->SetGraphcisRootSignatureAndDescriptors(_rootSignature.get(), &_descriptorSets);
 
@@ -88,7 +91,6 @@ HRESULT DemoScene::PSOInitialize()
 	desc.inputLayout.pElements = elementDescs;
 
 	desc.rootSignature = _rootSignature.get();
-
 	desc.vs = &_vs;
 	desc.ps = &_ps;
 
@@ -100,12 +102,12 @@ HRESULT DemoScene::PSOInitialize()
 	desc.depthStencilDesc = DefaultDepthStateDisableDisable();
 
 	desc.rasterizerDesc = DefaultRasterizerStateStandard();
-	desc.rasterizerDesc.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_FRONT;
+	desc.rasterizerDesc.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_BACK;
 	
 	desc.primitiveTopology = D3D12_PRIMITIVE_TOPOLOGY::D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
 	desc.numRTVs = 1;
 	desc.rtvFormats[0] = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
-	desc.dsvFormat = DXGI_FORMAT::DXGI_FORMAT_D32_FLOAT;
+	desc.dsvFormat = DXGI_FORMAT::DXGI_FORMAT_UNKNOWN;
 	desc.multiSamplerCount = 1;
 
 
@@ -149,7 +151,7 @@ HRESULT DemoScene::RootSignatureInitialize()
 	if (FAILED(hr)) {
 		return hr;
 	}
-	hr = _ps.CompileShader(Hashira::Shader::Type::SHADER_TYPE_VERTEX,
+	hr = _ps.CompileShader(Hashira::Shader::Type::SHADER_TYPE_PIXEL,
 		"./Src/Shader/RayMarchingShader.hlsl", "PS_Main", "ps_5_0");
 	if (FAILED(hr)) {
 		return hr;
@@ -173,5 +175,6 @@ HRESULT DemoScene::RootSignatureInitialize()
 
 void DemoScene::DescriptorSetInitialize()
 {
+	_descriptorSets.Reset();
 	_descriptorSets.SetVsCbv(0, _sceneConstantDescriptor.cpuHandle);
 }

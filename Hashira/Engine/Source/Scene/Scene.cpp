@@ -59,22 +59,22 @@ Hashira::Scene::~Scene()
 void Hashira::Scene::SceneBegin()
 {
 	//リソースアップデート用のコマンドリストのフェッチ
-	auto& list = _renderContext->GetResourceUpdateCmdList(RenderContext::RC_COMMAND_LIST_TYPE::BEGIN);
+	auto& list = _renderContext->GetResourceUpdateCmdList(RenderContext::RC_COMMAND_LIST_TYPE::BEGIN).lock();
 	//コマンドリストを現在のアロケータでリセット
-	_renderContext->ResetCommandList(list.lock());
+	_renderContext->ResetCommandList(list);
 
 	//マスターレンダーターゲットのクリア
 	{
-		_renderContext->GetSwapChain()->ClearScreen(list.lock());
+		_renderContext->GetSwapChain()->ClearScreen(list);
 	}
 
 	//メインカメラデプスのクリア
 	{
-		_mainCamera->ClearCurrentDepthStencil(list.lock());
+		//_mainCamera->ClearCurrentDepthStencil(list);
 	}
 
-	list.lock()->CloseCommandList();
-	_renderContext->PushBackCmdList(list.lock());
+	list->CloseCommandList();
+	_renderContext->PushBackCmdList(list);
 }
 
 void Hashira::Scene::ExecutePath()
@@ -87,13 +87,13 @@ void Hashira::Scene::SceneEnd()
 
 
 	//リソースアップデート用のコマンドリストのフェッチ
-	auto& list = _renderContext->GetResourceUpdateCmdList(RenderContext::RC_COMMAND_LIST_TYPE::END);
+	auto& list = _renderContext->GetResourceUpdateCmdList(RenderContext::RC_COMMAND_LIST_TYPE::END).lock();
 	//コマンドリストを現在のアロケータでリセット
-	_renderContext->ResetCommandList(list.lock());
+	_renderContext->ResetCommandList(list);
 
-	_renderContext->GetSwapChain()->SetStatePresent(list.lock());
-	list.lock()->CloseCommandList();
-	_renderContext->PushBackCmdList(list.lock());
+	_renderContext->GetSwapChain()->SetStatePresent(list);
+	list->CloseCommandList();
+	_renderContext->PushBackCmdList(list);
 	
 	_renderContext->ExecuteCmdList3DQueue();
 
