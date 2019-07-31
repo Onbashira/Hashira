@@ -8,7 +8,6 @@
 
 
 
-
 namespace Hashira {
 
 	template <typename T>

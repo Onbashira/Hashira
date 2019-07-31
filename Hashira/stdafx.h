@@ -11,6 +11,7 @@
 #include <map>
 #include <array>
 #include <algorithm>
+#include <assert.h>
 #include <comdef.h>
 #include <wrl.h>
 #include <mutex>
