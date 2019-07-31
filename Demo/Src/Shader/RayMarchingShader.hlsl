@@ -86,17 +86,20 @@ VSOut VS_Main(VSInput input)
 PSOut PS_Main(VSOut input)
 {
     PSOut output;
+    float temp = 1.0;
+    float saw = 2.0 * Time - floor(2.0 * Time);
+    float tTime = 1.0 - 0.3 * modf(Time * 2.0, saw);
 
     //Screen pos
-    //float2 p = (input.position.xy * 2.0 - Resolution) / min(Resolution.x, Resolution.y);
-    float2 p = input.texcoord;
+    float2 p = (input.position.xy * 2.0 - Resolution) / min(Resolution.x, Resolution.y);
+    //float2 p = input.texcoord;
 
 	//Camera
-    float3 cameraPos = float3(Resolution.x , cos(Time) + Resolution.y, Time);
+    float3 cameraPos = float3(Resolution.x , Resolution.y, 0);
     float3 cameraDir = float3(0.0, 0.0, 1.0);
     float3 cameraUpward = float3(0.0, 1.0, 0.0);
     float3 cameraRightward = cross(cameraDir, cameraUpward);
-    float cameraAngle = 60.0;
+    float cameraAngle = 60.0 ;
     float cameraFov = cameraAngle * 0.5 * PI / 180.0;
 
 	//ray
@@ -108,20 +111,22 @@ PSOut PS_Main(VSOut input)
     float rLen = 0.0;
     float3 rayPos = cameraPos;
     float3 color = float3(0.0,0.0,0.0);
-    const float3 SunLight = normalize(float3(-1.0, 1.0, 1.0));
-    const float boxSize = 0.4;
+    float3 SunLight = normalize(float3(-1.0, 1.0, 1.0));
+    
+    float steps = 0.1;
+    float boxSize = tTime - 0.6f;
     float ac = 0.0;
     for (int i = 0; i < StepCount; i++)
     {
         dist = sdBox(rayPos, boxSize);
-        dist = max(abs(dist), 0.02);
+        dist = max(abs(dist),0.02);
         ac += exp(-dist * 10.0);
 		
         rLen += dist * 0.5;
         rayPos = cameraPos + ray * rLen;
     }
-	
-    color = float3(ac * 0.01, ac * 0.02, ac * 0.03 + ray.x);
+
+    color = float3(ac * 0.01 * saw * cos(Time) * 0.1, ac * 0.02 * sin(tTime  * saw), ac * sin(saw) * 0.1);
 
     output.color = float4(color, 1.0f);
     return output;
