@@ -12,7 +12,7 @@ void App::Run()
 	Framework::SetUp();
 	auto& ref = Hashira::Framework::GetInstance();
 	ref.SetBackBufferNum(2);
-	ref.SetWindowSize(1280, 720);
+	ref.SetWindowSize(1920, 1080);
 	ref.SetWindowName(L"DEMO");
 	ref.Initialize();
 	ref.Time().Reset();

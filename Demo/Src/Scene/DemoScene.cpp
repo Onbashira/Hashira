@@ -39,7 +39,7 @@ void DemoScene::Update()
 {
 	static float totaldelta = 0.0f;
 	Hashira::SceneConstant sc;
-	sc.resolution = Hashira::Vector2(1280.0f, 720.0f);
+	sc.resolution = Hashira::Vector2(_mainCamera->GetCameraInfo().windowWidth, _mainCamera->GetCameraInfo().windowHeight);
 	totaldelta += Hashira::Framework::GetInstance().Time().DeltaTime();
 	sc.time = totaldelta;
 	_sceneConstant.Update(&sc, sizeof(Hashira::SceneConstant), 0);
