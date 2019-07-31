@@ -94,14 +94,12 @@ PSOut PS_Main(VSOut input)
     float2 p = (input.position.xy * 2.0 - Resolution) / min(Resolution.x, Resolution.y);
     //float2 p = input.texcoord;
 
-    float fovValue = sin(Time) + 0.5 * sin( 2.0* Time) + 1.0 / 3.0 / sin(Time);
-
 	//Camera
     float3 cameraPos = float3(Resolution.x, Resolution.y, 0);
     float3 cameraDir = float3(0.0, 0.0, 1.0);
     float3 cameraUpward = float3(0.0, 1.0, 0.0);
     float3 cameraRightward = cross(cameraDir, cameraUpward);
-    float cameraAngle = 60.0 * fovValue;
+    float cameraAngle = 60.0 ;
     float cameraFov = cameraAngle * 0.5 * PI / 180.0;
 
 	//ray
