@@ -105,7 +105,7 @@ HRESULT DemoScene::PSOInitialize()
 
 	desc.rasterizerDesc = DefaultRasterizerStateStandard();
 	desc.rasterizerDesc.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_BACK;
-	
+	desc.rasterizerDesc.isFrontCCW = false;
 	desc.primitiveTopology = D3D12_PRIMITIVE_TOPOLOGY::D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
 	desc.numRTVs = 1;
 	desc.rtvFormats[0] = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -132,13 +132,21 @@ HRESULT DemoScene::PlaneInitialize()
 		Vector2 texcoord;
 	};
 	std::vector<Vert> vert(4);
+	
+	//D3D left-handed
 	for (int i = 0; i < 4; ++i)
 	{
 		vert[i].pos = Vector3((static_cast<float>(i % 2) * 2.0f - 1.0) ,(1.0f - static_cast<float>(i / 2) * 2.0f) , 0.0f);
 
 		vert[i].texcoord = Vector2(static_cast<float>(i % 2 * 2 - 1), static_cast<float>((1 - i/2) * 2)-1.0f );
 	}
+	//OpenGL right-handed
+	//for (int i = 0; i < 4; ++i)
+	//{
+	//	vert[i].pos = Vector3((static_cast<float>(i % 2) * 2.0f - 1.0), (1.0f - static_cast<float>(i / 2) * 2.0f), 0.0f);
 
+	//	vert[i].texcoord = Vector2(static_cast<float>(i % 2 * 2 - 1), static_cast<float>((1 - i / 2) * 2) - 1.0f);
+	//}
 	return this->_planeVert.Initialize(sizeof(Vert) * 4, sizeof(Vert), vert.data());
 
 }

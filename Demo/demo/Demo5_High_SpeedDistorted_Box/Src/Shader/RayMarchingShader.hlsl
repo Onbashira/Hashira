@@ -30,6 +30,22 @@ static const float NORMAL_EPS = 0.0001;
 
 //âEéËç¿ïWånÅ®ç∂éËç¿ïWånÇ…
 
+float mod(float x, float y)
+{
+    return x - y * floor(x / y);
+}
+float2 mod(float2 x, float2 y)
+{
+    return x - y * floor(x / y);
+}
+float3 mod(float3 x, float3 y)
+{
+    return x - y * floor(x / y);
+}
+float4 mod(float4 x, float4 y)
+{
+    return x - y * floor(x / y);
+}
 
 float3 hsv(float h, float s, float v)
 {
@@ -41,7 +57,7 @@ float3 hsv(float h, float s, float v)
 
 float3 trans(float3 p, float len)
 {
-    return fmod(p, len) - (len * 0.5);
+    return mod(p, len) - (len * 0.5);
 }
 
 float sdSphere(float3 p, float sphereSize)
@@ -76,18 +92,20 @@ float3 rotate(float3 p, float angle, float3 axis)
     return mul(p,m);
 }
 
-float sdBox(float3 p, float boxSize)
+float sdBox(float3 p, float3 boxSize)
 {
     float3 pp = trans(p, 2.0);
     pp = float3(mul(pp.xy, rot(Time + sin(Time + p.z))), pp.z);
     float3 q = abs(pp);
-    return length(max(q - float3(boxSize, boxSize, boxSize), 0.0)) - 0.1;
+    return length(max(q - boxSize, 0.0)) - 0.1;
 }
 
-float sdBox(float3 p, float3 r)
+float sdBox(float3 p, float boxSize)
 {
-    p = abs(p) - r;
-    return max(max(p.x, p.y), p.z);
+    float3 pp = trans(p, 2.0);
+    pp = float3(mul(pp.xy, rot(Time + sin(Time + p.z))), pp.x);
+    float3 q = abs(pp);
+    return length(max(q - float3(boxSize, boxSize, boxSize), 0.0)) - 0.1;
 }
 
 float3 getSceneNormal(float3 p, float objectSize)
@@ -114,15 +132,14 @@ float map(float3 p)
 {
     float saw = 2.0 * Time - floor(2.0 * Time);
     float d1 = ifsBox(trans(p, 8.));
-    float d2 = sdBox(p, 0.3 * saw);
-    return min(d1, d2);
+    float d2 = sdBox(p, 0.01 * saw );
+    float d3 = sdSphere(p, 0.2);
+    return min(d1 *2, min(d2* 6, d3));
 
 }
 
 VSOut VS_Main(VSInput input)
 {
-
-
     VSOut output;
     output.position = float4(input.position, 1.0f);
     output.texcoord = input.texcoord;
@@ -134,8 +151,8 @@ PSOut PS_Main(VSOut input)
 {
     PSOut output;
     float temp = 1.0;
-    float saw = 2.0 * Time - floor(2.0 * Time);
-    float tTime = 1.0 - 0.3 * modf(Time * 2.0, saw);
+    float saw = 2.0 * Time - floor(2.0 * Time) ;
+    float tTime = 1.0 - 0.3 * mod(Time * 2.0, saw);
 
     //Screen pos
     float2 p = (input.position.xy * 2.0 - Resolution) / min(Resolution.x, Resolution.y);
@@ -144,7 +161,7 @@ PSOut PS_Main(VSOut input)
     float fovValue = cos(sin(Time * 2.0) * saw);
 
 	//Camera
-    float3 cameraPos = float3(Resolution.x, Resolution.y, 0);
+    float3 cameraPos = float3(0, 0, saw * 5.0);
     float3 cameraDir = float3(0.0, 0.0, 1.0);
     float3 cameraUpward = float3(0.0, 1.0, 0.0);
     float3 cameraRightward = cross(cameraDir, cameraUpward);
@@ -153,7 +170,6 @@ PSOut PS_Main(VSOut input)
 
 	//ray
     float3 ray = normalize(float3(sin(cameraFov) * p.x, sin(cameraFov) * p.y, cos(cameraFov)));
-
 
 	// marching loop
     float dist = 0.0;
@@ -164,7 +180,7 @@ PSOut PS_Main(VSOut input)
     float ac = 0.0;
     for (int i = 0; i < StepCount; i++)
     {
-        dist = map(rotate(rayPos, radians(Time * 10), float3(0.0, 1.0, 0.0)));
+        dist = map(rotate(rayPos, radians(Time * 10.0f ), float3(0.0, 0.0, 1.0)));
         dist = max(abs(dist), 0.02);
         ac += exp(-dist * 10.0);
 		
@@ -172,7 +188,7 @@ PSOut PS_Main(VSOut input)
         rayPos = cameraPos + ray * rLen;
     }
 
-    color = float3(ac * 0.01 * saw * 0.1, ac * 0.02 * sin(saw * tTime), ac * 0.01 * cos(2.0* tTime));
+    color = saturate(float3(ac * 0.01 , ac * 0.02 , ac  * 0.1));
 
     output.color = float4(color, 1.0f);
     return output;
