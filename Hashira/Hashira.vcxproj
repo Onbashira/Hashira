@@ -106,7 +106,6 @@
     <ClCompile Include="Engine\Source\Texture\TextureManager.cpp" />
     <ClCompile Include="Engine\Source\Time\Timer.cpp" />
     <ClCompile Include="Engine\Source\Debug\Logger.cpp" />
-    <ClCompile Include="Engine\Source\Utility\NonCopyable.cpp" />
     <ClCompile Include="Engine\Source\Window\Window.cpp" />
     <ClCompile Include="Engine\Source\Window\WindowManager.cpp" />
     <ClCompile Include="Engine\Source\Command\Core\InternalCommandCreater.cpp" />
@@ -130,7 +129,6 @@
     <ClCompile Include="Engine\Source\Component\PhysicsComponent\PhysicsComponent.cpp" />
     <ClCompile Include="Engine\Source\Scene\Scene.cpp" />
     <ClCompile Include="Engine\Source\Rendering\RenderContext\RenderContext.cpp" />
-    <ClCompile Include="Engine\Source\Utility\Singleton.cpp" />
     <ClCompile Include="Engine\Source\Texture\TextureObject.cpp" />
     <ClCompile Include="Engine\Source\MemoryAllocator\VariableSizeAllocationManager.cpp" />
     <ClCompile Include="Engine\Source\TextUI\TextUI.cpp" />

@@ -55,21 +55,16 @@ float3 hsv(float h, float s, float v)
 
 }
 
-float3 trans(float3 p, float len)
-{
-    return mod(p, len) - (len * 0.5);
-}
-
-float sdSphere(float3 p, float sphereSize)
-{
-    return (length(trans(p, 2.0)) - sphereSize);
-}
-
 float2x2 rot(float a)
 {
     float s = sin(a);
     float c = cos(a);
     return float2x2(c, -s, s, c);
+}
+
+float3 trans(float3 p, float len)
+{
+    return mod(p, len) - (len * 0.5);
 }
 
 float3 rotate(float3 p, float angle, float3 axis)
@@ -90,6 +85,12 @@ float3 rotate(float3 p, float angle, float3 axis)
         a.z * a.z * r + c
     );
     return mul(p,m);
+}
+
+float sdSphere(float3 p, float sphereSize)
+{
+    p = rotate(p + float3(p.x, p.y, p.z), radians(Time * 10.0f), float3(0.0, 0.0, 1.0));
+    return (length(trans(p, 2.0)) - sphereSize);
 }
 
 float sdBox(float3 p, float3 boxSize)
@@ -134,7 +135,7 @@ float map(float3 p)
     float d1 = ifsBox(trans(p, 8.));
     float d2 = sdBox(p, 0.01 * saw );
     float d3 = sdSphere(p, 0.2);
-    return min(d1 *2, min(d2* 6, d3));
+    return min(d1 *2, min(d2* 4, d3));
 
 }
 
@@ -161,7 +162,7 @@ PSOut PS_Main(VSOut input)
     float fovValue = cos(sin(Time * 2.0) * saw);
 
 	//Camera
-    float3 cameraPos = float3(0, 0, saw * 5.0);
+    float3 cameraPos = float3(0, 0, Time * 5.0);
     float3 cameraDir = float3(0.0, 0.0, 1.0);
     float3 cameraUpward = float3(0.0, 1.0, 0.0);
     float3 cameraRightward = cross(cameraDir, cameraUpward);
@@ -188,7 +189,7 @@ PSOut PS_Main(VSOut input)
         rayPos = cameraPos + ray * rLen;
     }
 
-    color = saturate(float3(ac * 0.01 , ac * 0.02 , ac  * 0.1));
+    color = saturate(float3(ac * 0.01 * sin(Time), ac * 0.02 * cos(Time), ac * 0.01));
 
     output.color = float4(color, 1.0f);
     return output;
