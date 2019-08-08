@@ -30,7 +30,6 @@ static const float NORMAL_EPS = 0.0001;
 static float Saw = 2.0 * Time - floor(2.0 * Time);;
 
 //右手座標系→左手座標系に
-void mainImage(out PSOut psOut, in VSOut input, in float2 fragCoord);
 
 float mod(float x, float y)
 {
@@ -70,73 +69,6 @@ float2 rot(float2 p , float a )
 
 }
 
-float3 lookAt( float3 p ,float3 eye, float3 target , float3 up)
-{
-
-    float3 w = normalize(target - eye), u = normalize(cross(w, up));
-    return float3(dot(p, u), dot(p, cross(u, w)), dot(p, w));
-}
-
-float dePoint(float3 ro , float3 rd , float3 a)
-{
-    return (length(cross(a - ro, rd)));
-
-}
-
-
-float deLine(float3 ro, float3 rd, float3 a, in float3 b)
-{
-    float3 ab = normalize(b - a), ao = a - ro;
-    float d0 = dot(rd, ab), d1 = dot(rd, ao), d2 = dot(ab, ao);
-    float len = (d0 * d1 - d2) / (1.0 - d0 * d0);
-    len = clamp(len, 0.0, length(b - a));
-    float3 p = ab * len + a;
-    return length(cross(p - ro, rd));
-}
-
-float deCircle(float3 ro, float3 rd, float3 p, float3 n, float r)
-{
-    float de = 1e10;
-    float3 u = normalize(cross(rd, n));
-    float3 v = cross(u, n);
-    float3 q = dot(p - ro, n) / dot(rd, n) * rd + ro;
-    float g = min(r, dot(u, q - p));
-    float h = sqrt(r * r - g * g);
-    float3 a = u * g + p;
-    de = min(de, length(cross(a + v * h - ro, rd)));
-    de = min(de, length(cross(a - v * h - ro, rd)));
-    a = normalize(q - p) * r + p;
-    de = min(de, length(cross(a - ro, rd)));
-    a = rd * dot(p - ro, rd) + ro - p;
-    a = normalize(cross(cross(n, a), n));
-    a = a * r + p;
-    de = min(de, length(cross(a - ro, rd)));
-    return de;
-}
-
-float deBox(float3 ro, float3 rd, float3 size, float3 pos)
-{
-    float3 c[8];
-    for(int i = 0; i < 8; i++)
-    {
-        float3 p = float3(i >> 2 & 1, i >> 1 & 1, i & 1) * 2.0 - 1.0;
-        p *= size;
-        float3 u = normalize(float3(pos.xy, 0));
-        float3 v = normalize(cross(float3(0, 0, 1), u));
-        p = mul(float3x3(v, u, cross(u, v)), p);
-        p += pos;
-        c[i] = p;
-    }
-    float de = 1e9;
-    for (int j = 0; j < 4; j++)
-    {
-        de = min(de, deLine(ro, rd, c[(j >> 1 & 1) * 3], c[(j & 1) + 1]));
-        de = min(de, deLine(ro, rd, c[(j >> 1 & 1) * 3 + 4], c[(j & 1) + 5]));
-        de = min(de, deLine(ro, rd, c[j], c[j + 4]));
-    }
-    return de;
-}
-
 float3 trans(float3 p, float len)
 {
     return mod(p, len) - (len * 0.5);
@@ -166,16 +98,6 @@ float3 rotate(float3 p, float angle, float3 axis)
     );
     return mul(p, m);
 }
-
-float3 hash(uint i)
-{
-    uint3 x = uint3(123, 456, 789) * (i + 55u);
-    uint k = 1103515245U;
-    x *= k;
-    x = ((x >> 2u) ^ (x.yzx >> 1u) ^ x.zxy) * k;
-    return float3(x) * (1.0 / float(0xffffffffU));
-}
-
 
 float sdBar(float2 p, float width)
 {
@@ -215,6 +137,7 @@ float distanceFunction(float3 pos, float size)
 }
 
 static float ind = 0.0;
+static float Size = Saw * 0.5 + 1.2;
 
 float map ( float3 pos , float size)
 {
@@ -237,39 +160,12 @@ float3 ScemeNormal(float3 p , float size)
 
 }
 
-float SSS(float3 ray, float3 rd, float d , float size)
+float SSS(float3 ray, float3 rd, float d)
 {
-    return clamp(distanceFunction(ray + rd * d, size), 0.0, 1.0);
+    return clamp(distanceFunction(ray + rd * d, Size), 0.0, 1.0);
 }
 
-void mainImage(out PSOut psOut, in VSOut input, in float2 fragCoord)
-{
-    float2 uv = fragCoord;
-    float3 ro = float3(0, 1, 0);
-    float3 ta = float3(0, 3, -10);
-    ta.xz = rot(ta.xz, 0.05);
-    float3 rd = lookAt(normalize(float3(uv, 2.0)), ro, ta, normalize(float3(0, 1, 0)));
-    float3 col = float3(0 , 0,0);
-    float de;
-    de = dePoint(ro, rd, float3(0, 0, 50));
-    col = lerp(col, float3(0.8, 0.4, 1), 2.0 / de);
-    for (uint i = 0u; i < 80u; i++)
-    {
-        float3 p = hash(i) * 2.0 - 1.0;
-        p *= float3(20, 20, 80);
-        p += sign(p) * float3(2, 2, 0);
-        p.z = mod(p.z + Time * 8.0, 160.0) - 80.0;
-        de = deBox(ro, rd, (hash(i + 136u) * 2.0 - 1.0) + float3(2, 1, 3), p);
-        float3 b_col = lerp(float3(0.2, 0.4, 1), float3(0.3, 0.5, 0.9), step(0.0, p.z));
-        col = lerp(col, b_col, 0.05 / de);
-    }
-    for (float j = 0.0; j < 10.0; j++)
-    {
-        de = deCircle(ro, rd, float3(0, 0, j * 3.0 - 5.0), float3(0, 0, 1), 8.0);
-        col = lerp(col, float3(0.3, 0.8, 0.4), 0.05 / de);
-    }
-    psOut.color = float4(col, 1.0f);
-}
+
 
 VSOut VS_Main(VSInput input)
 {
@@ -283,9 +179,66 @@ VSOut VS_Main(VSInput input)
 PSOut PS_Main(VSOut input)
 {
     PSOut output;
+    //Screen pos
     float2 p = (input.position.xy * 2.0 - Resolution) / min(Resolution.x, Resolution.y);
+    //float2 p = input.texcoord;
 
-    mainImage(output , input, p.xy);
+    float ht = 0.5 * Time;
+    float3 ta = float3(0.5, 0.5, 3.0 + 24.0 * sin(ht));
 
+	//Camera
+    float3 cameraPos = float3(0 + sin(Time), 3.5 * sin(ht), -3.0 + 24.0 * sin(ht));
+    cameraPos.xz = rot(cameraPos.xz, Time);
+    
+    float3 cameraDir = float3(0.0, 0.0, 1.0);
+    float3 fwd = normalize(ta - cameraPos);
+    float3 cameraUpward = float3(0.0, 1.0, 0.0);
+    float3 side = normalize(cross(fwd, cameraUpward));
+    cameraUpward = normalize(cross(side, fwd));
+    float screenZ = 1.8; //スクリーンポジション
+    float3 RayDir = normalize(p.x * side + p.y * cameraUpward + fwd * screenZ); //レイの方向
+    
+	// marching loop
+    float dist = 0.0;
+    float rLen = 0.0;
+    float3 color = float3(0.0, 0.0, 0.0);
+    float3 SunLight = normalize(float3(-1.0, 1.0, 1.0));
+    float ac = 0.0;
+
+    float3 lightDir; //ライトの位置
+    
+    float depth = 0.0; //レイの進んだ距離
+    float3 rayPos = float3(0.0, 0.0, 0.0); //レイの位置
+    float3 col = float3(0.0, 0.0, 0.0);
+
+    int j = 1;
+    for (int i = 0; i < StepCount; i++)
+    {
+        rayPos = cameraPos + (RayDir * depth); //レイの位置を計算
+        dist = map(rayPos, Size); //一番近いオブジェクトまでの距離を測る
+        if (dist <EPS)
+            break; //オブジェクトに例がぶつかったらfor文を抜ける
+        depth += dist; //レイの進んだ距離の更新
+        j = i + 1;
+    }
+
+    lightDir = normalize(-rayPos + cameraPos);
+
+    col =  hsv(ind * 0.3, 1.0, 1.0);
+
+    float diff = 0.0f;
+    if(diff  <EPS)
+    {
+        float3 n = ScemeNormal(rayPos, 1.0);
+        diff = max(dot(n, lightDir), 0.01);
+        
+    }
+
+    col *= diff;
+
+    col += float3(float(j) / 128, float(j + 16) / 128, float(j) / 32);
+    col += SSS(rayPos, RayDir, 0.05) * 0.005 + SSS(rayPos, RayDir, 0.025) * 0.0025;
+
+    output.color = float4(col, 1.0f);
     return output;
 }
